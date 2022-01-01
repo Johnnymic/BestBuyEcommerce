@@ -52,6 +52,9 @@ public class AppUser extends BaseEntity implements UserDetails {
     private Wallet wallet;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Reviews> reviews;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Order> order = new HashSet<>();
 
 

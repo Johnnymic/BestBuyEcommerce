@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 public interface OrderService {
     String saveOrder(OrderRequest orderRequest);
 
+    boolean hasUserOrderedProduct(Long userId, Long productId);
+
     Page<AdminOrderResponse> viewOrderByPaginated(Integer pageNo, Integer pageSize, String sortBy);
 
     Page<OrderResponse> viewHistory(Integer pageNo, Integer pageSize);

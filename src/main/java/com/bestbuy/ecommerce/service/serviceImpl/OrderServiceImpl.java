@@ -115,6 +115,23 @@ public class OrderServiceImpl implements OrderService {
         return  new PageImpl<>(orderResponseList.subList(min,max),pageRequest,orderResponseList.size());
     }
 
+    // ... (imports and other methods)
+
+    @Override
+    public boolean hasUserOrderedProduct(Long userId, Long productId) {
+        // Get the user based on the provided userId
+        AppUser loginUser = appUserRepository.findById(userId)
+                .orElseThrow(() -> new AppUserNotFountException("User not found"));
+
+        // Check if the user has any orders containing the specified product
+        return loginUser.getOrder().stream()
+                .flatMap(order -> order.getOrderItems().stream())
+                .anyMatch(orderItem -> orderItem.getProduct().getId().equals(productId));
+    }
+
+
+
+
     @Override
     public Page<OrderResponse> viewHistory(Integer pageNo, Integer pageSize) {
         AppUser loginUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())

@@ -36,7 +36,7 @@ public class AppUserController {
         return new ResponseEntity<>(apiResponse,HttpStatus.FOUND);
 
     }
-    @GetMapping ("/resend-new_verification")
+    @GetMapping ("/resend/new/verification")
     public ResponseEntity<ApiResponse<String>>resendVerificationLink(@RequestParam("email")
                                                                      String email, HttpServletRequest request){
 
@@ -45,7 +45,7 @@ public class AppUserController {
 
     }
 
-    @PutMapping ("/edit-profile")
+    @PutMapping ("/edit/profile")
     public ResponseEntity<ApiResponse<EditProfileResponse>>editProfile(@Validated
                                                                            @RequestBody EditProfileRequest editProfileRequest){
 
@@ -53,13 +53,13 @@ public class AppUserController {
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
 
     }
-    @GetMapping("/view-user-profile/")
+    @GetMapping("/view/user/profile/")
     public ResponseEntity<ApiResponse<UserProfileResponse>> viewUserProfile(){
         ApiResponse<UserProfileResponse> response = new ApiResponse<>(userService.viewUserProfile());
         return  new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/view-user-paginated")
+    @GetMapping("/view/user/paginated")
     public ResponseEntity<ApiResponse <Page<UserProfileResponse>>>viewAllUserProfilesByPaginationAndSort(@RequestParam(defaultValue = "0")Integer pageNo,
                                                                                                          @RequestParam(defaultValue = "16")Integer pageSize,
                                                                                                          @RequestParam(defaultValue = "id") String sortBy

@@ -3,14 +3,13 @@ package com.bestbuy.ecommerce.domain.entity;
 import com.bestbuy.ecommerce.domain.entity.Order;
 import com.bestbuy.ecommerce.domain.entity.Product;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import java.math.BigDecimal;
 import java.util.Set;
-
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @Builder

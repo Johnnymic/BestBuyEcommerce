@@ -39,11 +39,13 @@ public class ForgetPasswordListenEvent implements ApplicationListener<ForgetPass
         }
 
     }
+
+
     public void sendConfirmationToken(String url, AppUser appUser) throws MessagingException, UnsupportedEncodingException {
         String subject = "Password Reset Request";
-        String senderName = "Event Hub Inc.";
+        String senderName = "BestBuy E-commerce";
         String mailContent = "<p> Hi, "+appUser.getFirstName()+" </p>"+
-                "<p> Welcome to Event Hub Inc. </p>"+
+                "<p> Welcome to BestBuy. </p>"+
                 "<p>Please, follow the link below to reset your password. </p>" +
                 "<a href=\""+url+"\"> Click here</a>" +
                 "<p> Thank you <br>" + senderName;

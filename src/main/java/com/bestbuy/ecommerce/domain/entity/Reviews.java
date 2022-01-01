@@ -1,6 +1,15 @@
 package com.bestbuy.ecommerce.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+@Getter
+@Setter
+@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@RequiredArgsConstructor
 
 public class Reviews extends BaseEntity {
 
