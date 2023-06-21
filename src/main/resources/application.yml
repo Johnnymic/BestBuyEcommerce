@@ -1,0 +1,9 @@
+spring:
+  datasource:
+     url: jdbc:postgresql://localhost:5432/BestBuy
+     password: 123456789
+     username: postgres
+jwt:
+  expiration:
+    access-token: 86400000
+    refresh-token: 259200000
