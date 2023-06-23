@@ -22,8 +22,8 @@ public class JwtToken {
     private String refreshToken;
     private boolean isExpired;
     private boolean isRevoked;
-    @ManyToOne()
-    @JoinColumn(name = "user_Id" )
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "appUser_id" )
     private AppUser appUser;
 
 

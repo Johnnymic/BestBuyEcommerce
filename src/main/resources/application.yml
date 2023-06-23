@@ -3,6 +3,10 @@ spring:
      url: jdbc:postgresql://localhost:5432/BestBuy
      password: 123456789
      username: postgres
+  jpa:
+    hibernate:
+      ddl-auto : create
+    showSql : true
 jwt:
   expiration:
     access-token: 86400000
