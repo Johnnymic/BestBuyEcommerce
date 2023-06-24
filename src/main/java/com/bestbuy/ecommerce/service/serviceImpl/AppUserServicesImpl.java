@@ -23,8 +23,6 @@ public class AppUserServicesImpl implements UserService {
     public RegistrationResponse registerUser(RegistrationRequest registrationResquest) {
         AppUser appUser = mapToEntity(registrationResquest);
          var newAppUser = appUserRepository.save(appUser);
-         String token = jwtService.generateToken((Authentication) appUser);
-
          return RegistrationResponse.builder()
                  .firstName(newAppUser.getFirstName())
                  .lastName(newAppUser.getLastName())
