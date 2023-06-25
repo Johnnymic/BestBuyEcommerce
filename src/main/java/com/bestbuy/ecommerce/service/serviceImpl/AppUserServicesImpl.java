@@ -20,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.CredentialNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +61,7 @@ public class AppUserServicesImpl implements UserService {
     public LoginResponse authenticateUser(LoginRequest loginRequest) {
         AppUser appUser = appUserRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(()-> new AppUserNotFountException("user not found exception"));
-            if(appUser.getIsEnabled().equals(false)){
+            if(appUser.getIsEnabled().equals(true)){
                  throw  new UserDetailedException("User Account  not enabled");
             }
             if (!passwordEncoder.matches(loginRequest.getPassword(), appUser.getPassword())){

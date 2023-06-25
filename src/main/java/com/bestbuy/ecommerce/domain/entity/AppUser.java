@@ -26,19 +26,19 @@ public class AppUser {
     @NotBlank(message = "Email is required")
     private String email;
 
-    @NotBlank(message = "First name is required")
+
     private String firstName;
 
-    @NotBlank(message = "Last name is required")
+
     private String lastName;
 
-    @Pattern(regexp = "\\d{14}", message = "Phone number must be 10 digits")
+
     private String phone;
 
-    @NotBlank(message = "Password is required")
+
     private String password;
 
-    @NotNull(message = "Enabled status is required")
+
     private Boolean isEnabled;
 
     @Enumerated(value = EnumType.STRING)
