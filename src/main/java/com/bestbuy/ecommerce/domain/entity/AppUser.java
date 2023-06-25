@@ -32,7 +32,7 @@ public class AppUser {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
-    @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
+    @Pattern(regexp = "\\d{14}", message = "Phone number must be 10 digits")
     private String phone;
 
     @NotBlank(message = "Password is required")

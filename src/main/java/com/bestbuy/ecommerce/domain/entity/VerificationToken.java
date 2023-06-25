@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class verificationToken {
+public class VerificationToken {
 
     private static  final int EXPIRATION =10;
     @Id
@@ -26,11 +26,11 @@ public class verificationToken {
     @JoinColumn(name = "appUser_token")
     private  AppUser appUser;
 
-    public verificationToken(String token) {
+    public VerificationToken(String token) {
         this.token = token;
     }
 
-    public verificationToken(String token, Date expiration, AppUser appUser) {
+    public VerificationToken(String token, Date expiration, AppUser appUser) {
         this.token = token;
         this.expiration = getExpirationDate();
         this.appUser = appUser;

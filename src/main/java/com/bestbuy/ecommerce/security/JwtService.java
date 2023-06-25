@@ -35,7 +35,6 @@ public class JwtService {
         byte[]  secretKey = DatatypeConverter.parseBase64Binary(generateSecret());
         return new SecretKeySpec(secretKey, "HmacSHA512");
     }
-
     private String generateSecret() {
         return DatatypeConverter.printBase64Binary(new byte[512/8]);
     }
@@ -44,20 +43,14 @@ public class JwtService {
      Claims claims = extractAllClaims(token);
        return claims.getSubject();
     }
-
     private Date extractExpiration(String token){
     return  extractClaim(token,Claims::getExpiration);
 
     }
-
-
     private  <T> T extractClaim(String token , Function<Claims, T> claimsRevolver){
         Claims claims =extractAllClaims(token);
        return  claimsRevolver.apply(claims);
     }
-
-
-
     private Claims extractAllClaims(String token) {
      return Jwts.parserBuilder()
              .setSigningKey(generatedKey())
@@ -92,33 +85,21 @@ public class JwtService {
                .compact();
 
     }
-//
-//    public void revokedAllUserToken(AppUser appUser){
-//        List<JwtToken> jwtTokensValidation = jwtTokenRepository.findAllValidTokenByUser(appUser.getId());
-//        if (!jwtTokensValidation.isEmpty()){
-//             jwtTokensValidation.forEach(
-//                     t-> {
-//                         t.setRevoked(true);
-//                         t.setExpired(true);
-//                     });
-//                 }
-//        jwtTokenRepository.saveAll(jwtTokensValidation);
-//            }
-
-
-    public boolean isTokenValid(String token, UserDetails userDetails){
+    public void revokedAllUserToken(AppUser appUser){
+        List<JwtToken> jwtTokensValidation = jwtTokenRepository.findAllValidTokenByUser(appUser.getId());
+        if (!jwtTokensValidation.isEmpty()){
+             jwtTokensValidation.forEach(
+                     t-> {
+                         t.setRevoked(true);
+                         t.setExpired(true);
+                     });
+                 }
+        jwtTokenRepository.saveAll(jwtTokensValidation);
+            }
+            public boolean isTokenValid(String token, UserDetails userDetails){
         String username = extractUsername(token);
       return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-
-
-
-
-
-
-
-
-
 
 
 }
