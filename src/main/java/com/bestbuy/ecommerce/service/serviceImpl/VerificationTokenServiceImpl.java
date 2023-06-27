@@ -5,11 +5,14 @@ import com.bestbuy.ecommerce.domain.entity.VerificationToken;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
 import com.bestbuy.ecommerce.domain.repository.VerificationTokenRepository;
 
+import com.bestbuy.ecommerce.event.RegistrationCompleteEvent;
+import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
 import com.bestbuy.ecommerce.exceptions.TokenNotFoundException;
 import com.bestbuy.ecommerce.service.VerificationTokenService;
 import com.bestbuy.ecommerce.utitls.EmailUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,6 +23,8 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     private  final VerificationTokenRepository verificationTokenRepository;
 
     private  final AppUserRepository appUserRepository;
+
+    private  final ApplicationEventPublisher publisher;
 
     @Override
     public void saveConfirmationToken(VerificationToken verificationToken) {
@@ -47,6 +52,19 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         return  "USER VERIFIED PROCEED TO LOGIN";
     }
 
+    @Override
+    public String sendUserVerficationMail(String email, HttpServletRequest request) {
+        AppUser user = appUserRepository.findByEmail(email)
+                .orElseThrow(()->new AppUserNotFountException("user email not found"));
+        if(user.getIsEnabled().equals(true)){
+            return "User already verified, Proceed to login";
+        }
+        if(verificationTokenRepository.existsByAppUser(user)){
+             verificationTokenRepository.delete(verificationTokenRepository.findByAppUser(user));
+        }
+           publisher.publishEvent(new RegistrationCompleteEvent( EmailUtils.applicationUrl(request),user));
+        return "please check your email for verification link";
+    }
 
 
 }

@@ -7,6 +7,17 @@ spring:
     hibernate:
       ddl-auto : create
     showSql : true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: johnny25580@gmail.com
+    password: auhgnqbceseduzrh
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 jwt:
   expiration:
     access-token: 86400000

@@ -10,12 +10,16 @@ import com.bestbuy.ecommerce.dto.request.RegistrationRequest;
 import com.bestbuy.ecommerce.dto.responses.LoginResponse;
 import com.bestbuy.ecommerce.dto.responses.RegistrationResponse;
 import com.bestbuy.ecommerce.enums.Roles;
+import com.bestbuy.ecommerce.event.RegistrationCompleteEvent;
 import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
 import com.bestbuy.ecommerce.exceptions.UserCredentialNotFoundException;
 import com.bestbuy.ecommerce.exceptions.UserDetailedException;
 import com.bestbuy.ecommerce.security.JwtService;
 import com.bestbuy.ecommerce.service.AppUserService;
+import com.bestbuy.ecommerce.utitls.EmailUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,13 +33,17 @@ public class AppUserServicesImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
     private  final PasswordEncoder passwordEncoder;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     private final JwtTokenRepository tokenRepository;
 
     private final JwtService jwtService;
     @Override
-    public RegistrationResponse registerUser(RegistrationRequest registrationResquest) {
+    public RegistrationResponse registerUser(RegistrationRequest registrationResquest, HttpServletRequest request) {
         AppUser appUser = mapToEntity(registrationResquest);
+
          var newAppUser = appUserRepository.save(appUser);
+         eventPublisher.publishEvent(new RegistrationCompleteEvent(EmailUtils.applicationUrl(request),appUser));
          return RegistrationResponse.builder()
                  .firstName(newAppUser.getFirstName())
                  .lastName(newAppUser.getLastName())

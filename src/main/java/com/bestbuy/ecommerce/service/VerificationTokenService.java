@@ -1,6 +1,5 @@
 package com.bestbuy.ecommerce.service;
 
-import com.bestbuy.ecommerce.domain.entity.AppUser;
 import com.bestbuy.ecommerce.domain.entity.VerificationToken;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -10,4 +9,6 @@ public interface VerificationTokenService {
 
 
     String verifyUser(String token, HttpServletRequest request);
+
+    String sendUserVerficationMail(String email, HttpServletRequest request);
 }

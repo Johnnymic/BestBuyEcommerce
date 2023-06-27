@@ -27,8 +27,7 @@ public class AppUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Email(message = "Please provide a valid email address")
-    @NotBlank(message = "Email is required")
+
     private String email;
 
 
@@ -42,6 +41,8 @@ public class AppUser implements UserDetails {
 
 
     private String password;
+
+
 
 
     private Boolean isEnabled;
