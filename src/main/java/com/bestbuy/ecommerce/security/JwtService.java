@@ -9,6 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import jakarta.xml.bind.DatatypeConverter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Service;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
@@ -40,8 +43,8 @@ public class JwtService {
     }
     //payloader
     public  String extractUsername(String token){
-     Claims claims = extractAllClaims(token);
-       return claims.getSubject();
+          return  extractClaim(token,Claims::getSubject);
+
     }
     private Date extractExpiration(String token){
     return  extractClaim(token,Claims::getExpiration);
@@ -65,26 +68,41 @@ public class JwtService {
 
     }
 
-    public String generateToken(Authentication authentication){
-        String username = authentication.getName();
+    public String generateToken( Map<String,Object> extractClaims,
+                                        UserDetails userDetails){
+
+        return  buildToken(extractClaims, userDetails, access_expiration);
+    }
+
+public String generateAccessTokens(Authentication authentication){
+    String username = authentication.getName();
+    return Jwts.builder()
+            .setSubject(username)
+            .setIssuedAt(new Date(System.currentTimeMillis()))
+            .setExpiration(new Date(System.currentTimeMillis() + access_expiration))
+            .signWith(generatedKey(), SignatureAlgorithm.HS256)
+            .compact();
+}
+    public String generateAccessTokens(UserDetails userDetails){
+        return  buildToken(new HashMap<>(), userDetails, access_expiration);
+    }
+      public String generateRefreshTokens(UserDetails userDetails){
+        return  buildToken(new HashMap<>(), userDetails, refresh_token);
+      }
+    public String buildToken(Map<String, Object> extractClaims,
+                             UserDetails userDetails,long expiration
+
+
+     ){
         return Jwts.builder()
-                .setSubject(username)
+                .setClaims(extractClaims)
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+ access_expiration))
-                .signWith(generatedKey() , SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(generatedKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateRefreshToken(Authentication authentication){
-       String username = authentication.getName();
-       return Jwts.builder()
-               .setSubject(username)
-               .setIssuedAt(new Date(System.currentTimeMillis()))
-               .setExpiration(new Date(System.currentTimeMillis() + refresh_token))
-               .signWith(generatedKey(), SignatureAlgorithm.HS256)
-               .compact();
-
-    }
     public void revokedAllUserToken(AppUser appUser){
         List<JwtToken> jwtTokensValidation = jwtTokenRepository.findAllValidTokenByUser(appUser.getId());
         if (!jwtTokensValidation.isEmpty()){
