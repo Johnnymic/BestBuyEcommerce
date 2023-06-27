@@ -14,19 +14,18 @@ import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
 import com.bestbuy.ecommerce.exceptions.UserCredentialNotFoundException;
 import com.bestbuy.ecommerce.exceptions.UserDetailedException;
 import com.bestbuy.ecommerce.security.JwtService;
-import com.bestbuy.ecommerce.service.UserService;
+import com.bestbuy.ecommerce.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
 @RequiredArgsConstructor
-public class AppUserServicesImpl implements UserService {
+public class AppUserServicesImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
     private  final PasswordEncoder passwordEncoder;
 
@@ -48,7 +47,7 @@ public class AppUserServicesImpl implements UserService {
     @Override
     public LoginResponse authenticateUser(LoginRequest loginRequest) {
         AppUser appUser = appUserRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(()-> new AppUserNotFountException("user not found exception"));
+                .orElseThrow(()->  new AppUserNotFountException("user not found exception"));
             if(appUser.getIsEnabled().equals(true)){
                  throw  new UserDetailedException("User Account  not enabled");
             }

@@ -30,7 +30,7 @@ public class VerificationToken {
         this.token = token;
     }
 
-    public VerificationToken(String token, Date expiration, AppUser appUser) {
+    public VerificationToken(String token,  AppUser appUser) {
         this.token = token;
         this.expiration = getExpirationDate();
         this.appUser = appUser;

@@ -5,7 +5,7 @@ import com.bestbuy.ecommerce.dto.request.RegistrationRequest;
 import com.bestbuy.ecommerce.dto.responses.LoginResponse;
 import com.bestbuy.ecommerce.dto.responses.RegistrationResponse;
 
-public interface UserService {
+public interface AppUserService {
     RegistrationResponse registerUser(RegistrationRequest registrationResquest);
 
     LoginResponse authenticateUser(LoginRequest loginRequest);
