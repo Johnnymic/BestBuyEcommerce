@@ -33,8 +33,8 @@ public class AuthenticationController {
         return  new ResponseEntity<>(loginUser,HttpStatus.OK);
     }
 
-    @GetMapping ("/resend-verification")
-    public ResponseEntity<ApiResponse<String>>verifyUser(@RequestParam("token")
+    @GetMapping ("/token/{token}")
+    public ResponseEntity<ApiResponse<String>>verifyUser(@PathVariable
                                                              String token, HttpServletRequest request){
 
         ApiResponse<String> apiResponse =  new ApiResponse<>(verificationTokenService.verifyUser(token, request));
@@ -49,6 +49,7 @@ public class AuthenticationController {
         return new ResponseEntity<>(apiResponse,HttpStatus.FOUND);
 
     }
+
 
 
 

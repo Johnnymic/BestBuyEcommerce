@@ -32,16 +32,14 @@ public class RegistrationListenEventListener implements ApplicationListener<Regi
         String token = UUID.randomUUID().toString();
         VerificationToken verification_token = new VerificationToken(token,user);
         verificationTokenService.saveConfirmationToken(verification_token);
-        String url = event.getApplicationUrl()+ "/token/" + token;
+        String url = event.getApplicationUrl()+ "/api/v1/auth/token/" + token;
 
 
-//            try {
-//                sendNewVerificationMail(url ,user);
-//            } catch (MessagingException e) {
-//                throw new RuntimeException(e);
-//            } catch (UnsupportedEncodingException e) {
-//                throw new RuntimeException(e);
-//            }
+            try {
+                sendNewVerificationMail(url ,user);
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
 
 
         log.info("click the link to verify your registration : {} " +url);
