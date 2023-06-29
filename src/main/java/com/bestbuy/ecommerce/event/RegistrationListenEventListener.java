@@ -35,11 +35,11 @@ public class RegistrationListenEventListener implements ApplicationListener<Regi
         String url = event.getApplicationUrl()+ "/api/v1/auth/token/" + token;
 
 
-            try {
-                sendNewVerificationMail(url ,user);
-            } catch (MessagingException | UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+//            try {
+//                sendNewVerificationMail(url ,user);
+//            } catch (MessagingException | UnsupportedEncodingException e) {
+//                throw new RuntimeException(e);
+//            }
 
 
         log.info("click the link to verify your registration : {} " +url);

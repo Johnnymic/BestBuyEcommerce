@@ -1,9 +1,14 @@
 package com.bestbuy.ecommerce.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.math.BigDecimal;
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "products")
 public class Product {
@@ -11,22 +16,18 @@ public class Product {
        @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
+       private String name;
 
-        @Column(nullable = false, unique = true)
-        private String name;
-
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "category_id", nullable = false)
         private Category category;
 
-        @Column(nullable = false)
+
         private BigDecimal price;
 
         private String description;
 
         private String imageUrl;
 
-        // Constructors, getters, and setters
 
-        // ...
 }

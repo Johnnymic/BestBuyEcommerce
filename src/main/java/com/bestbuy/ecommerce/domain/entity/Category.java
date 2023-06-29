@@ -1,24 +1,27 @@
 package com.bestbuy.ecommerce.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 
 import java.util.List;
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "categories")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long categoryId;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+
+    private String categoryName;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
 
-    // Constructors, getters, and setters
 
-    // ...
 }
