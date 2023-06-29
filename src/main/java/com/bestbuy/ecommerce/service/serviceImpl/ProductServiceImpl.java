@@ -9,6 +9,7 @@ import com.bestbuy.ecommerce.dto.responses.ProductResponse;
 import com.bestbuy.ecommerce.exceptions.CategoryNotFoundException;
 import com.bestbuy.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,14 +22,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse addNewProduct(ProductRequest productRequest ) {
         Category category = categoryRepository.findById(productRequest.getCategoryId())
-                .orElseThrow(() -> new CategoryNotFoundException("Category id  not found"));
+                .orElseThrow(() -> new RuntimeException("Category id  not found"));
         Product product = mapToEntity(productRequest);
         product.setCategory(category);
        Product newProduct =  productRepository.save(product);
         return ProductResponse.builder()
                 .name(newProduct.getName())
                 .description(newProduct.getDescription())
-                .category(newProduct.getCategory())
+                .categoryName(newProduct.getCategory().getCategoryName())
                 .build();
     }
 
