@@ -11,4 +11,10 @@ public interface CategoryService {
 
 
     List<CategoryResponse> getAllCategories();
+
+    CategoryResponse getCategory(Long categoryId);
+
+    CategoryResponse editCategory(Long categoryId, CategoryRequest categoryRequest);
+
+    String  deleteCategoryById(Long categoryId);
 }

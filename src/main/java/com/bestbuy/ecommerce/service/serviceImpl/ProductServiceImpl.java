@@ -19,16 +19,16 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public ProductResponse addNewProduct(ProductRequest productRequest) {
+    public ProductResponse addNewProduct(ProductRequest productRequest ) {
         Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException("Category id  not found"));
         Product product = mapToEntity(productRequest);
         product.setCategory(category);
-        productRepository.save(product);
+       Product newProduct =  productRepository.save(product);
         return ProductResponse.builder()
-                .name(product.getName())
-                .description(product.getDescription())
-                .category(product.getCategory())
+                .name(newProduct.getName())
+                .description(newProduct.getDescription())
+                .category(newProduct.getCategory())
                 .build();
     }
 
