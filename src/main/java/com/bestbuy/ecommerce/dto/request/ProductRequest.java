@@ -1,5 +1,6 @@
 package com.bestbuy.ecommerce.dto.request;
 
+import com.bestbuy.ecommerce.domain.entity.BaseEntity;
 import com.bestbuy.ecommerce.domain.entity.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
@@ -18,7 +19,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Builder
-public class ProductRequest {
+public class ProductRequest extends BaseEntity {
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name must be at most 100 characters")
     private String name;

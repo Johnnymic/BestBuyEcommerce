@@ -19,6 +19,8 @@ import com.bestbuy.ecommerce.service.AppUserService;
 import com.bestbuy.ecommerce.utitls.EmailUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,7 +31,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AppUserServicesImpl implements AppUserService {
+public class AppUserServicesImpl implements AppUserService, ApplicationRunner {
     private final AppUserRepository appUserRepository;
     private  final PasswordEncoder passwordEncoder;
 
@@ -47,7 +49,7 @@ public class AppUserServicesImpl implements AppUserService {
          return RegistrationResponse.builder()
                  .firstName(newAppUser.getFirstName())
                  .lastName(newAppUser.getLastName())
-                 .message("sucessful")
+                 .message("successful")
                  .build();
     }
 
@@ -111,4 +113,19 @@ public class AppUserServicesImpl implements AppUserService {
     }
 
 
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        AppUser appUser = AppUser.builder()
+                .firstName("John")
+                .lastName("Doe")
+                .password("JohnDoe")
+                .email("JohnDoe@gmail.com")
+                .phone("2348165876597")
+                .isEnabled(true)
+                .roles(Roles.ADMIN)
+                .build();
+        appUserRepository.save(appUser);
+
+
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BestBuyApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(BestBuyApplication.class, args);
     }
 

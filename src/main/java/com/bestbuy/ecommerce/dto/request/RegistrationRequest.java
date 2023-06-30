@@ -1,5 +1,6 @@
 package com.bestbuy.ecommerce.dto.request;
 
+import com.bestbuy.ecommerce.domain.entity.BaseEntity;
 import com.bestbuy.ecommerce.enums.Roles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +12,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistrationRequest {
+public class RegistrationRequest  extends BaseEntity {
     @Email(message = "Please provide a valid email address")
     @NotBlank(message = "Email is required")
     private String email;

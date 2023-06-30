@@ -6,11 +6,11 @@ import com.bestbuy.ecommerce.domain.repository.CategoryRepository;
 import com.bestbuy.ecommerce.domain.repository.ProductRepository;
 import com.bestbuy.ecommerce.dto.request.ProductRequest;
 import com.bestbuy.ecommerce.dto.responses.ProductResponse;
-import com.bestbuy.ecommerce.exceptions.CategoryNotFoundException;
 import com.bestbuy.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +31,14 @@ public class ProductServiceImpl implements ProductService {
                 .description(newProduct.getDescription())
                 .categoryName(newProduct.getCategory().getCategoryName())
                 .build();
+    }
+
+    @Override
+    public List<ProductResponse> findAllProductByCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category id  not found"));
+         productRepository.findByCategory(category);
+        return  null;
     }
 
     private Product mapToEntity(ProductRequest productRequest) {
