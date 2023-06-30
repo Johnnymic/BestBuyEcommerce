@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistrationRequest  extends BaseEntity {
+public class RegistrationRequest  {
     @Email(message = "Please provide a valid email address")
     @NotBlank(message = "Email is required")
     private String email;

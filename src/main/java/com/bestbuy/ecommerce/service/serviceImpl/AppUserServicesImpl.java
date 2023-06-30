@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AppUserServicesImpl implements AppUserService, ApplicationRunner {
+public class AppUserServicesImpl implements AppUserService{
     private final AppUserRepository appUserRepository;
     private  final PasswordEncoder passwordEncoder;
 
@@ -113,19 +113,19 @@ public class AppUserServicesImpl implements AppUserService, ApplicationRunner {
     }
 
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        AppUser appUser = AppUser.builder()
-                .firstName("John")
-                .lastName("Doe")
-                .password("JohnDoe")
-                .email("JohnDoe@gmail.com")
-                .phone("2348165876597")
-                .isEnabled(true)
-                .roles(Roles.ADMIN)
-                .build();
-        appUserRepository.save(appUser);
-
-
-    }
+//    @Override
+//    public void run(ApplicationArguments args) throws Exception {
+//        AppUser appUser = AppUser.builder()
+//                .firstName("John")
+//                .lastName("Doe")
+//                .password("JohnDoe")
+//                .email("JohnDoe@gmail.com")
+//                .phone("2348165876597")
+//                .isEnabled(true)
+//                .roles(Roles.ADMIN)
+//                .build();
+//        appUserRepository.save(appUser);
+//
+//
+//    }
 }

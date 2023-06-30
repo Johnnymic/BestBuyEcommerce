@@ -9,4 +9,11 @@ public interface ProductService {
     ProductResponse addNewProduct(ProductRequest productRequest);
 
     List<ProductResponse> findAllProductByCategory(Long categoryId);
+
+    ProductResponse getProductByCategoryId(Long productId, Long categoryId);
+
+
+    ProductResponse updateProductByCategory(Long productId, Long categoryId, ProductRequest productRequest);
+
+    String  deleteProduct(Long productId, Long categoryId);
 }

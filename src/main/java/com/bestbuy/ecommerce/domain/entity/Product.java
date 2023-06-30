@@ -2,8 +2,12 @@ package com.bestbuy.ecommerce.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -11,7 +15,7 @@ import java.math.BigDecimal;
 @Builder
 @Entity
 @Table(name = "products")
-public class Product  extends  BaseEntity{
+public class Product  extends  BaseEntity {
 
        @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +32,9 @@ public class Product  extends  BaseEntity{
         private String description;
 
         private String imageUrl;
+
+
+
 
 
 }

@@ -1,21 +1,27 @@
 package com.bestbuy.ecommerce.dto.responses;
 
-import com.bestbuy.ecommerce.domain.entity.Category;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.bestbuy.ecommerce.domain.entity.BaseEntity;
 
-@Data
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductResponse {
+public class ProductResponse  {
 
     private String name;
 
     private String description;
 
     private String categoryName;
+
+    private LocalDateTime updateAt;
+
+    private LocalDateTime createdAt;
+
 
 }

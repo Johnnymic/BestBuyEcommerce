@@ -11,8 +11,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class CategoryRequest {
     @NotBlank(message = "Name is required")

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/admin")
-@RequiredArgsConstructor
+
 public class AdminController {
 
-    private final RoleService roleService;
+    private  RoleService roleService;
 
      @PostMapping("/add-roles")
      public ResponseEntity<ApiResponse<RoleResponse>>addRole(@RequestBody RoleRequest roleRequest){

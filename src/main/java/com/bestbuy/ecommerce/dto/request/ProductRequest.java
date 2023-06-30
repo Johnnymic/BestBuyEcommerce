@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Builder
-public class ProductRequest extends BaseEntity {
+public class ProductRequest extends BaseEntity{
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name must be at most 100 characters")
     private String name;
@@ -27,6 +27,8 @@ public class ProductRequest extends BaseEntity {
 
     @NotNull(message = "Category is required")
     private Long categoryId;
+
+    private Category category;
 
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
