@@ -108,6 +108,7 @@ public class AppUserServicesImpl implements AppUserService{
                 .password(passwordEncoder.encode(requesteqquest.getPassword()))
                 .isEnabled(false)
                 .roles(Roles.USER)
+
                 .email(requesteqquest.getEmail())
                 .build();
     }

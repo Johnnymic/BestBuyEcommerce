@@ -20,28 +20,28 @@ public class CategoryController {
     private  final CategoryService categoryService;
 
     @PostMapping("add-category")
-    private ResponseEntity<CategoryResponse>createCategory(@RequestBody CategoryRequest categoryRequest){
-        CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
-     return    new ResponseEntity<>(categoryResponse, HttpStatus.CREATED);
+    private ResponseEntity<ApiResponse <CategoryResponse>>createCategory(@RequestBody CategoryRequest categoryRequest){
+    ApiResponse<CategoryResponse> apiResponse= new ApiResponse<>(categoryService.createCategory(categoryRequest));
+     return    new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("list-of-category")
-    private ResponseEntity<List<CategoryResponse>>getAllCategories(){
-       List< CategoryResponse> categoryResponse = categoryService.getAllCategories();
+    private ResponseEntity<ApiResponse< List<CategoryResponse>>>getAllCategories(){
+      ApiResponse <List< CategoryResponse>> categoryResponse = new ApiResponse<>(categoryService.getAllCategories());
         return new ResponseEntity<>(categoryResponse,HttpStatus.OK);
 
     }
 
     @GetMapping("category/{Id}")
-    private ResponseEntity<CategoryResponse>getCategory(@PathVariable("Id") Long categoryId){
-         CategoryResponse categoryResponse = categoryService.getCategory(categoryId);
+    private ResponseEntity<ApiResponse< CategoryResponse>>getCategory(@PathVariable("Id") Long categoryId){
+     ApiResponse<CategoryResponse> categoryResponse =new ApiResponse<>( categoryService.getCategory(categoryId));
          return new  ResponseEntity<>(categoryResponse,HttpStatus.OK);
     }
 
     @PutMapping("update-category/{Id}")
-    private ResponseEntity<CategoryResponse>editCategory(@PathVariable("Id")Long categoryId,
+    private ResponseEntity<ApiResponse <CategoryResponse>>editCategory(@PathVariable("Id")Long categoryId,
                                                          @RequestBody CategoryRequest categoryRequest){
-        CategoryResponse categoryResponse = categoryService.editCategory(categoryId,categoryRequest);
+       ApiResponse <CategoryResponse> categoryResponse = new ApiResponse<>(categoryService.editCategory(categoryId,categoryRequest));
         return  new ResponseEntity<>(categoryResponse,HttpStatus.FOUND);
     }
 

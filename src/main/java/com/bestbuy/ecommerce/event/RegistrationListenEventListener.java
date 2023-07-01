@@ -46,10 +46,10 @@ public class RegistrationListenEventListener implements ApplicationListener<Regi
     }
 
     private void  sendNewVerificationMail(String url , AppUser appUser) throws MessagingException, UnsupportedEncodingException {
-        String subject = "EmailVerification";
+        String subject = "Email Verification";
         String senderName = "BestBuy-ShoppingMall";
         String mailContent = "<p> Hi, "+appUser.getFirstName()+" </p>"+
-                "<p> Welcome to Event Hub Inc. </p>"+
+                "<p> Welcome to Best . </p>"+
                 "<p>Thank you for registering with us, "+""+
                 "Please, follow the link below to complete your registration. </p>" +
                 "<a href=\""+url+"\"> Verify your email to activate your account</a>" +
@@ -58,6 +58,7 @@ public class RegistrationListenEventListener implements ApplicationListener<Regi
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
         mimeMessageHelper.setFrom("registeration@BestBuy",senderName);
+        mimeMessageHelper.setTo(appUser.getEmail());
         mimeMessageHelper.setSubject(subject);
         mimeMessageHelper.setText(mailContent,true);
         javaMailSender.send(mimeMessage);

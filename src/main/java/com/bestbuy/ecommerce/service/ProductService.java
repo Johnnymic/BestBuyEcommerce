@@ -6,7 +6,7 @@ import com.bestbuy.ecommerce.dto.responses.ProductResponse;
 import java.util.List;
 
 public interface ProductService {
-    ProductResponse addNewProduct(ProductRequest productRequest);
+    ProductResponse addNewProduct(Long brandId,Long categoryId,ProductRequest productRequest);
 
     List<ProductResponse> findAllProductByCategory(Long categoryId);
 

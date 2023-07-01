@@ -18,9 +18,9 @@ public class ProductController {
 
     private  final ProductService productService;
 
-    @PostMapping("/add-product")
-    public ResponseEntity<ApiResponse<ProductResponse>>addProduct(@RequestBody ProductRequest productRequest){
-        ApiResponse<ProductResponse>  response= new ApiResponse<>(productService.addNewProduct(productRequest));
+    @PostMapping("/{brandId}/brand/{catId}/category/add-product")
+    public ResponseEntity<ApiResponse<ProductResponse>>addProduct(@PathVariable("brandId") Long brandId, @PathVariable("catId") Long categoryId, @RequestBody ProductRequest productRequest){
+        ApiResponse<ProductResponse>  response= new ApiResponse<>(productService.addNewProduct(brandId,categoryId, productRequest));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }

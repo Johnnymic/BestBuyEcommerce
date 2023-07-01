@@ -1,11 +1,15 @@
 package com.bestbuy.ecommerce.service.serviceImpl;
 
+import com.bestbuy.ecommerce.domain.entity.Brand;
 import com.bestbuy.ecommerce.domain.entity.Category;
 import com.bestbuy.ecommerce.domain.entity.Product;
+import com.bestbuy.ecommerce.domain.repository.BrandRepository;
 import com.bestbuy.ecommerce.domain.repository.CategoryRepository;
 import com.bestbuy.ecommerce.domain.repository.ProductRepository;
+import com.bestbuy.ecommerce.dto.request.BrandRequest;
 import com.bestbuy.ecommerce.dto.request.ProductRequest;
 import com.bestbuy.ecommerce.dto.responses.ProductResponse;
+import com.bestbuy.ecommerce.exceptions.BrandNotFoundException;
 import com.bestbuy.ecommerce.exceptions.CategoryNotFoundException;
 import com.bestbuy.ecommerce.exceptions.ProductNotFoundException;
 import com.bestbuy.ecommerce.service.ProductService;
@@ -26,12 +30,19 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
+    private final BrandRepository brandRepository;
+
     @Override
-    public ProductResponse addNewProduct(ProductRequest productRequest ) {
-        Category category = categoryRepository.findById(productRequest.getCategoryId())
+    public ProductResponse addNewProduct(Long brandId,Long categoryId, ProductRequest productRequest) {
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category id  not found"));
+
+        Brand brand = brandRepository.findById(brandId)
+                .orElseThrow(()->new BrandNotFoundException("brand not found"));
+
         Product product = mapToEntity(productRequest);
         product.setCategory(category);
+        product.setBrand(brand);
         product.setCreatedAt(LocalDateTime.now());
         product.setUpdateAt(LocalDateTime.now());
        Product newProduct =  productRepository.save(product);
@@ -105,9 +116,13 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductResponse mapToProductResponse(Product product) {
          return     ProductResponse.builder()
-                 .name(product.getName())
-                 .description(product.getDescription())
+                 .brandName(product.getBrand().getBrandName())
                  .categoryName(product.getCategory().getCategoryName())
+                 .productName(product.getName())
+                 .description(product.getDescription())
+                 .price(product.getPrice())
+                 .quantityAvailable(5)
+                 .isOutOfStock(false)
                  .createdAt(product.getCreatedAt())
                  .updateAt(product.getUpdateAt())
                  .build();
@@ -119,6 +134,9 @@ public class ProductServiceImpl implements ProductService {
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
                 .price(productRequest.getPrice())
+                .quantityAvailable(productRequest.getQuantityAvailable())
+                .imageUrl(productRequest.getImageUrl())
+                .isOutOfStock(productRequest.isOutOfStock())
                 .build();
     }
 }

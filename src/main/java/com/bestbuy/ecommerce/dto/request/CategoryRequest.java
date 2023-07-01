@@ -12,6 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryRequest {
     @NotBlank(message = "Name is required")
     @Size(max = 255, message = "Name cannot exceed 255 characters")

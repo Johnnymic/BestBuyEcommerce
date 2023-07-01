@@ -4,6 +4,7 @@ import com.bestbuy.ecommerce.domain.entity.BaseEntity;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,11 +14,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ProductResponse  {
 
-    private String name;
+    private String productName;
 
     private String description;
 
     private String categoryName;
+
+    private String brandName;
+
+    private BigDecimal price;
+
+    private int quantityAvailable;
+    private boolean isOutOfStock;
 
     private LocalDateTime updateAt;
 

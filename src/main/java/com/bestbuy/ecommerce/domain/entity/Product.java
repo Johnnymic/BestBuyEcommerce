@@ -21,20 +21,18 @@ public class Product  extends  BaseEntity {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
        private String name;
+       private BigDecimal price;
+       private String description;
+       private String imageUrl;
 
-        @ManyToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name = "category_id", nullable = false)
-        private Category category ;
+      private int quantityAvailable;
+      private boolean isOutOfStock;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category ;
 
-
-        private BigDecimal price;
-
-        private String description;
-
-        private String imageUrl;
-
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
 }
