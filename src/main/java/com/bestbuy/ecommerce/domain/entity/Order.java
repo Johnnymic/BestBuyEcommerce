@@ -1,11 +1,14 @@
 package com.bestbuy.ecommerce.domain.entity;
 
+import com.bestbuy.ecommerce.enums.PickupStatus;
 import jakarta.persistence.*;
 
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -18,8 +21,21 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
 
+    private Double deliveryFee;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    private Set<OrderItem> orderItems = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pickup_id")
+    private PickupCenter pickupCenter;
+
+    @Enumerated(EnumType.STRING)
+    private PickupStatus pickupStatus;
 
     @Column(nullable = false)
     private LocalDateTime orderDate;
@@ -27,7 +43,5 @@ public class Order {
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
-    // Constructors, getters, and setters
 
-    // ...
 }

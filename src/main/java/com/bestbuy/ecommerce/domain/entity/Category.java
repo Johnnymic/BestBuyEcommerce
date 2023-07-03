@@ -1,27 +1,32 @@
 package com.bestbuy.ecommerce.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
 
-import java.util.List;
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Builder
-@Table(name = "categories")
-public class Category {
+@ToString
+@Table(name = "category_tbl")
+public class Category  extends  BaseEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    @Column(name="id")
+    private Long id;
 
+    private String name;
+    private String imageUrl;
 
-    private String categoryName;
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Product> products;
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<SubCategory> subCategories;
 
 
 }

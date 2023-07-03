@@ -1,12 +1,11 @@
 package com.bestbuy.ecommerce.service.serviceImpl;
 
 import com.bestbuy.ecommerce.domain.entity.Brand;
-import com.bestbuy.ecommerce.domain.entity.Category;
+import com.bestbuy.ecommerce.domain.entity.SubCategory;
 import com.bestbuy.ecommerce.domain.entity.Product;
 import com.bestbuy.ecommerce.domain.repository.BrandRepository;
-import com.bestbuy.ecommerce.domain.repository.CategoryRepository;
+import com.bestbuy.ecommerce.domain.repository.SubCategoryRepository;
 import com.bestbuy.ecommerce.domain.repository.ProductRepository;
-import com.bestbuy.ecommerce.dto.request.BrandRequest;
 import com.bestbuy.ecommerce.dto.request.ProductRequest;
 import com.bestbuy.ecommerce.dto.responses.ProductResponse;
 import com.bestbuy.ecommerce.exceptions.BrandNotFoundException;
@@ -18,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,13 +25,13 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
+    private final SubCategoryRepository categoryRepository;
 
     private final BrandRepository brandRepository;
 
     @Override
     public ProductResponse addNewProduct(Long brandId,Long categoryId, ProductRequest productRequest) {
-        Category category = categoryRepository.findById(categoryId)
+        SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category id  not found"));
 
         Brand brand = brandRepository.findById(brandId)
@@ -51,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> findAllProductByCategory(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId)
+        SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("category not found"));
 
         List<Product> products = productRepository.findAllByCategory(category);
@@ -65,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new ProductNotFoundException("Product not found exception"));
 
-        Category category = categoryRepository.findById(categoryId)
+        SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("Category not found"));
 
         if(!product.getCategory().getCategoryId().equals(category.getCategoryId())){
@@ -79,13 +76,13 @@ public class ProductServiceImpl implements ProductService {
         Product products = productRepository.findById(productId)
                 .orElseThrow(()-> new ProductNotFoundException("Product not found exception"));
 
-        Category category = categoryRepository.findById(categoryId)
+        SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("Category not found"));
 
         if(!products.getCategory().getCategoryId().equals(category.getCategoryId())){
             throw new ProductNotFoundException("product not belonging to category", HttpStatus.BAD_REQUEST);
         }
-        products.setName(productRequest.getName());
+        products.setProductName(productRequest.getName());
 
         products.setPrice(productRequest.getPrice());
         products.setDescription(productRequest.getDescription());
@@ -103,7 +100,7 @@ public class ProductServiceImpl implements ProductService {
         Product products = productRepository.findById(productId)
                 .orElseThrow(()-> new ProductNotFoundException("Product not found exception"));
 
-        Category category = categoryRepository.findById(categoryId)
+        SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("Category not found"));
 
         if(!products.getCategory().getCategoryId().equals(category.getCategoryId())){
@@ -118,7 +115,7 @@ public class ProductServiceImpl implements ProductService {
          return     ProductResponse.builder()
                  .brandName(product.getBrand().getBrandName())
                  .categoryName(product.getCategory().getCategoryName())
-                 .productName(product.getName())
+                 .productName(product.getProductName())
                  .description(product.getDescription())
                  .price(product.getPrice())
                  .quantityAvailable(5)
@@ -131,7 +128,7 @@ public class ProductServiceImpl implements ProductService {
 
     private Product mapToEntity(ProductRequest productRequest) {
         return Product.builder()
-                .name(productRequest.getName())
+                .productName(productRequest.getName())
                 .description(productRequest.getDescription())
                 .price(productRequest.getPrice())
                 .quantityAvailable(productRequest.getQuantityAvailable())

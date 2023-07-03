@@ -1,6 +1,6 @@
 package com.bestbuy.ecommerce.service.serviceImpl;
 
-import com.bestbuy.ecommerce.context.UsersContext;
+
 import com.bestbuy.ecommerce.domain.entity.AppUser;
 import com.bestbuy.ecommerce.domain.entity.JwtToken;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
@@ -83,7 +83,7 @@ public class AppUserServicesImpl implements AppUserService{
                 .accessToken(token.getAccessToken())
                 .refreshToken(token.getRefreshToken())
                 .userFullName(appUser.getFirstName() + " "+ appUser.getLastName())
-                .message(UsersContext.getUsername())
+                .message("successfully login")
                 .build();
     }
 

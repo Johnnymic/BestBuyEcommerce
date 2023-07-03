@@ -22,7 +22,7 @@ public class ProductResponse  {
 
     private String brandName;
 
-    private BigDecimal price;
+    private Double price;
 
     private int quantityAvailable;
     private boolean isOutOfStock;

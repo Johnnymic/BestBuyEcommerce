@@ -28,7 +28,5 @@ public class OrderItem {
     @Column(nullable = false)
     private Integer quantity;
 
-    // Constructors, getters, and setters
 
-    // ...
 }

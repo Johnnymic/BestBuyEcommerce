@@ -1,16 +1,12 @@
 package com.bestbuy.ecommerce.dto.responses;
 
-import com.bestbuy.ecommerce.domain.entity.Category;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Builder
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryResponse {
-    private String categoryName;
-
-
+    String categoryName;
 }

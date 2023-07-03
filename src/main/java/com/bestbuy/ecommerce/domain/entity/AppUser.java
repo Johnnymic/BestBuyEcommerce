@@ -49,6 +49,11 @@ public class AppUser extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "appUser")
     private List<JwtToken> tokens = new ArrayList<>();
 
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="cart_id")
+    private Cart cart = new Cart();
+
      @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return  List.of(new SimpleGrantedAuthority(roles.name()));

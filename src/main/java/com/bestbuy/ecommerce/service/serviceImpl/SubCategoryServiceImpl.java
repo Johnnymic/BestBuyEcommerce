@@ -1,11 +1,11 @@
 package com.bestbuy.ecommerce.service.serviceImpl;
 
-import com.bestbuy.ecommerce.domain.entity.Category;
-import com.bestbuy.ecommerce.domain.repository.CategoryRepository;
-import com.bestbuy.ecommerce.dto.request.CategoryRequest;
-import com.bestbuy.ecommerce.dto.responses.CategoryResponse;
+import com.bestbuy.ecommerce.domain.entity.SubCategory;
+import com.bestbuy.ecommerce.domain.repository.SubCategoryRepository;
+import com.bestbuy.ecommerce.dto.request.SubCategoryRequest;
+import com.bestbuy.ecommerce.dto.responses.SubCategoryResponse;
 import com.bestbuy.ecommerce.exceptions.CategoryNotFoundException;
-import com.bestbuy.ecommerce.service.CategoryService;
+import com.bestbuy.ecommerce.service.SubCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,21 +14,21 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryServiceImpl implements CategoryService {
-    private final CategoryRepository categoryRepository;
+public class SubCategoryServiceImpl implements SubCategoryService {
+    private final SubCategoryRepository categoryRepository;
     @Override
-    public CategoryResponse createCategory(CategoryRequest categoryRequest) {
-        Category category = new Category();
+    public SubCategoryResponse createCategory(SubCategoryRequest categoryRequest) {
+        SubCategory category = new SubCategory();
         category.setCategoryName(categoryRequest.getCategoryName());
         categoryRepository.save(category);
-        return CategoryResponse.builder()
+        return SubCategoryResponse.builder()
                 .categoryName(category.getCategoryName())
                 .build();
     }
 
     @Override
-    public List<CategoryResponse> getAllCategories() {
-        List<Category> category = categoryRepository.findAll();
+    public List<SubCategoryResponse> getAllCategories() {
+        List<SubCategory> category = categoryRepository.findAll();
             return     category
                 .stream()
                 .map(this::mapToCategory)
@@ -37,15 +37,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse getCategory(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId)
+    public SubCategoryResponse getCategory(Long categoryId) {
+        SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("category not found"));
         return  mapToCategory(category);
     }
 
     @Override
-    public CategoryResponse editCategory(Long categoryId, CategoryRequest categoryRequest) {
-        Category category = categoryRepository.findById(categoryId)
+    public SubCategoryResponse editCategory(Long categoryId, SubCategoryRequest categoryRequest) {
+        SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("category not found"));
         category.setCategoryName(categoryRequest.getCategoryName());
        categoryRepository.save(category);
@@ -54,15 +54,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public String deleteCategoryById(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId)
+        SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("category not found"));
         categoryRepository.delete(category);
         return "category is deleted";
     }
 
 
-    private CategoryResponse mapToCategory(Category category){
-        return CategoryResponse.builder()
+    private SubCategoryResponse mapToCategory(SubCategory category){
+        return SubCategoryResponse.builder()
                 .categoryName(category.getCategoryName())
                 .build();
     }
