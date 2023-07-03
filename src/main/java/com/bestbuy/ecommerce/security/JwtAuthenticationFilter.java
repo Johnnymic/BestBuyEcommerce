@@ -1,5 +1,7 @@
 package com.bestbuy.ecommerce.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
+
 import com.bestbuy.ecommerce.domain.repository.JwtTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,7 +37,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(authHeader!=null && authHeader.startsWith("Bearer")){
           accessToken= authHeader.substring(7);
-         username= jwtService.extractUsername(accessToken);
+
+
+           username= jwtService.extractUsername(accessToken);
     }
         if(username!=null && SecurityContextHolder.getContext().getAuthentication() ==null){
             UserDetails userDetails =userService.loadUserByUsername(username);

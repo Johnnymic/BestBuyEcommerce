@@ -22,14 +22,14 @@ public class AuthenticationController {
     private  final VerificationTokenService verificationTokenService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegistrationResponse>registerUser(@RequestBody RegistrationRequest registrationResquest,HttpServletRequest request) {
-        RegistrationResponse registerUser = userService.registerUser(registrationResquest,request);
+    public ResponseEntity< ApiResponse<RegistrationResponse>>registerUser(@RequestBody RegistrationRequest registrationResquest,HttpServletRequest request) {
+      ApiResponse<RegistrationResponse> registerUser =  new ApiResponse<>(userService.registerUser(registrationResquest,request));
         return new ResponseEntity<>(registerUser, HttpStatus.CREATED);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<LoginResponse>authenticate(@RequestBody LoginRequest loginRequest){
-        LoginResponse loginUser= userService.authenticateUser(loginRequest);
+    public ResponseEntity< ApiResponse<LoginResponse>>authenticate(@RequestBody LoginRequest loginRequest){
+      ApiResponse  <LoginResponse >loginUser= new ApiResponse<>(userService.authenticateUser(loginRequest));
         return  new ResponseEntity<>(loginUser,HttpStatus.OK);
     }
 

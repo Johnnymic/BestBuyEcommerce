@@ -3,15 +3,14 @@ package com.bestbuy.ecommerce.security;
 import com.bestbuy.ecommerce.domain.entity.AppUser;
 import com.bestbuy.ecommerce.domain.entity.JwtToken;
 import com.bestbuy.ecommerce.domain.repository.JwtTokenRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import jakarta.xml.bind.DatatypeConverter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 
@@ -27,6 +26,8 @@ import java.util.function.Function;
 public class JwtService {
 
     private  final JwtTokenRepository jwtTokenRepository;
+
+    private UserDetailsService userDetailsService;
 
     @Value("${jwt.expiration.access-token}")
     private long access_expiration;
@@ -114,10 +115,41 @@ public String generateAccessTokens(Authentication authentication){
                  }
         jwtTokenRepository.saveAll(jwtTokensValidation);
             }
-            public boolean isTokenValid(String token, UserDetails userDetails){
-        String username = extractUsername(token);
-      return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(generatedKey())
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            // Token has expired
+            String username = extractUsername(token);
+            UserDetails refreshedUserDetails = userDetailsService.loadUserByUsername(username);
+
+            // Check if the token's expiration date is within an acceptable grace period
+            long currentTimeMillis = System.currentTimeMillis();
+            Date expirationDate = e.getClaims().getExpiration();
+            long expirationMillis = expirationDate.getTime();
+            long allowedClockSkewMillis = 5 * 60 * 1000; // 5 minutes (adjust as needed)
+
+            if (currentTimeMillis - expirationMillis <= allowedClockSkewMillis) {
+                // Token expiration is within the allowed grace period
+                // Generate a new token with updated expiration and return it to the client
+                String newToken = generateToken(new HashMap<>(), refreshedUserDetails);
+                // TODO: Return the newToken to the client or update it in the current request context
+                return true;
+            } else {
+                // Token has expired and is outside the allowed grace period
+                return false;
+            }
+        } catch (JwtException | IllegalArgumentException e) {
+            // Invalid token
+            return false;
+        }
     }
+
 
 
 }

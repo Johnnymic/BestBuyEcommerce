@@ -2,9 +2,12 @@ package com.bestbuy.ecommerce.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Data;
 
 
-
+@Data
+@Builder
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -26,13 +29,5 @@ public class Address {
     @JsonIgnore
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
     private Order order;
-
-
-
-
-
-
-
-
 
 }
