@@ -106,27 +106,14 @@ public class AppUserServicesImpl implements AppUserService{
                 .lastName(requesteqquest.getLastName())
                 .phone(requesteqquest.getPhone())
                 .password(passwordEncoder.encode(requesteqquest.getPassword()))
+                .date_of_birth(requesteqquest.getDateOfBirth())
                 .isEnabled(false)
                 .roles(Roles.USER)
-
+                .gender(requesteqquest.getGender())
                 .email(requesteqquest.getEmail())
                 .build();
     }
 
 
-//    @Override
-//    public void run(ApplicationArguments args) throws Exception {
-//        AppUser appUser = AppUser.builder()
-//                .firstName("John")
-//                .lastName("Doe")
-//                .password("JohnDoe")
-//                .email("JohnDoe@gmail.com")
-//                .phone("2348165876597")
-//                .isEnabled(true)
-//                .roles(Roles.ADMIN)
-//                .build();
-//        appUserRepository.save(appUser);
-//
-//
-//    }
+
 }

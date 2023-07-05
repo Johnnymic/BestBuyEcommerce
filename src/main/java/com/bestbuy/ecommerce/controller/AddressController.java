@@ -44,7 +44,7 @@ public class AddressController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/delete-address/{addressId}")
+    @DeleteMapping("/delete-address/{addressId}")
     public  ResponseEntity<ApiResponse<String>>deleteAddress(@PathVariable("addressId") Long addressId) {
         ApiResponse<String> apiResponse = new ApiResponse<>(addressServices.deleteAddress(addressId));
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);

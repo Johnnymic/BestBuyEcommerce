@@ -1,6 +1,7 @@
 package com.bestbuy.ecommerce.dto.request;
 
 import com.bestbuy.ecommerce.domain.entity.BaseEntity;
+import com.bestbuy.ecommerce.enums.Gender;
 import com.bestbuy.ecommerce.enums.Roles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -26,6 +27,10 @@ public class RegistrationRequest  {
 
     @NotBlank(message = "Password is required")
     private String password;
+
+    private String  dateOfBirth;
+
+    private Gender gender;
 
     private Roles role;
 }

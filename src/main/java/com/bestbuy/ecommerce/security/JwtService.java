@@ -65,13 +65,12 @@ public class JwtService {
 
     // generate the token
     private boolean isTokenExpired(String token){
-        return  extractExpiration(token).before(new Date());
+        return  extractExpiration(token).after(new Date());
 
     }
 
     public String generateToken( Map<String,Object> extractClaims,
                                         UserDetails userDetails){
-
         return  buildToken(extractClaims, userDetails, access_expiration);
     }
 
@@ -117,37 +116,8 @@ public String generateAccessTokens(Authentication authentication){
             }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(generatedKey())
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (ExpiredJwtException e) {
-            // Token has expired
-            String username = extractUsername(token);
-            UserDetails refreshedUserDetails = userDetailsService.loadUserByUsername(username);
-
-            // Check if the token's expiration date is within an acceptable grace period
-            long currentTimeMillis = System.currentTimeMillis();
-            Date expirationDate = e.getClaims().getExpiration();
-            long expirationMillis = expirationDate.getTime();
-            long allowedClockSkewMillis = 5 * 60 * 1000; // 5 minutes (adjust as needed)
-
-            if (currentTimeMillis - expirationMillis <= allowedClockSkewMillis) {
-                // Token expiration is within the allowed grace period
-                // Generate a new token with updated expiration and return it to the client
-                String newToken = generateToken(new HashMap<>(), refreshedUserDetails);
-                // TODO: Return the newToken to the client or update it in the current request context
-                return true;
-            } else {
-                // Token has expired and is outside the allowed grace period
-                return false;
-            }
-        } catch (JwtException | IllegalArgumentException e) {
-            // Invalid token
-            return false;
-        }
+        String username = extractUsername(token);
+        return username.equals(userDetails.getUsername()) && isTokenExpired(token);
     }
 
 

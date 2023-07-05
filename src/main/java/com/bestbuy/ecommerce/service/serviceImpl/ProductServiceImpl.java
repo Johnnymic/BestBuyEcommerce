@@ -16,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,8 +42,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = mapToEntity(productRequest);
         product.setCategory(category);
         product.setBrand(brand);
-        product.setCreatedAt(LocalDateTime.now());
-        product.setUpdateAt(LocalDateTime.now());
+
        Product newProduct =  productRepository.save(product);
         return mapToProductResponse(newProduct);
     }
@@ -87,8 +88,8 @@ public class ProductServiceImpl implements ProductService {
         products.setPrice(productRequest.getPrice());
         products.setDescription(productRequest.getDescription());
         products.setImageUrl(productRequest.getImageUrl());
-        products.setUpdateAt(LocalDateTime.now());
-        products.setCreatedAt(LocalDateTime.now());
+        products.setUpdatedAt(Date.from(Instant.now()));
+        products.setCreatedAt(Date.from(Instant.now()));
 
         productRepository.save(products);
 
@@ -121,7 +122,7 @@ public class ProductServiceImpl implements ProductService {
                  .quantityAvailable(5)
                  .isOutOfStock(false)
                  .createdAt(product.getCreatedAt())
-                 .updateAt(product.getUpdateAt())
+                 .updateAt(product.getUpdatedAt())
                  .build();
 
     }

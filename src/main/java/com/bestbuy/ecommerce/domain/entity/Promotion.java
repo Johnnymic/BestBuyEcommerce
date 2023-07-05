@@ -7,11 +7,11 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "promotions")
-public class Promotion {
+public class Promotion extends  BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false)
     private String name;
 

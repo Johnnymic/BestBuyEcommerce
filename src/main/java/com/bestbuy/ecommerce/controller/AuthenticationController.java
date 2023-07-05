@@ -22,7 +22,7 @@ public class AuthenticationController {
     private  final VerificationTokenService verificationTokenService;
 
     @PostMapping("/register")
-    public ResponseEntity< ApiResponse<RegistrationResponse>>registerUser(@RequestBody RegistrationRequest registrationResquest,HttpServletRequest request) {
+    public ResponseEntity< ApiResponse<RegistrationResponse>>registerUser(@RequestBody RegistrationRequest registrationResquest, HttpServletRequest request) {
       ApiResponse<RegistrationResponse> registerUser =  new ApiResponse<>(userService.registerUser(registrationResquest,request));
         return new ResponseEntity<>(registerUser, HttpStatus.CREATED);
     }
@@ -49,9 +49,4 @@ public class AuthenticationController {
         return new ResponseEntity<>(apiResponse,HttpStatus.FOUND);
 
     }
-
-
-
-
-
 }

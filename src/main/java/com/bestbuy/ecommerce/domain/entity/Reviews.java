@@ -2,11 +2,11 @@ package com.bestbuy.ecommerce.domain.entity;
 
 import jakarta.persistence.*;
 
-public class Reviews {
+public class Reviews extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;

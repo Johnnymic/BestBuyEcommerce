@@ -3,7 +3,6 @@ package com.bestbuy.ecommerce.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -13,10 +12,10 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "products")
 public class Product  extends  BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-       @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
        private String productName;
        private Double price;
        private String description;
@@ -28,8 +27,12 @@ public class Product  extends  BaseEntity {
     @JoinColumn(name = "subcategory_id", nullable = false)
     private SubCategory category ;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private Brand brand;
+//
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "AppUser_id", nullable = false)
+//    private AppUser appUser;
 
 }

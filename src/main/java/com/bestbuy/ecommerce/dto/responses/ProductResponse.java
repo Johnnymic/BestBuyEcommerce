@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -27,9 +28,9 @@ public class ProductResponse  {
     private int quantityAvailable;
     private boolean isOutOfStock;
 
-    private LocalDateTime updateAt;
+    private Date updateAt;
 
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
 
 }
