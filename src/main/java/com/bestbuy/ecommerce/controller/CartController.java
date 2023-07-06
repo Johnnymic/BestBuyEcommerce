@@ -3,6 +3,7 @@ package com.bestbuy.ecommerce.controller;
 import com.bestbuy.ecommerce.dto.request.CartRequest;
 import com.bestbuy.ecommerce.dto.responses.ApiResponse;
 import com.bestbuy.ecommerce.service.CartService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,27 @@ public class CartController {
      ApiResponse<String> response = new ApiResponse<>(cartService.addItemsToCart(cartRequest));
      return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    @DeleteMapping("/delete-cart{cartItemsId}")
+    @DeleteMapping("/delete-cart/{cartItemsId}")
     public ResponseEntity<ApiResponse<String>>deleteItemsFromCart( @PathVariable("cartItemsId")  Long items){
     ApiResponse<String> response = new ApiResponse<>(cartService.deleteItemsFromCart(items));
     return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @PutMapping ("/add-to-quantity/{productId}")
+    public ResponseEntity<ApiResponse<String>>addItemsToQuantity(@PathVariable("productId") Long productId){
+        ApiResponse<String> response = new ApiResponse<>(cartService.addItemsToQuantity(productId));
+        return  new ResponseEntity<>(response,HttpStatus.OK);
+    }
+    @GetMapping("/reduce-quantity/{productId}")
+    public ResponseEntity<ApiResponse<String >>reduceItemQuantity(@PathVariable("productId") Long productId){
+        ApiResponse<String> response = new ApiResponse<>(cartService.reduceItemQuantity(productId));
+        return  new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/clear-cart/")
+    public ResponseEntity<ApiResponse<String >>clearCart(){
+        ApiResponse<String> response = new ApiResponse<>(cartService.clearCart());
+        return  new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 

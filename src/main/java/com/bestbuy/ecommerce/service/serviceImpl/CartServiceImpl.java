@@ -16,6 +16,7 @@ import com.bestbuy.ecommerce.exceptions.ProductNotFoundException;
 import com.bestbuy.ecommerce.service.CartService;
 
 import com.bestbuy.ecommerce.utitls.UserUtils;
+import com.sun.mail.imap.protocol.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class CartServiceImpl implements CartService {
             throw new NotAvailableException("Product is out of stock");
             
         } else if (cartItemsRepository.findByProductId(cartRequest.getProductId())!=null) {
-                addToItemsQualtity(cartRequest.getProductId());
+                addItemsToQuantity(cartRequest.getProductId());
         }
 
         CartItems newCartItem = mapToCartItems(product, cart);
@@ -60,13 +61,7 @@ public class CartServiceImpl implements CartService {
         return "Cart item successfully added";
     }
 
-    private void addToItemsQualtity(Long productId) {
-        AppUser longInUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
-                .orElseThrow(()-> new AppUserNotFountException("User is not login to the application"));
-        Cart cart =getOrCreateCart(longInUser);
-        Set<CartItems> items = cart.getItems();
 
-    }
 
     @Override
     public String deleteItemsFromCart(Long cartItemId) {
@@ -93,8 +88,86 @@ public class CartServiceImpl implements CartService {
         return "Cart item successfully deleted";
     }
 
-    
-    
+    @Override
+    public String addItemsToQuantity(Long productId) {
+        AppUser loginUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
+                .orElseThrow(() -> new AppUserNotFountException("User not found"));
+
+
+        Cart cart = getOrCreateCart(loginUser);
+        Set<CartItems> cartItems = cart.getItems();
+        Double cartTotal = cart.getTotalAmount();
+
+        CartItems foundItems = cartItemsRepository.findByProductId(productId);
+
+        if(foundItems.getProduct().getQuantityAvailable()==0) {
+            throw new NotAvailableException("product not found ");
+        }
+
+               for (CartItems item : cartItems){
+                      if (item.getProduct().getId() == foundItems.getProduct().getId()){
+                          foundItems.setOrderQty(item.getOrderQty() +1 );
+                          foundItems.setSubTotal(item.getUnitPrice() * item.getOrderQty());
+                          cartItemsRepository.save(item);
+                      }
+               }
+            cartTotal+= foundItems.getUnitPrice();
+               cart.setTotalAmount(cartTotal);
+              cartRepository.save(cart);
+
+               return  "cart quantity has been be updated successfully";
+    }
+
+    @Override
+    public String reduceItemQuantity(Long productId) {
+        AppUser loginUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
+                .orElseThrow(() -> new AppUserNotFountException("User not found"));
+
+
+        Cart cart = getOrCreateCart(loginUser);
+        Set<CartItems> cartItems = cart.getItems();
+        Double cartTotal = cart.getTotalAmount();
+        CartItems foundItems = cartItemsRepository.findByProductId(productId);
+
+        if(foundItems.getProduct().getQuantityAvailable()==0) {
+            throw new NotAvailableException("product not found ");
+        }
+        for(CartItems item: cartItems){
+            if(item.getProduct().getId() == foundItems.getProduct().getId()){
+                foundItems.setOrderQty(item.getOrderQty()-1);
+                foundItems.setSubTotal(item.getUnitPrice() * item.getOrderQty());
+                cartItemsRepository.save(item);
+            }
+        }
+        cartTotal-= foundItems.getUnitPrice();
+        cartRepository.save(cart);
+        cart.setTotalAmount(cartTotal);
+
+
+        return "cart quantity has been reduce";
+    }
+
+    @Override
+    public String clearCart() {
+        AppUser loginUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
+                .orElseThrow(() -> new AppUserNotFountException("User not found"));
+
+
+        Cart cart = getOrCreateCart(loginUser);
+        Set<CartItems> cartItems = cart.getItems();
+
+            for(CartItems item : cartItems){
+                cartItemsRepository.delete(item);
+            }
+
+            cartItems.clear();
+            cart.setItems(cartItems);
+            cart.setTotalAmount(0.0);
+            cartRepository.save(cart);
+        return "cart is clear successfully";
+    }
+
+
     private Cart getOrCreateCart(AppUser user) {
         Cart cart = user.getCart();
         if (cart == null) {
@@ -108,9 +181,8 @@ public class CartServiceImpl implements CartService {
 
     private void updateCartTotalAmount(Cart cart) {
         Double cartTotal = 0.0;
-        for (CartItems cartItem : cart.getItems()) {
+        for (CartItems cartItem : cart.getItems())
             cartTotal += cartItem.getSubTotal();
-        }
         cart.setTotalAmount(cartTotal);
     }
     private CartItems mapToCartItems(Product product, Cart cart) {
@@ -119,7 +191,6 @@ public class CartServiceImpl implements CartService {
         cartItem.setCart(cart);
         cartItem.setImageUrl(product.getImageUrl());
         cartItem.setUnitPrice(product.getPrice());
-        cartItem.setQuantity(1);
         cartItem.setOrderQty(1);
         return cartItem;
     }

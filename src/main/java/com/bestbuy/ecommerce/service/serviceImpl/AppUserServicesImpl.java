@@ -9,6 +9,7 @@ import com.bestbuy.ecommerce.dto.request.LoginRequest;
 import com.bestbuy.ecommerce.dto.request.RegistrationRequest;
 import com.bestbuy.ecommerce.dto.responses.LoginResponse;
 import com.bestbuy.ecommerce.dto.responses.RegistrationResponse;
+import com.bestbuy.ecommerce.enums.Gender;
 import com.bestbuy.ecommerce.enums.Roles;
 import com.bestbuy.ecommerce.event.RegistrationCompleteEvent;
 import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
@@ -109,7 +110,7 @@ public class AppUserServicesImpl implements AppUserService{
                 .date_of_birth(requesteqquest.getDateOfBirth())
                 .isEnabled(false)
                 .roles(Roles.USER)
-                .gender(requesteqquest.getGender())
+                .gender(Gender.MALE)
                 .email(requesteqquest.getEmail())
                 .build();
     }

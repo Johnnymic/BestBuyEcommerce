@@ -3,7 +3,6 @@ package com.bestbuy.ecommerce.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 @Setter
 @Getter
 @AllArgsConstructor
@@ -37,7 +36,6 @@ public class CartItems {
     @Column(nullable = false)
     private Double subTotal;
 
-    @Column(nullable = false)
-    private Integer quantity;
+
 
 }
