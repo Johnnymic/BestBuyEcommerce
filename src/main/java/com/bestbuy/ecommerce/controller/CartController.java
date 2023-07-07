@@ -1,13 +1,18 @@
 package com.bestbuy.ecommerce.controller;
 
+import com.bestbuy.ecommerce.domain.entity.Cart;
+import com.bestbuy.ecommerce.domain.entity.CartItems;
 import com.bestbuy.ecommerce.dto.request.CartRequest;
 import com.bestbuy.ecommerce.dto.responses.ApiResponse;
+import com.bestbuy.ecommerce.dto.responses.CartResponse;
 import com.bestbuy.ecommerce.service.CartService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,6 +48,10 @@ public class CartController {
         ApiResponse<String> response = new ApiResponse<>(cartService.clearCart());
         return  new ResponseEntity<>(response,HttpStatus.OK);
     }
-
+    @GetMapping("/view-cart")
+    public ResponseEntity<ApiResponse<CartResponse>>viewCartByAppUser(){
+        ApiResponse<CartResponse> response = new ApiResponse<>(cartService.viewCartByUser());
+        return  new ResponseEntity<>(response,HttpStatus.OK);
+    }
 
 }

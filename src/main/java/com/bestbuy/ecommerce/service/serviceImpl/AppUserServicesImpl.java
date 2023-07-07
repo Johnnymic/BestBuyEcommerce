@@ -5,8 +5,10 @@ import com.bestbuy.ecommerce.domain.entity.AppUser;
 import com.bestbuy.ecommerce.domain.entity.JwtToken;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
 import com.bestbuy.ecommerce.domain.repository.JwtTokenRepository;
+import com.bestbuy.ecommerce.dto.request.EditProfileRequest;
 import com.bestbuy.ecommerce.dto.request.LoginRequest;
 import com.bestbuy.ecommerce.dto.request.RegistrationRequest;
+import com.bestbuy.ecommerce.dto.responses.EditProfileResponse;
 import com.bestbuy.ecommerce.dto.responses.LoginResponse;
 import com.bestbuy.ecommerce.dto.responses.RegistrationResponse;
 import com.bestbuy.ecommerce.enums.Gender;
@@ -18,6 +20,7 @@ import com.bestbuy.ecommerce.exceptions.UserDetailedException;
 import com.bestbuy.ecommerce.security.JwtService;
 import com.bestbuy.ecommerce.service.AppUserService;
 import com.bestbuy.ecommerce.utitls.EmailUtils;
+import com.bestbuy.ecommerce.utitls.UserUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -85,6 +88,30 @@ public class AppUserServicesImpl implements AppUserService{
                 .refreshToken(token.getRefreshToken())
                 .userFullName(appUser.getFirstName() + " "+ appUser.getLastName())
                 .message("successfully login")
+                .build();
+    }
+
+    @Override
+    public EditProfileResponse editProfile(EditProfileRequest editProfileRequest) {
+          AppUser loginUser= appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
+                  .orElseThrow(()-> new AppUserNotFountException("user not found"));
+           loginUser.setFirstName(editProfileRequest.getFirstName()) ;
+           loginUser.setEmail(editProfileRequest.getEmail());
+           loginUser.setLastName(editProfileRequest.getLastName());
+           loginUser.setDate_of_birth(editProfileRequest.getDate_of_birth());
+           loginUser.setPhone(editProfileRequest.getPhone());
+           loginUser.setGender(editProfileRequest.getGender());
+            var newUserProfile = appUserRepository.save(loginUser);
+        return mapToEditProfileResponse(newUserProfile);
+    }
+
+    private EditProfileResponse mapToEditProfileResponse(AppUser newUserProfile) {
+        return EditProfileResponse.builder()
+                .firstName(newUserProfile.getFirstName())
+                .lastName(newUserProfile.getLastName())
+                .email(newUserProfile.getEmail())
+                .date_of_birth(newUserProfile.getDate_of_birth())
+                .phone(newUserProfile.getPhone())
                 .build();
     }
 

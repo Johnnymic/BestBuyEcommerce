@@ -4,15 +4,13 @@ import com.bestbuy.ecommerce.enums.Gender;
 import com.bestbuy.ecommerce.enums.Roles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -28,7 +26,9 @@ public class AppUser extends BaseEntity implements UserDetails {
     private String email;
 
     @Column(name = "first_name", nullable = false)
+
     private String firstName;
+
     private String lastName;
 
     @Enumerated(value = EnumType.STRING)
@@ -55,12 +55,13 @@ public class AppUser extends BaseEntity implements UserDetails {
     @JoinColumn(name="cart_id")
     private Cart cart = new Cart();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="address_id")
+    private Address address;
 
 
-//    @JsonIgnore
-//    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
-//    private Customer customer;
-
+    @OneToMany(mappedBy = "appUser",cascade = CascadeType.ALL)
+    private Set<Product> favorites = new HashSet<>();
 
 
      @Override

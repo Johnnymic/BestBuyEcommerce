@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.TimeZoneStorage;
 import org.hibernate.type.descriptor.DateTimeUtils;
+import org.springframework.http.HttpStatus;
 
 import java.text.DateFormat;
 import java.time.LocalDateTime;
@@ -20,6 +21,8 @@ public class ApiResponse<T> {
 
     @TimeZoneStorage
     private LocalDateTime time ;
+
+    private HttpStatus statusCode;
 
     private T data;
 

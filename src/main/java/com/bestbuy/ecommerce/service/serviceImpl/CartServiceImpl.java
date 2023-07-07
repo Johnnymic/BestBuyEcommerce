@@ -1,18 +1,14 @@
 package com.bestbuy.ecommerce.service.serviceImpl;
-import com.bestbuy.ecommerce.domain.entity.AppUser;
-import com.bestbuy.ecommerce.domain.entity.Cart;
-import com.bestbuy.ecommerce.domain.entity.CartItems;
-import com.bestbuy.ecommerce.domain.entity.Product;
+import com.bestbuy.ecommerce.domain.entity.*;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
 import com.bestbuy.ecommerce.domain.repository.CartItemsRepository;
 import com.bestbuy.ecommerce.domain.repository.CartRepository;
 import com.bestbuy.ecommerce.domain.repository.ProductRepository;
 import com.bestbuy.ecommerce.dto.request.CartRequest;
 
-import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
-import com.bestbuy.ecommerce.exceptions.ItemsNotFoundException;
-import com.bestbuy.ecommerce.exceptions.NotAvailableException;
-import com.bestbuy.ecommerce.exceptions.ProductNotFoundException;
+import com.bestbuy.ecommerce.dto.responses.AddressResponse;
+import com.bestbuy.ecommerce.dto.responses.CartResponse;
+import com.bestbuy.ecommerce.exceptions.*;
 import com.bestbuy.ecommerce.service.CartService;
 
 import com.bestbuy.ecommerce.utitls.UserUtils;
@@ -20,8 +16,8 @@ import com.sun.mail.imap.protocol.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -165,6 +161,33 @@ public class CartServiceImpl implements CartService {
             cart.setTotalAmount(0.0);
             cartRepository.save(cart);
         return "cart is clear successfully";
+    }
+
+    @Override
+    public CartResponse viewCartByUser() {
+        AppUser appUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
+                .orElseThrow(() -> new AppUserNotFountException("User not found"));
+      Cart cart = cartRepository.findByUser(appUser);
+      if(cart.getItems().isEmpty()){
+          throw  new CartNotFoundException("cart not found Exception");
+      }
+      double cartTotal = cart.getTotalAmount();
+
+        List<CartItems> cartItems = new ArrayList<>(cart.getItems());
+        Collections.sort(cartItems, Comparator.comparing(CartItems::getId, Comparator.reverseOrder()));
+         return CartResponse.builder()
+                 .items(cartItems)
+                 .total(cartTotal)
+                 .message("cart is viewed")
+                 .build();
+
+    }
+    private CartResponse mapToCartResponse(CartItems cart) {
+        return CartResponse.builder()
+
+                .message("list of cart")
+                .build();
+
     }
 
 
