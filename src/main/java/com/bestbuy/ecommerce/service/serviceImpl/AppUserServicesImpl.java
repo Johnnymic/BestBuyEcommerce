@@ -11,6 +11,7 @@ import com.bestbuy.ecommerce.dto.request.RegistrationRequest;
 import com.bestbuy.ecommerce.dto.responses.EditProfileResponse;
 import com.bestbuy.ecommerce.dto.responses.LoginResponse;
 import com.bestbuy.ecommerce.dto.responses.RegistrationResponse;
+import com.bestbuy.ecommerce.dto.responses.UserProfileResponse;
 import com.bestbuy.ecommerce.enums.Gender;
 import com.bestbuy.ecommerce.enums.Roles;
 import com.bestbuy.ecommerce.event.RegistrationCompleteEvent;
@@ -26,11 +27,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -105,6 +113,47 @@ public class AppUserServicesImpl implements AppUserService{
         return mapToEditProfileResponse(newUserProfile);
     }
 
+    @Override
+    public UserProfileResponse viewUserProfile() {
+        AppUser loginUser= appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
+                .orElseThrow(()-> new AppUserNotFountException("user not found"));
+
+        return mapToUserProfileResponse(loginUser);
+    }
+
+    @Override
+    public Page<UserProfileResponse> viewAllUserProfilesByPaginationAndSort(Integer pageNo,
+                                                                            Integer pageSize,
+                                                                            String sortBy) {
+        List<AppUser> userPage = appUserRepository.findAll();
+        List<UserProfileResponse> customerProfile =userPage.stream()
+                .map(person-> UserProfileResponse.builder()
+                        .firstName(person.getFirstName())
+                        .lastName(person.getLastName())
+                        .email(person.getEmail())
+                        .phone(person.getPhone())
+                        .date_of_birth(person.getDate_of_birth())
+                        .gender(person.getGender())
+                        .build())
+                .collect(Collectors.toList());
+             PageRequest    pageRequest    =PageRequest.of(pageNo,pageSize, Sort.Direction.DESC, sortBy);
+             int maxPage = Math.min(pageSize * (pageNo+1),customerProfile.size());
+             return new PageImpl<>(customerProfile.subList(pageNo*pageSize,maxPage),pageRequest,customerProfile.size());
+
+
+    }
+
+    private UserProfileResponse mapToUserProfileResponse(AppUser loginUser) {
+        return UserProfileResponse.builder()
+                .firstName(loginUser.getFirstName())
+                .lastName(loginUser.getLastName())
+                .email(loginUser.getEmail())
+                .phone(loginUser.getPhone())
+                .date_of_birth(loginUser.getDate_of_birth())
+                .gender(loginUser.getGender())
+                .build();
+    }
+
     private EditProfileResponse mapToEditProfileResponse(AppUser newUserProfile) {
         return EditProfileResponse.builder()
                 .firstName(newUserProfile.getFirstName())
@@ -113,6 +162,7 @@ public class AppUserServicesImpl implements AppUserService{
                 .date_of_birth(newUserProfile.getDate_of_birth())
                 .phone(newUserProfile.getPhone())
                 .build();
+
     }
 
     private void saveUserToken(AppUser appUser, String accessToken, String refresh_token) {

@@ -30,9 +30,6 @@ public class Product  extends  BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private Brand brand;
-//
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "AppUser", nullable = false)
-    private AppUser appUser;
+
 
 }

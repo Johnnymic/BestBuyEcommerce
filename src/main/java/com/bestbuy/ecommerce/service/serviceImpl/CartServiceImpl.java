@@ -66,15 +66,16 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = getOrCreateCart(loginUser);
 
-        Set<CartItems> cartItems = cart.getItems();
-        if (cartItems == null || cartItems.isEmpty()) {
+        Set<CartItems> items = cart.getItems();
+        if (cart == null) {
             throw new ItemsNotFoundException("Cart is empty");
         }
 
         CartItems cartItem = cartItemsRepository.findById(cartItemId)
                 .orElseThrow(() -> new ItemsNotFoundException("Item not found"));
 
-        if (cartItems.contains(cartItem)) {
+
+        if (items.contains(cartItem)) {
             cart.setTotalAmount(cart.getTotalAmount() - (cartItem.getOrderQty() * cartItem.getUnitPrice()));
             cartItemsRepository.delete(cartItem);
             cart.getItems().remove(cartItem);

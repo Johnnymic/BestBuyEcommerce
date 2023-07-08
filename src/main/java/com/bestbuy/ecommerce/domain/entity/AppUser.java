@@ -60,7 +60,7 @@ public class AppUser extends BaseEntity implements UserDetails {
     private Address address;
 
 
-    @OneToMany(mappedBy = "appUser",cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Product> favorites = new HashSet<>();
 
 
