@@ -59,12 +59,14 @@ public class AppUser extends BaseEntity implements UserDetails {
     @JoinColumn(name="address_id")
     private Address address;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JoinColumn(name="wishlist_id")
+    private Wishlist wishlist;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Product> favorites = new HashSet<>();
 
 
-     @Override
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return  List.of(new SimpleGrantedAuthority(roles.name()));
     }
