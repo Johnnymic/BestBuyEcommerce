@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,15 +21,17 @@ public class SubCategory {
     private Long categoryId;
 
 
-    private String categoryName;
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "cat_id")
     private Category category;
 
+    private String image;
+
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Product> products;
+    private Set<Product> products = new HashSet<>();
 
 
 }

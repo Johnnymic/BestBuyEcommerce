@@ -59,7 +59,7 @@ public class AppUser extends BaseEntity implements UserDetails {
     @JoinColumn(name="address_id")
     private Address address;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne( cascade = CascadeType.ALL)
     @JoinColumn(name="wishlist_id")
     private Wishlist wishlist;
 

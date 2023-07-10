@@ -1,13 +1,19 @@
 package com.bestbuy.ecommerce.dto.responses;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Builder
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class SubCategoryResponse {
-    private String categoryName;
+    private Long subCategoryId;
 
+    private String subCategoryName;
 
+    private Long CategoryId;
+    private String imageUrl;
+
+    private Long productId;
 }

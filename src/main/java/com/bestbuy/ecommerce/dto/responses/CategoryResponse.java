@@ -7,6 +7,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class CategoryResponse {
-    String categoryName;
+    private String categoryName;
+
+
 }

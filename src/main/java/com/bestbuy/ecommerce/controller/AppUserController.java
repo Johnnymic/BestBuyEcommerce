@@ -19,18 +19,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/customer")
 public class AppUserController {
 
     private final AppUserService userService;
     private  final VerificationTokenService verificationTokenService;
 
 
-    @PostMapping("/register")
-    public ResponseEntity<ApiResponse<RegistrationResponse>> registerUser(@Validated @RequestBody RegistrationRequest registrationResquest, HttpServletRequest request) {
-        ApiResponse<RegistrationResponse> registerUser =  new ApiResponse<>(userService.registerUser(registrationResquest,request));
-        return new ResponseEntity<>(registerUser, HttpStatus.CREATED);
-    }
+
 
     @GetMapping("/token/{token}")
     public ResponseEntity<ApiResponse<String>>verifyUser(@PathVariable

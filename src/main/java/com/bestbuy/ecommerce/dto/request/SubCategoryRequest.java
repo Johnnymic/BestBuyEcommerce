@@ -1,17 +1,24 @@
 package com.bestbuy.ecommerce.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.bestbuy.ecommerce.domain.entity.Product;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class SubCategoryRequest {
-    @NotBlank(message = "Name is required")
-    @Size(max = 255, message = "Name cannot exceed 255 characters")
-    private String categoryName;
+    private Long subCategoryId;
+    @NotNull(message = "Field cannot be missing or empty")
+    private String name;
+
+    private Long CategoryId;
+    private String imageUrl;
+
+    private Product productId;
+
 
 }

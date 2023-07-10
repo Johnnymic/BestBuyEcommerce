@@ -30,7 +30,8 @@ public class AddressServiceImpl implements AddressServices {
         AppUser appUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
                 .orElseThrow(()-> new AppUserNotFountException("user not found"));
          Address address = mapToAddress(addressRequest,appUser);
-          appUserRepository.save(address.getUser());
+         appUser.setAddress(address);
+          appUserRepository.save(appUser);
          var newAddress = addressRepository.save(address);
 
          return mapToAddressResponse(newAddress);

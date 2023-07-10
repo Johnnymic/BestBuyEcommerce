@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +23,11 @@ public class AuthenticationController {
     public ResponseEntity< ApiResponse<LoginResponse>>authenticate(@RequestBody LoginRequest loginRequest){
       ApiResponse  <LoginResponse >loginUser= new ApiResponse<>(userService.authenticateUser(loginRequest));
         return  new ResponseEntity<>(loginUser,HttpStatus.OK);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<RegistrationResponse>> registerUser(@Validated @RequestBody RegistrationRequest registrationResquest, HttpServletRequest request) {
+        ApiResponse<RegistrationResponse> registerUser =  new ApiResponse<>(userService.registerUser(registrationResquest,request));
+        return new ResponseEntity<>(registerUser, HttpStatus.CREATED);
     }
 
 

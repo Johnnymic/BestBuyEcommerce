@@ -4,17 +4,16 @@ import com.bestbuy.ecommerce.dto.request.SubCategoryRequest;
 import com.bestbuy.ecommerce.dto.responses.SubCategoryResponse;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SubCategoryService {
-    SubCategoryResponse createCategory(SubCategoryRequest categoryRequest);
+    SubCategoryResponse addNewCategory(SubCategoryRequest subCategoryRequest, Long categoryId);
 
+     List<SubCategoryResponse> viewAllCategories();
 
+    SubCategoryResponse editSubCategory(SubCategoryRequest subCategoryRequest, Long subCategoryId);
 
-    List<SubCategoryResponse> getAllCategories();
+   String  deleteSubCategory(Long subCategoryId);
 
-    SubCategoryResponse getCategory(Long categoryId);
-
-    SubCategoryResponse editCategory(Long categoryId, SubCategoryRequest categoryRequest);
-
-    String  deleteCategoryById(Long categoryId);
+   Set<SubCategoryResponse> viewSubCategoryByCategory(Long categoryId);
 }

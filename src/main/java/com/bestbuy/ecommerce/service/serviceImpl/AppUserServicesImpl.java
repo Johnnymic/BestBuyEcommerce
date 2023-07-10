@@ -115,11 +115,16 @@ public class AppUserServicesImpl implements AppUserService{
 
     @Override
     public UserProfileResponse viewUserProfile() {
-        AppUser loginUser= appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
-                .orElseThrow(()-> new AppUserNotFountException("user not found"));
+        AppUser loginUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
+                .orElseThrow(() -> new AppUserNotFountException("User not found"));
+
+        if (loginUser == null) {
+            throw new AppUserNotFountException("User not found");
+        }
 
         return mapToUserProfileResponse(loginUser);
     }
+
 
     @Override
     public Page<UserProfileResponse> viewAllUserProfilesByPaginationAndSort(Integer pageNo,

@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -115,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductResponse mapToProductResponse(Product product) {
          return     ProductResponse.builder()
                  .brandName(product.getBrand().getBrandName())
-                 .categoryName(product.getCategory().getCategoryName())
+                 .categoryName(product.getCategory().getName())
                  .productName(product.getProductName())
                  .description(product.getDescription())
                  .price(product.getPrice())

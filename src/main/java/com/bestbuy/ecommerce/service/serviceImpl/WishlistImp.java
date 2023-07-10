@@ -32,7 +32,7 @@ public class WishlistImp implements WishlistService {
         Wishlist wishlist = loginUser.getWishlist();
         if(wishlist== null){
              wishlist= new Wishlist();
-             wishlist.setUser(loginUser);
+
             wishlist.setProducts(new HashSet<>());
         }
 
