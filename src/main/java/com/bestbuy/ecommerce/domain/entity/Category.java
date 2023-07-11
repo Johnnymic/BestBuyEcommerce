@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString
-@Table(name = "category_tbl")
+@Table(name = "category")
 public class Category  extends  BaseEntity{
 
     @Id

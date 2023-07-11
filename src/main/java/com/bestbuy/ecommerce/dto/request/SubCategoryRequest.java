@@ -13,12 +13,12 @@ import lombok.*;
 public class SubCategoryRequest {
     private Long subCategoryId;
     @NotNull(message = "Field cannot be missing or empty")
-    private String name;
+    private String subCategoryName;
 
-    private Long CategoryId;
+
     private String imageUrl;
 
-    private Product productId;
+
 
 
 }

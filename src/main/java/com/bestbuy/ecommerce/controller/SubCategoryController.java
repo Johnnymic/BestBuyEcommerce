@@ -48,7 +48,7 @@ public class SubCategoryController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/view-subCategory/{catId}")
+    @GetMapping("/view-subCategory/{sub_catId}")
     public ResponseEntity<ApiResponse <Set<SubCategoryResponse>>>viewSubCategoryByCategory(@PathVariable("sub_catId") Long categoryId){
         ApiResponse<Set<SubCategoryResponse>> apiResponse = new ApiResponse<>(subCategoryService.viewSubCategoryByCategory(categoryId));
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);

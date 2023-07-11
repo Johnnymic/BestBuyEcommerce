@@ -2,9 +2,7 @@ package com.bestbuy.ecommerce.domain.entity;
 
 import com.bestbuy.ecommerce.enums.Gender;
 import com.bestbuy.ecommerce.enums.Roles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,7 +46,9 @@ public class AppUser extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "appUser")
     private List<JwtToken> tokens = new ArrayList<>();
 
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "wallet_id")
+    private Wallet wallet;
 
 
     @OneToOne(cascade = CascadeType.ALL)

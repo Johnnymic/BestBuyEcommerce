@@ -12,8 +12,7 @@ public class SubCategoryResponse {
 
     private String subCategoryName;
 
-    private Long CategoryId;
     private String imageUrl;
 
-    private Long productId;
+
 }

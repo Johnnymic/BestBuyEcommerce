@@ -5,5 +5,5 @@ import com.bestbuy.ecommerce.domain.entity.SubCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SubCategoryRepository extends JpaRepository<SubCategory,Long> {
-    boolean existsByName(String name);
+    boolean existsBySubCategoryName(String name);
 }

@@ -32,7 +32,7 @@ public class SubCategoryImplementation implements SubCategoryService {
     public SubCategoryResponse addNewCategory(SubCategoryRequest subCategoryRequest, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new CategoryNotFoundException("CATEGORY NOT FOUND"));
-        if (subCategoryRepository.existsByName(subCategoryRequest.getName())){
+        if (subCategoryRepository.existsBySubCategoryName(subCategoryRequest.getSubCategoryName())){
             throw new AlreadyExistException("subCategory already exist");
         }
         SubCategory subCategory = mapToSubCategory(subCategoryRequest,category);
@@ -52,8 +52,8 @@ public class SubCategoryImplementation implements SubCategoryService {
     public SubCategoryResponse editSubCategory(SubCategoryRequest subCategoryRequest, Long subCategoryId) {
         SubCategory subCategory = subCategoryRepository.findById(subCategoryId)
                 .orElseThrow(()->new SubCategoryNotFoundException("sub-category not found"));
-        subCategory.setName(subCategory.getName());
-        subCategory.setImage(subCategory.getImage());
+        subCategory.setSubCategoryName(subCategory.getSubCategoryName());
+        subCategory.setImageUrl(subCategory.getImageUrl());
         subCategoryRepository.save(subCategory);
         return mapToSubCategoryResponse(subCategory);
     }
@@ -74,9 +74,9 @@ public class SubCategoryImplementation implements SubCategoryService {
          Set<SubCategoryResponse> subCategoryResponses = new HashSet<>();
          subCategories.forEach( subCategory -> {
                SubCategoryResponse response = SubCategoryResponse.builder()
-                      .subCategoryId(subCategory.getCategoryId())
-                      .subCategoryName(subCategory.getName())
-                      .imageUrl(subCategory.getImage())
+                      .subCategoryId(subCategory.getSubCategoryId())
+                      .subCategoryName(subCategory.getSubCategoryName())
+                      .imageUrl(subCategory.getImageUrl())
                       .build();
                     subCategoryResponses.add(response);
                  }
@@ -86,15 +86,15 @@ public class SubCategoryImplementation implements SubCategoryService {
 
     private SubCategoryResponse mapToSubCategoryResponse(SubCategory newSubCategory) {
           return    SubCategoryResponse.builder()
-                     .CategoryId(newSubCategory.getCategoryId())
-                     .subCategoryName(newSubCategory.getName())
-                     .imageUrl(newSubCategory.getImage())
+                     .subCategoryId(newSubCategory.getSubCategoryId())
+                     .subCategoryName(newSubCategory.getSubCategoryName())
+                     .imageUrl(newSubCategory.getImageUrl())
                      .build();
     }
 
     private SubCategory mapToSubCategory(SubCategoryRequest subCategoryRequest, Category category) {
           return      SubCategory.builder()
-                  .name(subCategoryRequest.getName())
+                  .subCategoryName(subCategoryRequest.getSubCategoryName())
                   .category(category)
                   .build();
 

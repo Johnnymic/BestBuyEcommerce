@@ -3,8 +3,10 @@ package com.bestbuy.ecommerce.service.serviceImpl;
 
 import com.bestbuy.ecommerce.domain.entity.AppUser;
 import com.bestbuy.ecommerce.domain.entity.JwtToken;
+import com.bestbuy.ecommerce.domain.entity.Wallet;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
 import com.bestbuy.ecommerce.domain.repository.JwtTokenRepository;
+import com.bestbuy.ecommerce.domain.repository.WalletRepository;
 import com.bestbuy.ecommerce.dto.request.EditProfileRequest;
 import com.bestbuy.ecommerce.dto.request.LoginRequest;
 import com.bestbuy.ecommerce.dto.request.RegistrationRequest;
@@ -12,6 +14,7 @@ import com.bestbuy.ecommerce.dto.responses.EditProfileResponse;
 import com.bestbuy.ecommerce.dto.responses.LoginResponse;
 import com.bestbuy.ecommerce.dto.responses.RegistrationResponse;
 import com.bestbuy.ecommerce.dto.responses.UserProfileResponse;
+import com.bestbuy.ecommerce.enums.BaseCurrency;
 import com.bestbuy.ecommerce.enums.Gender;
 import com.bestbuy.ecommerce.enums.Roles;
 import com.bestbuy.ecommerce.event.RegistrationCompleteEvent;
@@ -37,6 +40,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,12 +55,21 @@ public class AppUserServicesImpl implements AppUserService{
 
     private final JwtTokenRepository tokenRepository;
 
+    private final WalletRepository walletRepository;
+
     private final JwtService jwtService;
     @Override
     public RegistrationResponse registerUser(RegistrationRequest registrationResquest, HttpServletRequest request) {
         AppUser appUser = mapToEntity(registrationResquest);
 
-         var newAppUser = appUserRepository.save(appUser);
+        Wallet wallet = Wallet.builder()
+                .accountBalance(BigDecimal.ZERO)
+                .baseCurrency(BaseCurrency.NAIRA)
+                .appUser(appUser)
+                .build();
+        appUser.setWallet(wallet);
+        walletRepository.save(wallet);
+        var newAppUser = appUserRepository.save(appUser);
          eventPublisher.publishEvent(new RegistrationCompleteEvent(EmailUtils.applicationUrl(request),appUser));
          return RegistrationResponse.builder()
                  .firstName(newAppUser.getFirstName())

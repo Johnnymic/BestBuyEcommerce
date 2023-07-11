@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
         SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("Category not found"));
 
-        if(!product.getCategory().getCategoryId().equals(category.getCategoryId())){
+        if(!product.getCategory().getSubCategoryId().equals(category.getSubCategoryId())){
             throw new ProductNotFoundException("product not belonging to category", HttpStatus.BAD_REQUEST);
         }
         return mapToProductResponse(product);
@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
         SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("Category not found"));
 
-        if(!products.getCategory().getCategoryId().equals(category.getCategoryId())){
+        if(!products.getCategory().getSubCategoryId().equals(category.getSubCategoryId())){
             throw new ProductNotFoundException("product not belonging to category", HttpStatus.BAD_REQUEST);
         }
         products.setProductName(productRequest.getName());
@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
         SubCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("Category not found"));
 
-        if(!products.getCategory().getCategoryId().equals(category.getCategoryId())){
+        if(!products.getCategory().getSubCategoryId().equals(category.getSubCategoryId())){
             throw new ProductNotFoundException("product not belonging to category", HttpStatus.BAD_REQUEST);
         }
         productRepository.delete(products);
@@ -114,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductResponse mapToProductResponse(Product product) {
          return     ProductResponse.builder()
                  .brandName(product.getBrand().getBrandName())
-                 .categoryName(product.getCategory().getName())
+                 .categoryName(product.getCategory().getSubCategoryName())
                  .productName(product.getProductName())
                  .description(product.getDescription())
                  .price(product.getPrice())

@@ -14,20 +14,20 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "categories")
+@Table(name="sub_category")
 public class SubCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    private Long subCategoryId;
 
 
-    private String name;
+    private String subCategoryName;
 
     @ManyToOne
-    @JoinColumn(name = "cat_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    private String image;
+    private String imageUrl;
 
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
