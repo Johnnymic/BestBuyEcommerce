@@ -10,7 +10,7 @@ import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
 import com.bestbuy.ecommerce.exceptions.ProductAlreadyExistException;
 import com.bestbuy.ecommerce.exceptions.ProductNotFoundException;
 import com.bestbuy.ecommerce.service.WishlistService;
-import com.bestbuy.ecommerce.utitls.UserUtils;
+import com.bestbuy.ecommerce.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

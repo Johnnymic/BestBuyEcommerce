@@ -1,4 +1,4 @@
-package com.bestbuy.ecommerce.utitls;
+package com.bestbuy.ecommerce.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 

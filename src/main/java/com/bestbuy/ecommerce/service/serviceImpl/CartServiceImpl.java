@@ -6,18 +6,15 @@ import com.bestbuy.ecommerce.domain.repository.CartRepository;
 import com.bestbuy.ecommerce.domain.repository.ProductRepository;
 import com.bestbuy.ecommerce.dto.request.CartRequest;
 
-import com.bestbuy.ecommerce.dto.responses.AddressResponse;
 import com.bestbuy.ecommerce.dto.responses.CartResponse;
 import com.bestbuy.ecommerce.exceptions.*;
 import com.bestbuy.ecommerce.service.CartService;
 
-import com.bestbuy.ecommerce.utitls.UserUtils;
-import com.sun.mail.imap.protocol.Item;
+import com.bestbuy.ecommerce.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

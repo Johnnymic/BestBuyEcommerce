@@ -1,6 +1,6 @@
 package com.bestbuy.ecommerce.domain.entity;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -11,27 +11,27 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
+@Entity
 public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long roleId;
+
     private String roleName;
 
-    private List<Permission> permissions;
-
-    public List<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
-    }
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "role_permissions",
+            joinColumns = @JoinColumn(name = "role_id"))
+    @Column(name = "permission")
+    public List<String> permissions;
 
     public List<SimpleGrantedAuthority> getAuthorities(){
         List<SimpleGrantedAuthority>  authorities = getPermissions().stream()
-                .map(permissions-> new SimpleGrantedAuthority(permissions.getPermission()))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.getRoleName()));
         return authorities;
     }
-
 }

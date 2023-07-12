@@ -7,6 +7,7 @@ import com.bestbuy.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ProductController {
 
     private  final ProductService productService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/{brandId}/brand/{catId}/category/add-product")
     public ResponseEntity<ApiResponse<ProductResponse>>addProduct(@PathVariable("brandId") Long brandId, @PathVariable("catId") Long categoryId, @RequestBody ProductRequest productRequest){
         ApiResponse<ProductResponse>  response= new ApiResponse<>(productService.addNewProduct(brandId,categoryId, productRequest));

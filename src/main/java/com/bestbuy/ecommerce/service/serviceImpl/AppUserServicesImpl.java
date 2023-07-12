@@ -3,9 +3,11 @@ package com.bestbuy.ecommerce.service.serviceImpl;
 
 import com.bestbuy.ecommerce.domain.entity.AppUser;
 import com.bestbuy.ecommerce.domain.entity.JwtToken;
+import com.bestbuy.ecommerce.domain.entity.Role;
 import com.bestbuy.ecommerce.domain.entity.Wallet;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
 import com.bestbuy.ecommerce.domain.repository.JwtTokenRepository;
+import com.bestbuy.ecommerce.domain.repository.RoleRepository;
 import com.bestbuy.ecommerce.domain.repository.WalletRepository;
 import com.bestbuy.ecommerce.dto.request.EditProfileRequest;
 import com.bestbuy.ecommerce.dto.request.LoginRequest;
@@ -23,12 +25,10 @@ import com.bestbuy.ecommerce.exceptions.UserCredentialNotFoundException;
 import com.bestbuy.ecommerce.exceptions.UserDetailedException;
 import com.bestbuy.ecommerce.security.JwtService;
 import com.bestbuy.ecommerce.service.AppUserService;
-import com.bestbuy.ecommerce.utitls.EmailUtils;
-import com.bestbuy.ecommerce.utitls.UserUtils;
+import com.bestbuy.ecommerce.utils.EmailUtils;
+import com.bestbuy.ecommerce.utils.UserUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -56,6 +56,8 @@ public class AppUserServicesImpl implements AppUserService{
     private final JwtTokenRepository tokenRepository;
 
     private final WalletRepository walletRepository;
+
+    private final RoleRepository roleRepository;
 
     private final JwtService jwtService;
     @Override
@@ -197,6 +199,7 @@ public class AppUserServicesImpl implements AppUserService{
 
 
     private AppUser mapToEntity(RegistrationRequest requesteqquest) {
+        Role role = roleRepository.findByRoleName("CUSTOMER");
         return  AppUser.builder()
                 .firstName(requesteqquest.getFirstName())
                 .lastName(requesteqquest.getLastName())
@@ -204,12 +207,9 @@ public class AppUserServicesImpl implements AppUserService{
                 .password(passwordEncoder.encode(requesteqquest.getPassword()))
                 .date_of_birth(requesteqquest.getDateOfBirth())
                 .isEnabled(false)
-                .roles(Roles.USER)
+                .role(role)
                 .gender(Gender.MALE)
                 .email(requesteqquest.getEmail())
                 .build();
     }
-
-
-
 }

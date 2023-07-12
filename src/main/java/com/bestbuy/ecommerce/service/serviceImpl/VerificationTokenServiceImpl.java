@@ -9,7 +9,7 @@ import com.bestbuy.ecommerce.event.RegistrationCompleteEvent;
 import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
 import com.bestbuy.ecommerce.exceptions.TokenNotFoundException;
 import com.bestbuy.ecommerce.service.VerificationTokenService;
-import com.bestbuy.ecommerce.utitls.EmailUtils;
+import com.bestbuy.ecommerce.utils.EmailUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

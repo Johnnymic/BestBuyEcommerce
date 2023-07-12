@@ -40,8 +40,9 @@ public class AppUser extends BaseEntity implements UserDetails {
 
     private Boolean isEnabled;
 
-    @Enumerated(value = EnumType.STRING)
-    private Roles roles;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @OneToMany(mappedBy = "appUser")
     private List<JwtToken> tokens = new ArrayList<>();
@@ -63,14 +64,10 @@ public class AppUser extends BaseEntity implements UserDetails {
     @JoinColumn(name="wishlist_id")
     private Wishlist wishlist;
 
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return  List.of(new SimpleGrantedAuthority(roles.name()));
+        return  role.getAuthorities();
     }
-
 
     @Override
     public String getPassword() {

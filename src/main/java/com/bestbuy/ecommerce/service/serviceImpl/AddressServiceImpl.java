@@ -9,12 +9,11 @@ import com.bestbuy.ecommerce.dto.responses.AddressResponse;
 import com.bestbuy.ecommerce.exceptions.AddressNotFoundException;
 import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
 import com.bestbuy.ecommerce.service.AddressServices;
-import com.bestbuy.ecommerce.utitls.UserUtils;
+import com.bestbuy.ecommerce.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

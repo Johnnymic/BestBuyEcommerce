@@ -1,17 +1,44 @@
 package com.bestbuy.ecommerce.data;
 
-import com.bestbuy.ecommerce.domain.entity.Permission;
+import com.bestbuy.ecommerce.utils.Permission;
+import com.bestbuy.ecommerce.domain.entity.Role;
+import com.bestbuy.ecommerce.domain.repository.RoleRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DataSeeder {
+@RequiredArgsConstructor
+public class DataSeeder implements CommandLineRunner {
+    private final RoleRepository roleRepository;
 
-    public void addRole(){
-        Permission permission = new Permission();
-        List<Permission>adminPermission= new ArrayList<>();
-//         adminPermission.add()
+    @Override
+    public void run(String... args) throws Exception {
+        Role adminRole = new Role();
+        adminRole.setRoleName("ADMIN");
+        adminRole.setPermissions(
+                List.of(
+                        Permission.ADMIN_CREATE,
+                        Permission.ADMIN_READ,
+                        Permission.ADMIN_UPDATE,
+                        Permission.ADMIN_DELETE,
+                        Permission.CUSTOMER_CREATE,
+                        Permission.CUSTOMER_READ,
+                        Permission.CUSTOMER_UPDATE,
+                        Permission.CUSTOMER_DELETE
+                ));
+
+        Role customerRole = new Role();
+        adminRole.setRoleName("CUSTOMER");
+        customerRole.setPermissions(
+                List.of(
+                        Permission.CUSTOMER_CREATE,
+                        Permission.CUSTOMER_READ,
+                        Permission.CUSTOMER_UPDATE,
+                        Permission.CUSTOMER_DELETE
+                ));
+
+        roleRepository.save(adminRole);
+        roleRepository.save(customerRole);
     }
-
-
 }
