@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class StateController {
     private final StateService stateService;
 
     @PostMapping("/create/new/state/")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<ApiResponse<StateResponse>> addNewState(@RequestBody StateRequest stateRequest){
 
         ApiResponse<StateResponse> apiResponse = new ApiResponse<>(stateService.addNewState(stateRequest));

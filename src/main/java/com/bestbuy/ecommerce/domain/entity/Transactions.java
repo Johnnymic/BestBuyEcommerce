@@ -22,6 +22,7 @@ public class Transactions  extends  BaseEntity{
 
     private String reference;
 
+    @Enumerated(EnumType.STRING)
     private PaymentPurpose paymentPurpose;
 
     @Enumerated(EnumType.STRING)

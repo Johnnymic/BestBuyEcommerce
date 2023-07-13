@@ -15,11 +15,20 @@ public class CartItems {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-
+    @Column(nullable = false)
+    private String productName;
+    @Column(nullable = false)
     private String imageUrl;
 
-    private Integer OrderQty;
+    @Column(nullable = false)
+    private Integer orderQty;
+
+
+    @Column(nullable = false)
+    private Double unitPrice;
+
+    @Column(nullable = false)
+    private Double subTotal;
 
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -30,11 +39,7 @@ public class CartItems {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(nullable = false)
-    private Double unitPrice;
 
-    @Column(nullable = false)
-    private Double subTotal;
 
 
 

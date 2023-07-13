@@ -1,14 +1,14 @@
 package com.bestbuy.ecommerce.dto.responses;
 
 import com.bestbuy.ecommerce.domain.entity.PickupCenter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class StateResponse {
     private Long id;
 

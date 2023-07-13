@@ -51,6 +51,9 @@ public class AppUser extends BaseEntity implements UserDetails {
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Order> order = new HashSet<>();
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="cart_id")

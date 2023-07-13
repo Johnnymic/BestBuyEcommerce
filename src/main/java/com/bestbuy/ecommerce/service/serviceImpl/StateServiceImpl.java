@@ -44,6 +44,7 @@ public class StateServiceImpl implements StateService {
         State state = stateRepository.findById(stateId)
                 .orElseThrow(()-> new StateNotFoundException("State not found"));
          state.setName(request.getStateName());
+         stateRepository.save(state);
          return mapToResponse(state);
     }
 
