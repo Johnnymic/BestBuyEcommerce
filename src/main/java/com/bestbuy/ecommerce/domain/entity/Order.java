@@ -28,7 +28,7 @@ public class Order extends BaseEntity {
     private LocalDateTime orderDate;
 
     @Column(nullable = false)
-    private BigDecimal totalAmount;
+    private Double grandTotal;
 
     private Double deliveryFee;
 

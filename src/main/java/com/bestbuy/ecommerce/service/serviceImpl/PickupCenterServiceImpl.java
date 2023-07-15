@@ -111,7 +111,7 @@ public class PickupCenterServiceImpl implements PickupCenterService {
                 .email(pickCenterRequest.getEmail())
                 .address(pickCenterRequest.getLocation())
                 .delivery(pickCenterRequest.getDelivery())
-                .state(pickCenterRequest.)
+
                 .build();
     }
 

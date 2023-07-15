@@ -6,15 +6,21 @@ import com.bestbuy.ecommerce.domain.entity.OrderItem;
 import com.bestbuy.ecommerce.domain.entity.PickupCenter;
 import com.bestbuy.ecommerce.enums.DeliveryStatus;
 import com.bestbuy.ecommerce.enums.ModeOfDelivery;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.Transaction;
 
 import java.util.Set;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class OrderResponse {
     private ModeOfPayment modeOfPayment;
     private Set<OrderItem> items;
     private Double deliveryFee;
-    private ModeOfDelivery modeOfDelivery;
+
     private DeliveryStatus deliveryStatus;
     private Double grandTotal;
     private Double discount;
