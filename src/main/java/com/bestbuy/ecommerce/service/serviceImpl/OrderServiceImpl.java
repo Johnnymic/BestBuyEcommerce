@@ -6,23 +6,16 @@ import com.bestbuy.ecommerce.dto.request.OrderRequest;
 import com.bestbuy.ecommerce.dto.responses.AdminOrderResponse;
 import com.bestbuy.ecommerce.dto.responses.OrderResponse;
 import com.bestbuy.ecommerce.enums.DeliveryStatus;
-import com.bestbuy.ecommerce.enums.PaymentPurpose;
 import com.bestbuy.ecommerce.enums.PickupStatus;
-import com.bestbuy.ecommerce.enums.TransactionStatus;
 import com.bestbuy.ecommerce.exceptions.*;
 import com.bestbuy.ecommerce.service.CartService;
 import com.bestbuy.ecommerce.service.OrderService;
 import com.bestbuy.ecommerce.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.parameters.P;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +23,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.bestbuy.ecommerce.enums.PaymentPurpose.PURCHASE;
-import static com.bestbuy.ecommerce.enums.TransactionStatus.COMPLETE;
 import static com.bestbuy.ecommerce.enums.TransactionStatus.PENDING;
 
 @Service
@@ -146,6 +138,47 @@ public class OrderServiceImpl implements OrderService {
         int min = pageNo*pageSize;
         int max = Math.max(pageSize*(pageNo+1),orderResponseList.size());
         return new PageImpl<>(orderResponseList.subList(min,max),pageRequest,orderResponseList.size());
+    }
+
+    @Override
+    public OrderResponse viewParticularOrder(Long orderId) {
+        Order orders = orderRepository.findById(orderId)
+                .orElseThrow(()-> new OrderNotFoundException("order does not found "));
+
+        return mapToOrderResponse(orders);
+    }
+
+    @Override
+    public Page<OrderResponse> viewOrderByDeliveryStatus(DeliveryStatus status, Integer pageNo, Integer pageSize) {
+       Integer pageNumbers= Math.max(pageNo,0);
+       Integer pageSizes =Math.max(pageSize,1);
+       PageRequest pageRequest = PageRequest.of(pageNumbers,pageSizes);
+        return orderRepository.findByDeliveryStatus(status,pageRequest).map(this::mapToOrderResponse);
+
+    }
+
+    @Override
+    public Page<OrderResponse> viewOrderPickupStatus(PickupStatus pickupStatus, Integer pageNo, Integer pageSize) {
+        AppUser loginUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
+                .orElseThrow(()-> new AppUserNotFountException("user is not login in "));
+        pageNo = Math.max(pageSize,1);
+        pageSize= Math.max(pageNo,0);
+        PageRequest pageable = PageRequest.of(pageNo,pageSize);
+
+        return orderRepository.findByUserIdAndPickupStatus(loginUser.getId(),pickupStatus,pageable)
+                .map(this::mapToOrderResponse);
+    }
+
+
+    private OrderResponse mapToOrderResponse(Order orders) {
+        return  OrderResponse.builder()
+                .orderId(orders.getId())
+                .address(orders.getAddress())
+                .pickupCenter(orders.getPickupCenter())
+                .items(orders.getOrderItems())
+                .deliveryStatus(DeliveryStatus.TO_ARRIVE)
+                .build();
+
     }
 
 

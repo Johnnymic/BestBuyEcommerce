@@ -113,8 +113,7 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductResponse mapToProductResponse(Product product) {
          return     ProductResponse.builder()
-                 .brandName(product.getBrand().getBrandName())
-                 .categoryName(product.getCategory().getSubCategoryName())
+
                  .productName(product.getProductName())
                  .description(product.getDescription())
                  .price(product.getPrice())

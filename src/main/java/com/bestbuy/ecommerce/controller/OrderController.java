@@ -4,6 +4,8 @@ import com.bestbuy.ecommerce.dto.request.OrderRequest;
 import com.bestbuy.ecommerce.dto.responses.AdminOrderResponse;
 import com.bestbuy.ecommerce.dto.responses.ApiResponse;
 import com.bestbuy.ecommerce.dto.responses.OrderResponse;
+import com.bestbuy.ecommerce.enums.DeliveryStatus;
+import com.bestbuy.ecommerce.enums.PickupStatus;
 import com.bestbuy.ecommerce.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -43,8 +45,25 @@ public class OrderController {
     }
 
     @GetMapping ("/customer/view/particular/order/{orderId}")
-    ResponseEntity<ApiResponse<OrderResponse>>viewParticularOrder(@PathVariable("orderId") Long OrderId){
-        ApiResponse<>
+    ResponseEntity<ApiResponse<OrderResponse>>viewParticularOrder(@PathVariable("orderId") Long orderId){
+        ApiResponse<OrderResponse> apiResponse = new ApiResponse<>(orderService.viewParticularOrder(orderId));
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
+    @GetMapping("/admin/check/order/status")
+    ResponseEntity<ApiResponse <Page<OrderResponse>>>viewOrderByStatus(@RequestParam DeliveryStatus status, @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "16") Integer pageSize
+            ){
+        ApiResponse<Page<OrderResponse>> apiResponse = new ApiResponse<>(orderService.viewOrderByDeliveryStatus(status,pageNo,pageSize));
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    }
+
+    @GetMapping("/customer/check/order/")
+    ResponseEntity<ApiResponse <Page<OrderResponse>>>viewOrderPickStatus(@RequestParam PickupStatus pickupStatus,
+                                                                         @RequestParam(defaultValue = "0") Integer pageNo,
+                                                                         @RequestParam(defaultValue = "16") Integer pageSize
+                                                                         ){
+        ApiResponse<Page<OrderResponse>> apiResponse = new ApiResponse<>(orderService.viewOrderPickupStatus(pickupStatus,pageNo,pageSize));
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+
+    }
 }

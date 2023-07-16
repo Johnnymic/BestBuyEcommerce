@@ -1,5 +1,6 @@
 package com.bestbuy.ecommerce.domain.entity;
 
+import com.bestbuy.ecommerce.enums.DeliveryStatus;
 import com.bestbuy.ecommerce.enums.PickupStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,6 +43,8 @@ public class Order extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
+
+    private DeliveryStatus deliveryStatus;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pickup_id")

@@ -22,23 +22,23 @@ public class WalletController {
 
     private final WalletService walletService;
 
-    @PostMapping("/fund-customer-wallet/")
+    @PostMapping("/fund/customer/wallet/")
     public ResponseEntity<ApiResponse<WalletResponse>> fundUserWallet(@RequestBody WalletRequest walletRequest){
         ApiResponse<WalletResponse>apiResponse = new ApiResponse<>(walletService.fundCustomerWallet(walletRequest));
         return  new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
-    @GetMapping("/customer-balance/")
+    @GetMapping("/customer/balance/")
     public ResponseEntity<ApiResponse<WalletBalanceResponse>> getUserBalance(){
         ApiResponse<WalletBalanceResponse>apiResponse = new ApiResponse<>(walletService.getCustomerBalance());
         return  new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/customer-view-wallet-info/")
+    @GetMapping("/customer/view/wallet/info/")
     public ResponseEntity<ApiResponse<WalletInfoResponse>> viewUserWalletInfo(){
         ApiResponse<WalletInfoResponse>apiResponse = new ApiResponse<>(walletService.viewCustomerWallet());
         return  new ResponseEntity<>(apiResponse, HttpStatus.FOUND);
     }
-    @GetMapping ("/view-customer-wallet-by-pagination")
+    @GetMapping ("/view/customer/wallet/paginated")
     public ResponseEntity<ApiResponse <Page<WalletResponse>>>viewUserWalletByPagination(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,

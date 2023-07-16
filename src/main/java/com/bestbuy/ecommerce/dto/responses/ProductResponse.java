@@ -2,6 +2,8 @@ package com.bestbuy.ecommerce.dto.responses;
 
 import com.bestbuy.ecommerce.domain.entity.BaseEntity;
 
+import com.bestbuy.ecommerce.domain.entity.Brand;
+import com.bestbuy.ecommerce.domain.entity.SubCategory;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -19,9 +21,9 @@ public class ProductResponse  {
 
     private String description;
 
-    private String categoryName;
+    private SubCategory subCategoryName;
 
-    private String brandName;
+    private Brand brandName;
 
     private Double price;
 

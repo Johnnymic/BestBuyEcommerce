@@ -17,6 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 
 public class OrderResponse {
+    private Long orderId;
     private ModeOfPayment modeOfPayment;
     private Set<OrderItem> items;
     private Double deliveryFee;

@@ -19,20 +19,18 @@ public class ProductController {
 
     private  final ProductService productService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/{brandId}/brand/{catId}/category/add-product")
-    public ResponseEntity<ApiResponse<ProductResponse>>addProduct(@PathVariable("brandId") Long brandId, @PathVariable("catId") Long categoryId, @RequestBody ProductRequest productRequest){
-        ApiResponse<ProductResponse>  response= new ApiResponse<>(productService.addNewProduct(brandId,categoryId, productRequest));
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
 
-    }
 
-    @GetMapping("/list-of-product/{categoryId}/category")
+
+    @GetMapping("/view/products/{categoryId}/category")
     public ResponseEntity<ApiResponse<List<ProductResponse>>>getAllProductsByCategory(@PathVariable("categoryId") Long categoryId){
         ApiResponse<List<ProductResponse>> response = new ApiResponse<>(productService.findAllProductByCategory(categoryId));
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
+
+
+
 
     @GetMapping("/{productId}/category/{categoryId}")
     public ResponseEntity<ApiResponse<ProductResponse>>getProductByCategoryId(@PathVariable("productId") Long productId
@@ -41,17 +39,10 @@ public class ProductController {
         return  new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/{productId}/category/{categoryId}")
-    public ResponseEntity<ApiResponse<ProductResponse>>updateProductByCategory(@PathVariable("productId") Long productId,@PathVariable("categoryId") Long categoryId,
-           @RequestBody ProductRequest productRequest){
-        ApiResponse<ProductResponse>  response = new ApiResponse<>(productService.updateProductByCategory(productId,categoryId,productRequest));
-        return  new ResponseEntity<>(response,HttpStatus.ACCEPTED);
-    }
 
-    @DeleteMapping("/{productId}/category/{categoryId}")
-    public ResponseEntity<ApiResponse<String >>deleteByCategory(@PathVariable("productId")Long productId,@PathVariable("categoryId") Long categoryId ){
-        ApiResponse<String>  response = new ApiResponse<>(productService.deleteProduct(productId,categoryId));
-        return  new ResponseEntity<>(response,HttpStatus.ACCEPTED);
-    }
+
+
+
+
 
 }
