@@ -32,8 +32,8 @@ public class AdminController {
          return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
      }
 
-     @PostMapping("/add/new/products/")
-    public ResponseEntity<ApiResponse<ProductResponse>>addNewProduct(@RequestParam AddNewProductRequest addNewProductRequest){
+     @PostMapping("/add/new/products")
+    public ResponseEntity<ApiResponse<ProductResponse>>addNewProduct(@RequestBody AddNewProductRequest addNewProductRequest){
          ApiResponse<ProductResponse> apiResponse= new ApiResponse<>(adminService.addNewProduct(addNewProductRequest));
          return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
      }
@@ -44,7 +44,7 @@ public class AdminController {
          return new ResponseEntity<>(apiResponse,HttpStatus.OK);
 
      }
-     @PutMapping("/admin/update/product/{productId}")
+     @PutMapping("/update/product/{productId}")
      public ResponseEntity<ApiResponse<ProductResponse>>updateProduct(@PathVariable("productId") Long productId, UpdateProductRequest updateProduct){
          ApiResponse<ProductResponse> apiResponse = new ApiResponse<>(adminService.updateProduct(productId,updateProduct));
          return new ResponseEntity<>(apiResponse,HttpStatus.OK);

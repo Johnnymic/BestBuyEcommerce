@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -21,12 +23,6 @@ import java.util.List;
 public class ProductController {
 
     private  final ProductService productService;
-
-
-
-
-
-
     @GetMapping("/view/all/products/")
     public ResponseEntity<ApiResponse<List<ProductResponse>>>fetchAllProduct(){
         ApiResponse<List<ProductResponse>> response = new ApiResponse<>(productService.fetchAllProducts());
@@ -79,12 +75,22 @@ public class ProductController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/upload/image/{productId}")
+    public ResponseEntity<ApiResponse<Object>>uploadProductPic(@RequestPart MultipartFile productImage,@PathVariable Long productId) throws IOException {
+     ApiResponse<Object> apiResponse = new ApiResponse<>(productService.uploadProductPic(productId,productImage));
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
+    @DeleteMapping("/delete/image/")
+    public ResponseEntity<ApiResponse<String>>deleteProductPic(String productId) throws IOException {
+        ApiResponse<String> apiResponse = new ApiResponse<>(productService.deleteProductPic(productId));
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
-
-
-
-
-
+    @PostMapping("/upload/image/")
+    public ResponseEntity<ApiResponse<Object>>uploadProductPicWithoutProductId(@RequestPart MultipartFile productImage) throws IOException {
+        ApiResponse<Object> apiResponse = new ApiResponse<>(productService.uploadProductPicWithOutId(productImage));
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
 }

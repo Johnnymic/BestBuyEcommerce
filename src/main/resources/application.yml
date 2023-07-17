@@ -5,8 +5,12 @@ spring:
      username: postgres
   jpa:
     hibernate:
-      ddl-auto : create
+      ddl-auto : update
     showSql : true
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
   mail:
     host: smtp.gmail.com
     port: 587
@@ -22,3 +26,7 @@ jwt:
   expiration:
     access-token: 86400000
     refresh-token: 259200000
+cloudinary:
+  cloud_name: dz66pkcg4
+  api_key: 188321597371899
+  api_secret: QiHoiEANiNfhZU-DHo5X-9qqojg

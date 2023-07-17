@@ -70,7 +70,7 @@ public class AdminServiceImp implements AdminService {
                 .orElseThrow(()-> new BrandNotFoundException("brand not found"));
 
         product.setProductName(updateProduct.getName());
-        product.setBrand(brand);
+
         product.setPrice(updateProduct.getPrice());
         product.setCategory(category);
         product.setQuantityAvailable(updateProduct.getAvailableQty());
@@ -104,14 +104,18 @@ public class AdminServiceImp implements AdminService {
     private ProductResponse mapToResponse(Product newProduct,SubCategory category, Brand brand) {
         return ProductResponse.builder()
                 .subCategoryName(SubCategory.builder()
+
                         .subCategoryName(category.getSubCategoryName())
                         .subCategoryId(category.getSubCategoryId())
                         .category(category.getCategory())
+                        .imageUrl(category.getImageUrl())
                         .build())
                 .brandName(Brand.builder()
+                        .id(brand.getId())
                         .brandName(brand.getBrandName())
                         .brandDescription(brand.getBrandDescription())
                         .build())
+                .id(newProduct.getId())
                 .productName(newProduct.getProductName())
                 .description(newProduct.getDescription())
                 .price(newProduct.getPrice())
@@ -127,7 +131,7 @@ public class AdminServiceImp implements AdminService {
       return    Product.builder()
                   .productName(addNewProductRequest.getName())
                   .price(addNewProductRequest.getPrice())
-                  .quantityAvailable(addNewProductRequest.getAvailableQty())
+                  .quantityAvailable(5)
                   .category(subCategory)
                   .brand(brand)
                   .imageUrl(addNewProductRequest.getImageUrl())
