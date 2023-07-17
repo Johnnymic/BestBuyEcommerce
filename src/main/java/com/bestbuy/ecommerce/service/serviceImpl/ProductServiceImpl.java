@@ -13,12 +13,15 @@ import com.bestbuy.ecommerce.exceptions.CategoryNotFoundException;
 import com.bestbuy.ecommerce.exceptions.ProductNotFoundException;
 import com.bestbuy.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,32 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final BrandRepository brandRepository;
 
-    @Override
-    public ProductResponse addNewProduct(Long brandId,Long categoryId, ProductRequest productRequest) {
-        SubCategory category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category id  not found"));
 
-        Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(()->new BrandNotFoundException("brand not found"));
-
-        Product product = mapToEntity(productRequest);
-        product.setCategory(category);
-        product.setBrand(brand);
-
-       Product newProduct =  productRepository.save(product);
-        return mapToProductResponse(newProduct);
-    }
-
-    @Override
-    public List<ProductResponse> findAllProductByCategory(Long categoryId) {
-        SubCategory category = categoryRepository.findById(categoryId)
-                .orElseThrow(()->new CategoryNotFoundException("category not found"));
-
-        List<Product> products = productRepository.findAllByCategory(category);
-
-
-        return  products.stream().map(this::mapToProductResponse).collect(Collectors.toList());
-    }
 
     @Override
     public ProductResponse getProductByCategoryId(Long productId, Long categoryId) {
@@ -72,42 +50,104 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse updateProductByCategory(Long productId, Long categoryId, ProductRequest productRequest) {
-        Product products = productRepository.findById(productId)
-                .orElseThrow(()-> new ProductNotFoundException("Product not found exception"));
+    public List<ProductResponse> fetchAllProducts() {
+        List<Product> fetchAllProduct = productRepository.findAll();
+        List<ProductResponse> productResponses = fetchAllProduct.stream()
+                .map(product ->  ProductResponse.builder()
+                        .id(product.getId())
+                        .productName(product.getProductName())
+                        .description(product.getDescription())
+                        .quantityAvailable(product.getQuantityAvailable())
+                        .price(product.getPrice())
+                        .brandName(product.getBrand())
+                        .subCategoryName(product.getCategory())
+                        .build()
+                ).collect(Collectors.toList());
 
-        SubCategory category = categoryRepository.findById(categoryId)
-                .orElseThrow(()->new CategoryNotFoundException("Category not found"));
-
-        if(!products.getCategory().getSubCategoryId().equals(category.getSubCategoryId())){
-            throw new ProductNotFoundException("product not belonging to category", HttpStatus.BAD_REQUEST);
-        }
-        products.setProductName(productRequest.getName());
-
-        products.setPrice(productRequest.getPrice());
-        products.setDescription(productRequest.getDescription());
-        products.setImageUrl(productRequest.getImageUrl());
-        products.setUpdatedAt(Date.from(Instant.now()));
-        products.setCreatedAt(Date.from(Instant.now()));
-
-        productRepository.save(products);
-
-        return mapToProductResponse(products);
+        return productResponses;
     }
 
     @Override
-    public String deleteProduct(Long productId, Long categoryId) {
-        Product products = productRepository.findById(productId)
-                .orElseThrow(()-> new ProductNotFoundException("Product not found exception"));
+    public Page<ProductResponse> fetchProductByPaginatedAndSorted(Integer pageNo, Integer pageSize, String sortBy,boolean ascending) {
+        List<Product> productList = productRepository.findAll();
+        List<ProductResponse>responseList = new ArrayList<>();
+         productList.forEach(product ->
+                  responseList.add(
+                          ProductResponse.builder()
+                                  .id(product.getId())
+                                  .productName(product.getProductName())
+                                  .description(product.getDescription())
+                                  .quantityAvailable(product.getQuantityAvailable())
+                                  .price(product.getPrice())
+                                  .brandName(product.getBrand())
+                                  .subCategoryName(product.getCategory())
+                                  .build()));
 
-        SubCategory category = categoryRepository.findById(categoryId)
-                .orElseThrow(()->new CategoryNotFoundException("Category not found"));
+        Collections.sort(responseList, Comparator.comparing(ProductResponse::getId,Comparator.reverseOrder()));
+        int min = pageNo*pageSize;
+        int max= Math.min(pageSize*(pageNo+1),responseList.size());
+        PageRequest pageRequest = PageRequest.of(pageNo,pageSize, Sort.Direction.DESC,sortBy);
+        return new PageImpl<>(responseList.subList(min,max),pageRequest,responseList.size());
+    }
 
-        if(!products.getCategory().getSubCategoryId().equals(category.getSubCategoryId())){
-            throw new ProductNotFoundException("product not belonging to category", HttpStatus.BAD_REQUEST);
-        }
-        productRepository.delete(products);
-        return "product is successful deleted";
+    @Override
+    public Page<ProductResponse> fetchProductsBySubCategory(Long subCategoryId, Integer pageNo, Integer pageSize, String sortBy, boolean isAscending) {
+        List<Product> subCategories = productRepository.findAllByCategory_SubCategoryId(subCategoryId);
+        List<ProductResponse>productResponsesList= new ArrayList<>();
+        subCategories.forEach(product ->
+                productResponsesList.add(
+                        ProductResponse.builder()
+                                .id(product.getId())
+                                .productName(product.getProductName())
+                                .description(product.getDescription())
+                                .quantityAvailable(product.getQuantityAvailable())
+                                .price(product.getPrice())
+                                .subCategoryName(product.getCategory())
+                                .build()));
+        Collections.sort(productResponsesList,Comparator.comparing(ProductResponse::getId,Comparator.reverseOrder()));
+        int min = pageNo*pageSize;
+        int max= Math.min(pageSize*(pageNo+1),productResponsesList.size());
+        PageRequest pageRequest = PageRequest.of(pageNo,pageSize, Sort.Direction.DESC,sortBy);
+        return new PageImpl<>(productResponsesList.subList(min,max),pageRequest,productResponsesList.size());
+
+    }
+
+    @Override
+    public Page<ProductResponse> fetchProductsByBrand(Long brandId, Integer pageNo, Integer pageSize, String sortBy, boolean isAscending) {
+        List<Product> products = productRepository.findByBrandId(brandId);
+        List <ProductResponse> productsList =   products.stream()
+                .map( product ->
+                        ProductResponse.builder()
+                                .id(product.getId())
+                                .productName(product.getProductName())
+                                .description(product.getDescription())
+                                .quantityAvailable(product.getQuantityAvailable())
+                                .price(product.getPrice())
+                                .brandName(product.getBrand())
+                                .build())
+                .collect(Collectors.toList());
+        Collections.sort(productsList,Comparator.comparing(ProductResponse::getCreatedAt,Collections.reverseOrder()));
+        int minimum = pageNo*pageSize;
+        int maximum = Math.min(pageSize*(pageNo+1),productsList.size());
+        PageRequest pageable = PageRequest.of(pageNo,pageSize,Sort.Direction.DESC,sortBy);
+
+        return new PageImpl<>(productsList.subList(minimum,maximum),pageable,productsList.size());
+    }
+
+    @Override
+    public List<ProductResponse> viewNewArrival() {
+        List<Product> products = productRepository.findAllProductByCreatedAtDesc();
+        return products.stream().map(this::mapToProductResponse)
+                 .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<ProductResponse> viewBestSelling() {
+        List<Product> products = productRepository.findProductByBestSelling();
+        return products.stream().map(this::mapToProductResponse)
+                .collect(Collectors.toList());
+
     }
 
 
@@ -119,20 +159,12 @@ public class ProductServiceImpl implements ProductService {
                  .price(product.getPrice())
                  .quantityAvailable(5)
                  .isOutOfStock(false)
+                 .sales(product.getSales())
                  .createdAt(product.getCreatedAt())
                  .updateAt(product.getUpdatedAt())
                  .build();
 
     }
 
-    private Product mapToEntity(ProductRequest productRequest) {
-        return Product.builder()
-                .productName(productRequest.getName())
-                .description(productRequest.getDescription())
-                .price(productRequest.getPrice())
-                .quantityAvailable(productRequest.getQuantityAvailable())
-                .imageUrl(productRequest.getImageUrl())
-                .isOutOfStock(productRequest.isOutOfStock())
-                .build();
-    }
+
 }

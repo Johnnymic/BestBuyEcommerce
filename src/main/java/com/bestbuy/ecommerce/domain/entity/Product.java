@@ -23,6 +23,8 @@ public class Product  extends  BaseEntity {
 
       private int quantityAvailable;
       private boolean isOutOfStock;
+
+      private Integer Sales;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "subcategory_id", nullable = false)
     private SubCategory category ;

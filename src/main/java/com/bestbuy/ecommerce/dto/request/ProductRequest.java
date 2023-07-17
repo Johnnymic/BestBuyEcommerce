@@ -34,6 +34,8 @@ public class ProductRequest extends BaseEntity{
     private int quantityAvailable;
     private boolean isOutOfStock;
 
+    private Integer sales;
+
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     private Double price;

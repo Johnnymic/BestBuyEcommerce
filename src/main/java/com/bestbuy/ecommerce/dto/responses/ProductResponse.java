@@ -17,6 +17,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class ProductResponse  {
 
+    private Long id;
+
     private String productName;
 
     private String description;
@@ -26,6 +28,8 @@ public class ProductResponse  {
     private Brand brandName;
 
     private Double price;
+
+    private Integer sales;
 
     private int quantityAvailable;
     private boolean isOutOfStock;
