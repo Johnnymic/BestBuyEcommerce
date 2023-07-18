@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -15,6 +16,9 @@ public class BrandResponse {
     private String brandName;
 
     private String brandDescription;
-    @CreatedBy
-    private LocalDateTime establishedDate;
+
+    private Date createAt;
+
+    private Date updateAt;
+
 }

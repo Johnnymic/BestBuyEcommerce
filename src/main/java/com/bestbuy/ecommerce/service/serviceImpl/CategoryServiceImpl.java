@@ -11,6 +11,9 @@ import com.bestbuy.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,8 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
         Category category = new Category();
         category.setName(categoryRequest.getCategoryName());
+        category.setImageUrl(category.getImageUrl());
+        category.setCreatedAt(Date.from(Instant.now()));
         categoryRepository.save(category);
         return CategoryResponse.builder()
                 .categoryName(category.getName())
@@ -50,6 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("category not found"));
         category.setName(categoryRequest.getCategoryName());
+        category.setUpdatedAt(Date.from(Instant.now()));
        categoryRepository.save(category);
         return mapToCategory(category);
     }
@@ -66,6 +72,8 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryResponse mapToCategory(Category category){
         return CategoryResponse.builder()
                 .categoryName(category.getName())
+                .createAt(category.getCreatedAt())
+                .updateAt(category.getUpdatedAt())
                 .build();
     }
 

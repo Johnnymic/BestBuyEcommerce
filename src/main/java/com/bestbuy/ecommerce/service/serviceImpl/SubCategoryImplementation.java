@@ -14,6 +14,8 @@ import com.bestbuy.ecommerce.service.SubCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +38,7 @@ public class SubCategoryImplementation implements SubCategoryService {
             throw new AlreadyExistException("subCategory already exist");
         }
         SubCategory subCategory = mapToSubCategory(subCategoryRequest,category);
+        subCategory.setUpdatedAt(Date.from(Instant.now()));
 
         var newSubCategory = subCategoryRepository.save(subCategory);
         return mapToSubCategoryResponse(newSubCategory);
@@ -54,6 +57,7 @@ public class SubCategoryImplementation implements SubCategoryService {
                 .orElseThrow(()->new SubCategoryNotFoundException("sub-category not found"));
         subCategory.setSubCategoryName(subCategory.getSubCategoryName());
         subCategory.setImageUrl(subCategory.getImageUrl());
+        subCategory.setUpdatedAt(Date.from(Instant.now()));
         subCategoryRepository.save(subCategory);
         return mapToSubCategoryResponse(subCategory);
     }
@@ -89,12 +93,14 @@ public class SubCategoryImplementation implements SubCategoryService {
                      .subCategoryId(newSubCategory.getSubCategoryId())
                      .subCategoryName(newSubCategory.getSubCategoryName())
                      .imageUrl(newSubCategory.getImageUrl())
+                     .createAt(newSubCategory.getCreatedAt())
                      .build();
     }
 
     private SubCategory mapToSubCategory(SubCategoryRequest subCategoryRequest, Category category) {
           return      SubCategory.builder()
                   .subCategoryName(subCategoryRequest.getSubCategoryName())
+
                   .category(category)
                   .build();
 

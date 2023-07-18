@@ -47,6 +47,8 @@ public class AdminServiceImp implements AdminService {
                 .orElseThrow(()-> new BrandNotFoundException("brand not found"));
 
         Product product = mapToProduct(addNewProductRequest,category,brand);
+         product.setCreatedAt(Date.from(Instant.now()));
+
         var newProduct =  productRepository.save(product);
         return mapToResponse(newProduct,category,brand) ;
     }
@@ -76,6 +78,7 @@ public class AdminServiceImp implements AdminService {
         product.setQuantityAvailable(updateProduct.getAvailableQty());
         product.setImageUrl(updateProduct.getImageUrl());
         product.setDescription(updateProduct.getDescription());
+        product.setUpdatedAt(Date.from(Instant.now()));
         productRepository.save(product);
         return mapToResponse(product,category,brand);
     }
@@ -95,8 +98,8 @@ public class AdminServiceImp implements AdminService {
                 .description(newProduct.getDescription())
                 .price(newProduct.getPrice())
                 .quantityAvailable(newProduct.getQuantityAvailable())
-                .createdAt(Date.from(Instant.now()))
-                .updateAt(Date.from(Instant.now()))
+                .createdAt(newProduct.getCreatedAt())
+                .updateAt(newProduct.getUpdatedAt())
                 .build();
     }
 
@@ -104,7 +107,6 @@ public class AdminServiceImp implements AdminService {
     private ProductResponse mapToResponse(Product newProduct,SubCategory category, Brand brand) {
         return ProductResponse.builder()
                 .subCategoryName(SubCategory.builder()
-
                         .subCategoryName(category.getSubCategoryName())
                         .subCategoryId(category.getSubCategoryId())
                         .category(category.getCategory())
@@ -120,8 +122,8 @@ public class AdminServiceImp implements AdminService {
                 .description(newProduct.getDescription())
                 .price(newProduct.getPrice())
                 .quantityAvailable(newProduct.getQuantityAvailable())
-                .createdAt(Date.from(Instant.now()))
-                .updateAt(Date.from(Instant.now()))
+                .createdAt(newProduct.getCreatedAt())
+                .updateAt(newProduct.getUpdatedAt())
                 .build();
 
     }

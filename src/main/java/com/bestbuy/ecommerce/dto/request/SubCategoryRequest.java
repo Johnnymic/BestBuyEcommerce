@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SubCategoryRequest {
+public class SubCategoryRequest  {
     private Long subCategoryId;
     @NotNull(message = "Field cannot be missing or empty")
     private String subCategoryName;

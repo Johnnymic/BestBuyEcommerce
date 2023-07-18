@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryRequest {
+public class CategoryRequest  {
 
     private Long categoryId;
     @NotBlank(message = "Name is required")

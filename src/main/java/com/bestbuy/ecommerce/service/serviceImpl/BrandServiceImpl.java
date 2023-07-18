@@ -9,7 +9,9 @@ import com.bestbuy.ecommerce.service.BrandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +23,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public BrandResponse createBrand(BrandRequest brandRequest) {
         Brand brand = mapToBrand(brandRequest);
+        brand.setCreatedAt(Date.from(Instant.now()));
        var newBrand = brandRepository.save(brand);
         return mapToBrandResponse(newBrand);
     }
@@ -45,7 +48,7 @@ public class BrandServiceImpl implements BrandService {
         brand.setBrandDescription(brandRequest.getBrandDescription());
         brand.setBrandName(brandRequest.getBrandName());
         brand.setLogoUrl(brandRequest.getLogoUrl());
-        brand.setEstablishedDate(brandRequest.getEstablishedDate());
+       brand.setUpdatedAt(Date.from(Instant.now()));
         brandRepository.save(brand);
         return mapToBrandResponse(brand);
     }
@@ -63,7 +66,8 @@ public class BrandServiceImpl implements BrandService {
         return BrandResponse.builder()
                 .brandName(brand.getBrandName())
                 .brandDescription(brand.getBrandDescription())
-                .establishedDate(LocalDateTime.now())
+                .createAt(brand.getCreatedAt())
+                .updateAt(brand.getUpdatedAt())
                 .build();
     }
 
@@ -72,7 +76,6 @@ public class BrandServiceImpl implements BrandService {
                 .brandName(brandRequest.getBrandName())
                 .brandDescription(brandRequest.getBrandDescription())
                 .logoUrl(brandRequest.getLogoUrl())
-                .establishedDate(LocalDateTime.now())
                 .build();
     }
 }

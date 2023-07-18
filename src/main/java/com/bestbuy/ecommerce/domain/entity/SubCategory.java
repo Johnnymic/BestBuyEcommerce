@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Builder
 @Table(name="sub_category")
-public class SubCategory {
+public class SubCategory  extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long subCategoryId;

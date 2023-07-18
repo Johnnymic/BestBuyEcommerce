@@ -39,9 +39,6 @@ public class ProductServiceImpl implements ProductService {
 
     private final CloudinaryConfig cloudinaryConfig;
 
-    private final BrandRepository brandRepository;
-
-
     @Override
     public ProductResponse getProductByCategoryId(Long productId, Long categoryId) {
         Product product = productRepository.findById(productId)
@@ -59,6 +56,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponse> fetchAllProducts() {
         List<Product> fetchAllProduct = productRepository.findAll();
+
+
         List<ProductResponse> productResponses = fetchAllProduct.stream()
                 .map(product -> ProductResponse.builder()
                         .id(product.getId())

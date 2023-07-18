@@ -17,8 +17,4 @@ public class BrandRequest {
 
     private String logoUrl;
 
-    private Product product;
-
-    @CreatedBy
-    private LocalDateTime establishedDate;
 }
