@@ -1,6 +1,6 @@
 package com.bestbuy.ecommerce.dto.request;
 
-import com.bestbuy.ecommerce.domain.entity.SearchCriteria;
+import com.bestbuy.ecommerce.search.SearchCriteria;
 
 
 import java.util.List;

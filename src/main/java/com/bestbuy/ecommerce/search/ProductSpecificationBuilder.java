@@ -1,7 +1,6 @@
 package com.bestbuy.ecommerce.search;
 
 import com.bestbuy.ecommerce.domain.entity.Product;
-import com.bestbuy.ecommerce.domain.entity.SearchCriteria;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -37,7 +36,8 @@ public class ProductSpecificationBuilder {
 
          }
         return  result;
-    }
+      }
+
 
 
 }

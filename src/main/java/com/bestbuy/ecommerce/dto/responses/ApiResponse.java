@@ -22,7 +22,7 @@ public class ApiResponse<T> {
     @TimeZoneStorage
     private LocalDateTime time ;
 
-    private HttpStatus statusCode;
+//    private HttpStatus statusCode;
 
     private T data;
 
@@ -30,5 +30,6 @@ public class ApiResponse<T> {
         this.message= "Processed successful";
         this.time= LocalDateTime.now();
         this.data = data;
+
     }
 }

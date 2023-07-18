@@ -3,6 +3,7 @@ package com.bestbuy.ecommerce.controller;
 import com.bestbuy.ecommerce.dto.request.AddNewProductRequest;
 
 import com.bestbuy.ecommerce.dto.request.UpdateProductRequest;
+import com.bestbuy.ecommerce.dto.responses.AddPermissionRequest;
 import com.bestbuy.ecommerce.dto.responses.ApiResponse;
 import com.bestbuy.ecommerce.dto.request.RoleRequest;
 import com.bestbuy.ecommerce.dto.responses.ProductResponse;
@@ -19,16 +20,22 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private  RoleService roleService;
+    private  final RoleService roleService;
 
     private  final AdminService adminService;
 
 
 
 
-     @PostMapping("/add-roles")
+     @PostMapping("/add/roles/")
      public ResponseEntity<ApiResponse<RoleResponse>>addRole(@RequestBody RoleRequest roleRequest){
          ApiResponse<RoleResponse> apiResponse = new ApiResponse<>(roleService.addRoles(roleRequest));
+         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+     }
+
+     @PostMapping("/add/permission/")
+     public ResponseEntity<ApiResponse<RoleResponse>>addPermissions(@RequestBody AddPermissionRequest permissionRequest, Long id){
+         ApiResponse<RoleResponse>apiResponse = new ApiResponse<>(roleService.addRolesPermission(permissionRequest,id));
          return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
      }
 

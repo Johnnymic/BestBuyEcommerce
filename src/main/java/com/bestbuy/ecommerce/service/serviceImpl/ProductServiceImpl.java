@@ -56,21 +56,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponse> fetchAllProducts() {
         List<Product> fetchAllProduct = productRepository.findAll();
-
-
-        List<ProductResponse> productResponses = fetchAllProduct.stream()
-                .map(product -> ProductResponse.builder()
-                        .id(product.getId())
-                        .productName(product.getProductName())
-                        .description(product.getDescription())
-                        .quantityAvailable(product.getQuantityAvailable())
-                        .price(product.getPrice())
-                        .brandName(product.getBrand())
-                        .subCategoryName(product.getCategory())
-                        .build()
-                ).collect(Collectors.toList());
-
-        return productResponses;
+        return fetchAllProduct.stream().map(this::mapToProductResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -85,8 +71,19 @@ public class ProductServiceImpl implements ProductService {
                                 .description(product.getDescription())
                                 .quantityAvailable(product.getQuantityAvailable())
                                 .price(product.getPrice())
-                                .brandName(product.getBrand())
-                                .subCategoryName(product.getCategory())
+                                .brandName(Brand.builder()
+                                                .id(product.getBrand().getId())
+                                                .brandDescription(product.getBrand()
+                                                        .getBrandDescription())
+                                                .brandName(product.getBrand()
+                                                .getBrandName())
+                                        .logoUrl(product.getImageUrl())
+                                        .build())
+                                .subCategoryName(SubCategory.builder()
+                                        .subCategoryId(product.getId())
+                                        .imageUrl(product.getImageUrl())
+                                        .subCategoryName(product.getCategory().
+                                                getSubCategoryName()).build())
                                 .build()));
 
         Collections.sort(responseList, Comparator.comparing(ProductResponse::getId, Comparator.reverseOrder()));
@@ -108,7 +105,11 @@ public class ProductServiceImpl implements ProductService {
                                 .description(product.getDescription())
                                 .quantityAvailable(product.getQuantityAvailable())
                                 .price(product.getPrice())
-                                .subCategoryName(product.getCategory())
+                                .subCategoryName(SubCategory.builder()
+                                        .subCategoryId(product.getId())
+                                        .imageUrl(product.getImageUrl())
+                                        .subCategoryName(product.getCategory()
+                                                .getSubCategoryName()).build())
                                 .build()));
         Collections.sort(productResponsesList, Comparator.comparing(ProductResponse::getId, Comparator.reverseOrder()));
         int min = pageNo * pageSize;
@@ -129,7 +130,7 @@ public class ProductServiceImpl implements ProductService {
                                 .description(product.getDescription())
                                 .quantityAvailable(product.getQuantityAvailable())
                                 .price(product.getPrice())
-                                .brandName(product.getBrand())
+                                .brandName(Brand.builder().brandName(product.getBrand().getBrandName()).build())
                                 .build())
                 .collect(Collectors.toList());
         Collections.sort(productsList, Comparator.comparing(ProductResponse::getCreatedAt, Collections.reverseOrder()));

@@ -39,7 +39,7 @@ public class ProductController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
     }
-    @GetMapping("/fetch/all/product/{subcategoryId}")
+    @GetMapping("/fetch/all/product/subcategory/{subcategoryId}")
     public ResponseEntity<ApiResponse<Page<ProductResponse>>>fetchProductBySubcategory( @PathVariable("subcategoryId") Long subCategoryId,
                                                                                         @RequestParam(defaultValue = "0") Integer pageNo,
                                                                                        @RequestParam(defaultValue = "16") Integer pageSize,
@@ -51,7 +51,7 @@ public class ProductController {
        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
-    @GetMapping("/fetch/all/product/{brandId}")
+    @GetMapping("/fetch/all/product/brand/{brandId}")
     public ResponseEntity<ApiResponse<Page<ProductResponse>>>fetchProductByBrand( @PathVariable("brandId") Long brandId,
                                                                                   @RequestParam(defaultValue = "0") Integer pageNo,
                                                                                   @RequestParam(defaultValue = "16") Integer pageSize,

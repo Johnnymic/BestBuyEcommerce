@@ -1,7 +1,6 @@
 package com.bestbuy.ecommerce.search;
 
 import com.bestbuy.ecommerce.domain.entity.Product;
-import com.bestbuy.ecommerce.domain.entity.SearchCriteria;
 import com.bestbuy.ecommerce.domain.entity.SubCategory;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-@Service
 @RequiredArgsConstructor
 public class ProductSpecification implements Specification<Product> {
 

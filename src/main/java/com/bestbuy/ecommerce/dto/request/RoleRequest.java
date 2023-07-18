@@ -1,5 +1,6 @@
 package com.bestbuy.ecommerce.dto.request;
 
+import com.bestbuy.ecommerce.utils.Permission;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -14,9 +15,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoleRequest {
+
+    private Long id;
+
+
     @NotBlank(message = "Invalid: First name cannot be blank")
     @Size(min = 3, max = 30, message = "First name characters should be between 3 and 30")
     private String firstName;
+
+    private Permission permission;
 
     @NotBlank(message = "Invalid: Last name cannot be blank")
     @Size(min = 3, max = 30, message = "Lastname characters should be between 3 and 30")

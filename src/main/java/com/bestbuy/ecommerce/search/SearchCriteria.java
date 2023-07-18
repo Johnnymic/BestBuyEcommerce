@@ -1,4 +1,4 @@
-package com.bestbuy.ecommerce.domain.entity;
+package com.bestbuy.ecommerce.search;
 
 import lombok.*;
 
