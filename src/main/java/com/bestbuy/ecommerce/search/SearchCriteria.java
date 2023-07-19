@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class SearchCriteria {
 
-    private String filterOperator;
+    private String filterKey;
 
     private Object value;
 
@@ -18,7 +18,7 @@ public class SearchCriteria {
     private String dataOption;
 
     public SearchCriteria(String filterOperator, Object value, String operation) {
-        this.filterOperator = filterOperator;
+        this.filterKey = filterOperator;
         this.value = value;
         Operation = operation;
 

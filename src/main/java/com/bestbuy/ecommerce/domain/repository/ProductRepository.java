@@ -3,11 +3,12 @@ package com.bestbuy.ecommerce.domain.repository;
 import com.bestbuy.ecommerce.domain.entity.SubCategory;
 import com.bestbuy.ecommerce.domain.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product,Long> {
+public interface ProductRepository extends JpaRepository<Product,Long> , JpaSpecificationExecutor<Product> {
   boolean existsByProductName(String productName);
 
     List<Product> findAllByCategory(SubCategory category);
