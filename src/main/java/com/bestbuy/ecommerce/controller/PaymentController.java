@@ -30,7 +30,7 @@ public class PaymentController {
     }
 
     @GetMapping("/verify/transaction/{reference}")
-    public ResponseEntity<ApiResponse<InitializePaymentResponse>>confirmPayment(@PathVariable String reference){
+    public ResponseEntity<ApiResponse<InitializePaymentResponse>>confirmPayment(@PathVariable("reference") String reference){
         ApiResponse<InitializePaymentResponse> apiResponse = new ApiResponse<>(transactionService.verifyPayment(reference));
 
         return  new ResponseEntity<>(apiResponse, HttpStatus.OK);
