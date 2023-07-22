@@ -1,10 +1,12 @@
 package com.bestbuy.ecommerce.domain.entity;
 
 import com.bestbuy.ecommerce.enums.BaseCurrency;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,6 +26,10 @@ public class Wallet {
 
  @OneToOne(mappedBy = "wallet", cascade = CascadeType.ALL)
  private AppUser appUser;
+
+ @JsonIgnore
+ @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+ private Set<Transactions> transactions;
 
 
 

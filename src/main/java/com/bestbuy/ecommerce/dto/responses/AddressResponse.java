@@ -1,5 +1,6 @@
 package com.bestbuy.ecommerce.dto.responses;
 
+import com.bestbuy.ecommerce.domain.entity.State;
 import lombok.*;
 
 @Getter
@@ -12,6 +13,6 @@ public class AddressResponse {
     private String phone;
     private String emailAddress;
     private String street;
-    private String state;
+    private State state;
     private String country;
 }

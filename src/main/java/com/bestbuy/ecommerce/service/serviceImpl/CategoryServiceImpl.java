@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -23,13 +24,19 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     @Override
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
-        Category category = new Category();
-        category.setName(categoryRequest.getCategoryName());
-        category.setImageUrl(category.getImageUrl());
-        category.setCreatedAt(Date.from(Instant.now()));
+        Category category = mapToResponse(categoryRequest);
         categoryRepository.save(category);
         return CategoryResponse.builder()
                 .categoryName(category.getName())
+                .createAt(category.getCreatedAt().toString())
+
+                .build();
+    }
+
+    private Category mapToResponse(CategoryRequest categoryRequest) {
+        return Category.builder()
+                .name(categoryRequest.getCategoryName())
+                .imageUrl(categoryRequest.getImageUrl())
                 .build();
     }
 
@@ -55,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()->new CategoryNotFoundException("category not found"));
         category.setName(categoryRequest.getCategoryName());
-        category.setUpdatedAt(Date.from(Instant.now()));
+        category.setUpdatedAt(category.getUpdatedAt());
        categoryRepository.save(category);
         return mapToCategory(category);
     }
@@ -69,11 +76,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
-    private CategoryResponse mapToCategory(Category category){
+    private  CategoryResponse mapToCategory(Category category){
+        SimpleDateFormat createdAt = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat updateAt = new SimpleDateFormat("yyyy-MM-dd");
+
         return CategoryResponse.builder()
                 .categoryName(category.getName())
-                .createAt(category.getCreatedAt())
-                .updateAt(category.getUpdatedAt())
+                .createAt(createdAt.format(category.getCreatedAt()))
+                .updateAt(updateAt.format(category.getUpdatedAt()))
                 .build();
     }
 

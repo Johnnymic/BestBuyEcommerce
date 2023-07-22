@@ -21,8 +21,8 @@ public class AddressController {
     private final AddressServices addressServices;
 
    @PostMapping("/new-address")
-    public ResponseEntity<ApiResponse<AddressResponse>> addNewAddress(@RequestBody AddressRequest addressRequest){
-      ApiResponse<AddressResponse> apiResponse = new ApiResponse<>(addressServices.addNewAddress(addressRequest));
+    public ResponseEntity<ApiResponse<AddressResponse>> addNewAddress(@RequestBody AddressRequest addressRequest, Long stateId){
+      ApiResponse<AddressResponse> apiResponse = new ApiResponse<>(addressServices.addNewAddress(addressRequest,stateId));
       return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 

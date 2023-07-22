@@ -9,13 +9,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TransactionRequest {
+public class TransactionResponse {
+
+    private Long id;
+    private String date;
+    private String time;
     private String amount;
+    private String purpose;
     private String reference;
-    private String email;
-    private PayStackBearer paystackBearer = PayStackBearer.ACCOUNT;
-    private String callback_url;
-    private Integer invoice_limit;
-    private Channels[] channels;
+    private String status;
 
 }

@@ -6,14 +6,17 @@ import com.bestbuy.ecommerce.domain.entity.Wallet;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
 import com.bestbuy.ecommerce.domain.repository.TransactionRepository;
 import com.bestbuy.ecommerce.domain.repository.WalletRepository;
+import com.bestbuy.ecommerce.dto.request.TransactionResponse;
 import com.bestbuy.ecommerce.dto.request.WalletRequest;
 import com.bestbuy.ecommerce.dto.responses.WalletBalanceResponse;
 import com.bestbuy.ecommerce.dto.responses.WalletInfoResponse;
 import com.bestbuy.ecommerce.dto.responses.WalletResponse;
 import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
 import com.bestbuy.ecommerce.exceptions.CustomerWalletNotFoundException;
+import com.bestbuy.ecommerce.service.JavaMailService;
 import com.bestbuy.ecommerce.service.WalletService;
 import com.bestbuy.ecommerce.utils.UserUtils;
+import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -24,9 +27,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.bestbuy.ecommerce.enums.PaymentPurpose.DEPOSIT;
@@ -39,6 +41,8 @@ public class WalletServiceImp implements WalletService {
     private final WalletRepository walletRepository;
 
     private final AppUserRepository appUserRepository;
+
+    private final JavaMailService javaMailService;
 
     private final TransactionRepository transactionRepository;
 
@@ -61,6 +65,11 @@ public class WalletServiceImp implements WalletService {
                 .paymentPurpose(DEPOSIT)
                 .status(COMPLETE)
                 .build();
+        try{
+          javaMailService.sendMail(loginUser.getEmail(),"wallet balance ", "Your wallet has been credited with "+ walletRequest.getAmount() +". Your new balance is now "+ wallet.getAccountBalance() );
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
 
         transactionRepository.save(transactions);
         return mapToResponse(walletRequest,loginUser,wallet);
@@ -72,6 +81,12 @@ public class WalletServiceImp implements WalletService {
                 .orElseThrow(()-> new AppUserNotFountException("Please login in"));
         Wallet wallet = loginUser.getWallet();
          BigDecimal  customerAccount  =  wallet.getAccountBalance();
+        try{
+            javaMailService.sendMail(loginUser.getEmail(),"wallet balance ", "Your wallet is " +customerAccount + wallet.getBaseCurrency() );
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+
         return WalletBalanceResponse.builder()
                 .currentBalance(customerAccount)
                 .build();
@@ -109,7 +124,34 @@ public class WalletServiceImp implements WalletService {
         return new PageImpl<>(walletResponses.subList(minimum,maximum),pageRequest,walletResponses.size());
     }
 
+    @Override
+    public Page<TransactionResponse> viewAllCustomerTransaction(Integer pageNo, Integer pageSize, String sortBy) {
+        AppUser loginUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
+                .orElseThrow(()-> new AppUserNotFountException("Please login in"));
+        Wallet wallet = loginUser.getWallet();
+        Set<Transactions> transactionsSet= wallet.getTransactions();
+        List<Transactions> transactionsList = new ArrayList<>(transactionsSet);
+         List<TransactionResponse> requests =  transactionsList.stream().map(this::mapToResponse).collect(Collectors.toList());
+         PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.Direction.DESC,sortBy);
+         int min = pageSize*pageNo;
+         int max = Math.min(pageSize*(pageNo+1) , requests.size());
 
+        return  new PageImpl<>(requests.subList(min,max),pageRequest,requests.size());
+    }
+    private TransactionResponse mapToResponse(Transactions transactions){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+
+        return TransactionResponse.builder()
+                .amount(transactions.getAmount())
+                .date(dateFormat.format(transactions.getUpdatedAt()))
+                .time(time.format(transactions.getCreatedAt()))
+                .purpose(transactions.getPaymentPurpose().toString())
+                .status(transactions.getStatus().toString())
+                .reference(transactions.getReference())
+                .build();
+
+    }
 
 
     private WalletResponse mapToResponse(WalletRequest walletRequest,AppUser appUser, Wallet wallet) {

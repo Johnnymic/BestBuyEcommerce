@@ -2,12 +2,8 @@ package com.bestbuy.ecommerce.service.serviceImpl;
 
 import com.bestbuy.ecommerce.domain.entity.Amount;
 import com.bestbuy.ecommerce.domain.entity.PayStackTransactions;
-import com.bestbuy.ecommerce.domain.entity.Wallet;
 import com.bestbuy.ecommerce.domain.repository.PaymentTransactionRepository;
-import com.bestbuy.ecommerce.domain.repository.TransactionRepository;
-import com.bestbuy.ecommerce.domain.repository.WalletRepository;
 import com.bestbuy.ecommerce.dto.request.InitializePaymentRequest;
-import com.bestbuy.ecommerce.dto.request.TransactionRequest;
 import com.bestbuy.ecommerce.dto.request.WalletRequest;
 import com.bestbuy.ecommerce.dto.responses.InitializePaymentResponse;
 import com.bestbuy.ecommerce.exceptions.PaymentNotVerifiedException;
@@ -21,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -30,8 +25,6 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 @Service

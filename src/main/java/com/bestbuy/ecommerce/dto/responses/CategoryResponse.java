@@ -12,8 +12,8 @@ import java.util.Date;
 
 public class CategoryResponse  {
     private String categoryName;
-    private Date createAt;
+    private String createAt;
 
-    private Date updateAt;
+    private String updateAt;
 
 }

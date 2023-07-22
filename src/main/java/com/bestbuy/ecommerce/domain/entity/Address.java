@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "addresses")
-public class Address {
+public class Address  extends  BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +23,9 @@ public class Address {
     private String phone;
     private String emailAddress;
     private String street;
-    private String state;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "state_id" , nullable = false)
+    private State state;
     private String country;
 
     @ManyToOne(fetch = FetchType.LAZY)

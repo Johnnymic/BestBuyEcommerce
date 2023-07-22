@@ -100,6 +100,10 @@ public class PickupCenterServiceImpl implements PickupCenterService {
                 .address(newCenter.getAddress())
                 .phone(newCenter.getPhone())
                 .delivery(newCenter.getDelivery())
+                .state(State.builder()
+                        .id(newCenter.getState().getId())
+                        .name(newCenter.getName())
+                        .build())
                 .build();
     }
 
@@ -111,7 +115,9 @@ public class PickupCenterServiceImpl implements PickupCenterService {
                 .email(pickCenterRequest.getEmail())
                 .address(pickCenterRequest.getLocation())
                 .delivery(pickCenterRequest.getDelivery())
-
+                .state(State.builder().id(pickCenterRequest.getStateId())
+                        .name(pickCenterRequest.getName())
+                        .build())
                 .build();
     }
 

@@ -169,9 +169,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String deleteProductPic(String productId) throws IOException {
+    public String deleteProductPic(Long productId) throws IOException {
         try {
-            cloudinaryConfig.cloudinary().uploader().destroy(productId, ObjectUtils.emptyMap());
+            cloudinaryConfig.cloudinary().uploader().destroy(String.valueOf(productId), ObjectUtils.emptyMap());
         } catch (IOException exception) {
             exception.printStackTrace();
             throw new RuntimeException(exception);

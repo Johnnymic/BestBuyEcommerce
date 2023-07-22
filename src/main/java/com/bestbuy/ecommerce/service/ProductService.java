@@ -26,7 +26,7 @@ public interface ProductService {
 
     Object uploadProductPic(Long productId, MultipartFile productImage) throws IOException;
 
-    String  deleteProductPic(String productId) throws IOException;
+    String  deleteProductPic(Long productId) throws IOException;
 
     String  uploadProductPicWithOutId(MultipartFile productImage) throws IOException;
 }

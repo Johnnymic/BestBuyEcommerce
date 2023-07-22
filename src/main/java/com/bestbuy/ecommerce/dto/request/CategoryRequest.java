@@ -16,4 +16,6 @@ public class CategoryRequest  {
     @Size(max = 255, message = "Name cannot exceed 255 characters")
     private String categoryName;
 
+    private String imageUrl;
+
 }

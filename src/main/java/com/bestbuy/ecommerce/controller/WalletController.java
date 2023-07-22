@@ -1,5 +1,6 @@
 package com.bestbuy.ecommerce.controller;
 
+import com.bestbuy.ecommerce.dto.request.TransactionResponse;
 import com.bestbuy.ecommerce.dto.request.WalletRequest;
 import com.bestbuy.ecommerce.dto.responses.ApiResponse;
 import com.bestbuy.ecommerce.dto.responses.WalletBalanceResponse;
@@ -12,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,6 +48,19 @@ public class WalletController {
                 viewCustomerWalletByPagination(pageNo,pageSize,sortBy));
         return  new ResponseEntity<>(apiResponse, HttpStatus.FOUND);
     }
+
+    @GetMapping("/customer/all/transaction")
+    public ResponseEntity<ApiResponse<Page<TransactionResponse>>>fetchAllTransaction(
+
+            @RequestParam(defaultValue = "o") Integer pageNo,
+            @RequestParam(defaultValue = "16") Integer pageSize,
+            @RequestParam(defaultValue = "Id") String sortBy
+            ){
+        ApiResponse<Page<TransactionResponse>> apiResponse  = new ApiResponse<>(
+                walletService.viewAllCustomerTransaction(pageNo,pageSize,sortBy));
+        return  new ResponseEntity<>(apiResponse, HttpStatus.FOUND);
+    }
+
 
 
 }
