@@ -5,7 +5,7 @@ import com.bestbuy.ecommerce.domain.entity.VerificationToken;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
 import com.bestbuy.ecommerce.domain.repository.VerificationTokenRepository;
 
-import com.bestbuy.ecommerce.event.RegistrationCompleteEvent;
+import com.bestbuy.ecommerce.event.register.RegistrationCompleteEvent;
 import com.bestbuy.ecommerce.exceptions.AppUserNotFountException;
 import com.bestbuy.ecommerce.exceptions.TokenNotFoundException;
 import com.bestbuy.ecommerce.service.VerificationTokenService;

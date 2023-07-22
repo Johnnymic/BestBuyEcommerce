@@ -1,4 +1,4 @@
-package com.bestbuy.ecommerce.event;
+package com.bestbuy.ecommerce.event.register;
 
 import com.bestbuy.ecommerce.domain.entity.AppUser;
 import lombok.Getter;
