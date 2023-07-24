@@ -54,7 +54,7 @@ public class ReviewController {
                                                                            @RequestParam(defaultValue = "0")Integer pageNo,
                                                                            @RequestParam(defaultValue = "0")Integer pageSize,
                                                                             @RequestParam(defaultValue = "Id")String  sortBy,
-                                                                           @RequestParam(defaultValue = "false") boolean isAscending
+                                                                           @RequestParam(defaultValue = "truen") boolean isAscending
     ){
         ApiResponse <Page<ReviewResponse>>  apiResponse = new ApiResponse<>(reviewService.viewAllReviewByProduct(productId,pageNo,pageSize,sortBy,isAscending));
         return  new ResponseEntity<>(apiResponse, HttpStatus.OK);
