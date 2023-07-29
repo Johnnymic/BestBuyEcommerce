@@ -27,26 +27,26 @@ public class PickupCenterController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("/view/pickup/center")
-    public ResponseEntity<ApiResponse<List<PickUpCenterResponse>>> getPickupCenterByStateName(String name) {
+    @GetMapping("/view/pickup/center/{name}")
+    public ResponseEntity<ApiResponse<List<PickUpCenterResponse>>> getPickupCenterByStateName(@PathVariable("name") String name) {
         ApiResponse<List<PickUpCenterResponse>> apiResponse = new ApiResponse<>(pickupCenterService.findCenterByStateName(name));
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/edit/pickup/center/{stateId}")
+    @PutMapping("/edit/pickup/center/{stateId}")
     public ResponseEntity<ApiResponse<PickUpCenterResponse>> editPickupCenter(@PathVariable("stateId") Long centerId, @RequestBody PickCenterRequest pickCenterRequest) {
         ApiResponse<PickUpCenterResponse> apiResponse = new ApiResponse<>(pickupCenterService.updatePickupCenter(centerId, pickCenterRequest));
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/pickup/{stateId}")
-    public ResponseEntity<ApiResponse<String>> editPickupCenter(@PathVariable("stateId") Long centerId) {
+    public ResponseEntity<ApiResponse<String>> deleteState(@PathVariable("stateId") Long centerId) {
         ApiResponse<String> apiResponse = new ApiResponse<>(pickupCenterService.deleteCenter(centerId));
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/fetch/all/centers/")
-    public ResponseEntity<ApiResponse<Page<PickUpCenterResponse>>> viewAllCenter(@RequestParam(defaultValue = "page") Integer pageNo,
+    public ResponseEntity<ApiResponse<Page<PickUpCenterResponse>>> viewAllCenter(@RequestParam(defaultValue = "0") Integer pageNo,
                                                                                  @RequestParam(defaultValue = "10") Integer pageSize,
                                                                                  @RequestParam(defaultValue = "id") String sortBy) {
 

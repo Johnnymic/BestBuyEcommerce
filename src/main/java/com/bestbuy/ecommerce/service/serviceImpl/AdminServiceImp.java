@@ -34,6 +34,8 @@ public class AdminServiceImp implements AdminService {
 
     private final SubCategoryRepository subCategoryRepository;
 
+
+
     private final BrandRepository brandRepository;
     @Override
     public ProductResponse addNewProduct(AddNewProductRequest addNewProductRequest) {
@@ -47,7 +49,7 @@ public class AdminServiceImp implements AdminService {
                 .orElseThrow(()-> new BrandNotFoundException("brand not found"));
 
         Product product = mapToProduct(addNewProductRequest,category,brand);
-         product.setCreatedAt(Date.from(Instant.now()));
+//         product.setCreatedAt(Date.from(Instant.now()));
 
         var newProduct =  productRepository.save(product);
         return mapToResponse(newProduct,category,brand) ;
@@ -78,7 +80,7 @@ public class AdminServiceImp implements AdminService {
         product.setQuantityAvailable(updateProduct.getAvailableQty());
         product.setImageUrl(updateProduct.getImageUrl());
         product.setDescription(updateProduct.getDescription());
-        product.setUpdatedAt(Date.from(Instant.now()));
+//        product.setUpdatedAt(Date.from(Instant.now()));
         productRepository.save(product);
         return mapToResponse(product,category,brand);
     }
@@ -92,14 +94,15 @@ public class AdminServiceImp implements AdminService {
     }
 
 
+
     private ProductResponse mapToProductResponse(Product newProduct) {
         return ProductResponse.builder()
                 .productName(newProduct.getProductName())
                 .description(newProduct.getDescription())
                 .price(newProduct.getPrice())
                 .quantityAvailable(newProduct.getQuantityAvailable())
-                .createdAt(newProduct.getCreatedAt())
-                .updateAt(newProduct.getUpdatedAt())
+//                .createdAt(newProduct.getCreatedAt())
+//                .updateAt(newProduct.getUpdatedAt())
                 .build();
     }
 
@@ -122,8 +125,8 @@ public class AdminServiceImp implements AdminService {
                 .description(newProduct.getDescription())
                 .price(newProduct.getPrice())
                 .quantityAvailable(newProduct.getQuantityAvailable())
-                .createdAt(newProduct.getCreatedAt())
-                .updateAt(newProduct.getUpdatedAt())
+//                .createdAt(newProduct.getCreatedAt())
+//                .updateAt(newProduct.getUpdatedAt())
                 .build();
 
     }

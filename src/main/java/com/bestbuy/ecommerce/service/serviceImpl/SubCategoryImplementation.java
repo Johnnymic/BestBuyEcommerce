@@ -38,7 +38,7 @@ public class SubCategoryImplementation implements SubCategoryService {
             throw new AlreadyExistException("subCategory already exist");
         }
         SubCategory subCategory = mapToSubCategory(subCategoryRequest,category);
-        subCategory.setUpdatedAt(Date.from(Instant.now()));
+//        subCategory.setUpdatedAt(Date.from(Instant.now()));
 
         var newSubCategory = subCategoryRepository.save(subCategory);
         return mapToSubCategoryResponse(newSubCategory);
@@ -57,7 +57,7 @@ public class SubCategoryImplementation implements SubCategoryService {
                 .orElseThrow(()->new SubCategoryNotFoundException("sub-category not found"));
         subCategory.setSubCategoryName(subCategory.getSubCategoryName());
         subCategory.setImageUrl(subCategory.getImageUrl());
-        subCategory.setUpdatedAt(Date.from(Instant.now()));
+//        subCategory.setUpdatedAt(Date.from(Instant.now()));
         subCategoryRepository.save(subCategory);
         return mapToSubCategoryResponse(subCategory);
     }
@@ -93,7 +93,7 @@ public class SubCategoryImplementation implements SubCategoryService {
                      .subCategoryId(newSubCategory.getSubCategoryId())
                      .subCategoryName(newSubCategory.getSubCategoryName())
                      .imageUrl(newSubCategory.getImageUrl())
-                     .createAt(newSubCategory.getCreatedAt())
+//                     .createAt(newSubCategory.getCreatedAt())
                      .build();
     }
 

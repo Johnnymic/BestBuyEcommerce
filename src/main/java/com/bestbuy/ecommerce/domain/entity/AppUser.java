@@ -2,6 +2,7 @@ package com.bestbuy.ecommerce.domain.entity;
 
 import com.bestbuy.ecommerce.enums.Gender;
 import com.bestbuy.ecommerce.enums.Roles;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -69,6 +70,11 @@ public class AppUser extends BaseEntity implements UserDetails {
     @OneToOne( cascade = CascadeType.ALL)
     @JoinColumn(name="wishlist_id")
     private Wishlist wishlist;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "appUser", cascade = CascadeType.ALL)
+    private Admin admin;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

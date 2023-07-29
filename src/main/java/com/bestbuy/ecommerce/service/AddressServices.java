@@ -6,7 +6,7 @@ import com.bestbuy.ecommerce.dto.responses.AddressResponse;
 import java.util.List;
 
 public interface AddressServices {
-    AddressResponse addNewAddress(AddressRequest addressRequest,Long stateId);
+    AddressResponse addNewAddress(AddressRequest addressRequest);
 
     AddressResponse viewAddress(Long addressId);
 

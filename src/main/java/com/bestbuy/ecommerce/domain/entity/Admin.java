@@ -1,13 +1,24 @@
 package com.bestbuy.ecommerce.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
+public class Admin  {
 
-public class Admin extends AppUser  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Admin;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "appUser_id")
+    private  AppUser appUser;
 
 
 }

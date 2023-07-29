@@ -26,10 +26,10 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
         Category category = mapToResponse(categoryRequest);
         categoryRepository.save(category);
+        SimpleDateFormat createdAt = new SimpleDateFormat("yyyy-MM-dd");
         return CategoryResponse.builder()
                 .categoryName(category.getName())
-                .createAt(category.getCreatedAt().toString())
-
+                .createAt(createdAt.format(categoryRequest.getTime().toString()))
                 .build();
     }
 

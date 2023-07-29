@@ -20,6 +20,7 @@ public class ReviewController {
 
 
 
+    @PostMapping("/add/new/review/product")
     public ResponseEntity<ApiResponse<ReviewResponse>> addReviewToProduct(@RequestBody ReviewRequest reviewRequest){
         ApiResponse<ReviewResponse>  apiResponse = new ApiResponse<>(reviewService.addReviewToView(reviewRequest));
 
@@ -54,7 +55,7 @@ public class ReviewController {
                                                                            @RequestParam(defaultValue = "0")Integer pageNo,
                                                                            @RequestParam(defaultValue = "0")Integer pageSize,
                                                                             @RequestParam(defaultValue = "Id")String  sortBy,
-                                                                           @RequestParam(defaultValue = "truen") boolean isAscending
+                                                                           @RequestParam(defaultValue = "true") boolean isAscending
     ){
         ApiResponse <Page<ReviewResponse>>  apiResponse = new ApiResponse<>(reviewService.viewAllReviewByProduct(productId,pageNo,pageSize,sortBy,isAscending));
         return  new ResponseEntity<>(apiResponse, HttpStatus.OK);

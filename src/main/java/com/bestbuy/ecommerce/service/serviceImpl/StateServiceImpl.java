@@ -62,7 +62,6 @@ public class StateServiceImpl implements StateService {
         return  StateResponse.builder()
                 .id(addState.getId())
                 .stateName(addState.getName())
-                .pickupCenterSet(addState.getPickupCenters())
                 .build();
 
     }

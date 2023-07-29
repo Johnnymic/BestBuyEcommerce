@@ -14,5 +14,7 @@ public class AddressRequest {
     private String emailAddress;
     private String street;
 
+    private Long stateId;
+
     private String country;
 }

@@ -36,7 +36,7 @@ public class StateController {
     }
 
     @GetMapping("/view/state/{stateId}")
-    public ResponseEntity<ApiResponse<StateResponse>>viewAllState(@PathVariable("stateId") Long stateId){
+    public ResponseEntity<ApiResponse<StateResponse>>viewState(@PathVariable("stateId") Long stateId){
 
         ApiResponse<StateResponse> apiResponse = new ApiResponse<>(stateService.viewState(stateId));
         return  new ResponseEntity<>(apiResponse , HttpStatus.OK);
@@ -50,7 +50,7 @@ public class StateController {
     }
 
     @DeleteMapping("/delete/state/{stateId}")
-    public ResponseEntity<ApiResponse<String>>updateState( @PathVariable("stateId") Long stateId){
+    public ResponseEntity<ApiResponse<String>>deleteState( @PathVariable("stateId") Long stateId){
 
         ApiResponse<String> apiResponse = new ApiResponse<>(stateService.deleteState(stateId));
         return  new ResponseEntity<>(apiResponse , HttpStatus.OK);

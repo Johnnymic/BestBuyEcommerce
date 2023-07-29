@@ -225,8 +225,8 @@ public class ProductServiceImpl implements ProductService {
                  .quantityAvailable(5)
                  .isOutOfStock(false)
                  .sales(product.getSales())
-                 .createdAt(product.getCreatedAt())
-                 .updateAt(product.getUpdatedAt())
+//                 .createdAt(product.getCreatedAt())
+//                 .updateAt(product.getUpdatedAt())
                  .build();
 
     }

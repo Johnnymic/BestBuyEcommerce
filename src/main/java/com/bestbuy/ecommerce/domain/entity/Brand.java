@@ -22,7 +22,7 @@ public class Brand  extends  BaseEntity{
     private String brandName;
     private String brandDescription;
     private String logoUrl;
-    private LocalDateTime establishedDate;
+
     @OneToMany(mappedBy = "brand")
     private List<Product> products;
 

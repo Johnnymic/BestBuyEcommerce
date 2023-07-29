@@ -56,11 +56,11 @@ public class PickupCenterServiceImpl implements PickupCenterService {
     public PickUpCenterResponse updatePickupCenter(Long centerId, PickCenterRequest pickCenterRequest) {
         PickupCenter pickupCenter= pickupCenterRepository.findById(centerId)
                 .orElseThrow(()->new CenterNotFoundException("center not found"));
-        pickupCenter.setName(pickupCenter.getName());
-        pickupCenter.setPhone(pickupCenter.getPhone());
-        pickupCenter.setEmail(pickupCenter.getEmail());
-        pickupCenter.setAddress(pickupCenter.getAddress());
-        pickupCenter.setDelivery(pickupCenter.getDelivery());
+        pickupCenter.setName(pickCenterRequest.getName());
+        pickupCenter.setPhone(pickCenterRequest.getPhone());
+        pickupCenter.setEmail(pickCenterRequest.getEmail());
+        pickupCenter.setAddress(pickCenterRequest.getAddress());
+        pickupCenter.setDelivery(pickCenterRequest.getDelivery());
         pickupCenterRepository.save(pickupCenter);
         return  mapToResponse(pickupCenter);
     }
@@ -102,7 +102,7 @@ public class PickupCenterServiceImpl implements PickupCenterService {
                 .delivery(newCenter.getDelivery())
                 .state(State.builder()
                         .id(newCenter.getState().getId())
-                        .name(newCenter.getName())
+                        .name(newCenter.getState().getName())
                         .build())
                 .build();
     }
@@ -113,11 +113,8 @@ public class PickupCenterServiceImpl implements PickupCenterService {
                 .name(pickCenterRequest.getName())
                 .phone(pickCenterRequest.getPhone())
                 .email(pickCenterRequest.getEmail())
-                .address(pickCenterRequest.getLocation())
+                .address(pickCenterRequest.getAddress())
                 .delivery(pickCenterRequest.getDelivery())
-                .state(State.builder().id(pickCenterRequest.getStateId())
-                        .name(pickCenterRequest.getName())
-                        .build())
                 .build();
     }
 

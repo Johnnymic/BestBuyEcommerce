@@ -13,38 +13,38 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/category")
 public class CategoryController {
 
     private  final CategoryService categoryService;
 
-    @PostMapping("add-category")
+    @PostMapping("/add/new/category")
     private ResponseEntity<ApiResponse <CategoryResponse>>createCategory(@RequestBody CategoryRequest categoryRequest){
     ApiResponse<CategoryResponse> apiResponse= new ApiResponse<>(categoryService.createCategory(categoryRequest));
      return    new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping("list-of-category")
+    @GetMapping("/view/categories")
     private ResponseEntity<ApiResponse< List<CategoryResponse>>>getAllCategories(){
       ApiResponse <List<CategoryResponse>> categoryResponse = new ApiResponse<>(categoryService.getAllCategories());
         return new ResponseEntity<>(categoryResponse,HttpStatus.OK);
 
     }
 
-    @GetMapping("category/{Id}")
+    @GetMapping("/view/category/{Id}")
     private ResponseEntity<ApiResponse<CategoryResponse>>getCategory(@PathVariable("Id") Long categoryId){
      ApiResponse<CategoryResponse> categoryResponse =new ApiResponse<>( categoryService.getCategory(categoryId));
          return new  ResponseEntity<>(categoryResponse,HttpStatus.OK);
     }
 
-    @PutMapping("update-category/{Id}")
+    @PutMapping("/update/category/{Id}")
     private ResponseEntity<ApiResponse <CategoryResponse>>editCategory(@PathVariable("Id")Long categoryId,
                                                                        @RequestBody CategoryRequest categoryRequest){
        ApiResponse <CategoryResponse> categoryResponse = new ApiResponse<>(categoryService.editCategory(categoryId,categoryRequest));
         return  new ResponseEntity<>(categoryResponse,HttpStatus.FOUND);
     }
 
-    @DeleteMapping("{Id}")
+    @DeleteMapping("/delete/category/{Id}")
     private ResponseEntity<ApiResponse<String>>deleteCategory(@PathVariable("Id") Long categoryId){
         ApiResponse<String> apiResponse = new ApiResponse<>(categoryService.deleteCategoryById(categoryId));
         return new ResponseEntity<>(apiResponse,HttpStatus.FOUND);

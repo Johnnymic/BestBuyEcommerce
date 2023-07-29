@@ -19,31 +19,31 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    @PostMapping("/create-brands")
+    @PostMapping("/create/new/brand")
     public ResponseEntity<ApiResponse<BrandResponse>>createNewBrand(@RequestBody BrandRequest brandRequest){
         ApiResponse<BrandResponse> apiResponse = new ApiResponse<>(brandService.createBrand(brandRequest));
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping ("/list-of-brands")
+    @GetMapping ("/view/brands")
     public  ResponseEntity<ApiResponse<List<BrandResponse>>> listOfBrands(){
         ApiResponse<List<BrandResponse>> apiResponse = new ApiResponse<>(brandService.getAllBrands());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/{brandId}")
+    @GetMapping("/view/brand/{brandId}")
     public ResponseEntity<ApiResponse<BrandResponse>>findBrandById(@PathVariable("brandId") Long brandId){
         ApiResponse<BrandResponse> apiResponse = new ApiResponse<>(brandService.getBrandById(brandId));
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{brandId}/brands")
+    @PutMapping("/edit/brands/{brandId}")
     public ResponseEntity<ApiResponse<BrandResponse>>editBrand(@PathVariable("brandId") Long brandId ,@RequestBody BrandRequest brandRequest){
         ApiResponse<BrandResponse> apiResponse = new ApiResponse<>(brandService.updateBrand(brandId,brandRequest));
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{brandId}")
+    @DeleteMapping("/delete/brand/{brandId}")
     public ResponseEntity<ApiResponse<String>>deleteBrand(@PathVariable("brandId") Long brandId){
         ApiResponse<String> apiResponse = new ApiResponse<>(brandService.deleteBrand(brandId));
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);

@@ -2,12 +2,10 @@ package com.bestbuy.ecommerce.controller;
 
 import com.bestbuy.ecommerce.dto.request.AddNewProductRequest;
 
+import com.bestbuy.ecommerce.dto.request.AdminRequest;
 import com.bestbuy.ecommerce.dto.request.UpdateProductRequest;
-import com.bestbuy.ecommerce.dto.responses.AddPermissionRequest;
-import com.bestbuy.ecommerce.dto.responses.ApiResponse;
+import com.bestbuy.ecommerce.dto.responses.*;
 import com.bestbuy.ecommerce.dto.request.RoleRequest;
-import com.bestbuy.ecommerce.dto.responses.ProductResponse;
-import com.bestbuy.ecommerce.dto.responses.RoleResponse;
 import com.bestbuy.ecommerce.service.AdminService;
 import com.bestbuy.ecommerce.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +36,19 @@ public class AdminController {
          ApiResponse<RoleResponse>apiResponse = new ApiResponse<>(roleService.addRolesPermission(permissionRequest,id));
          return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
      }
+     @PostMapping("/register")
+     public ResponseEntity<ApiResponse<AdminResponse>>registerAdmin(@RequestBody AdminRequest adminRequest){
+         ApiResponse<AdminResponse>apiResponse = new ApiResponse<>(roleService.registerAdmin(adminRequest));
+         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+     }
+
+     @GetMapping("/deActive/user/{userId}")
+     public ResponseEntity<ApiResponse<String>>deActiveCustomer(@PathVariable("userId") Long userId){
+         ApiResponse<String> apiResponse = new ApiResponse<>(roleService.deActiveUser(userId));
+         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+     }
+
 
      @PostMapping("/add/new/products")
     public ResponseEntity<ApiResponse<ProductResponse>>addNewProduct(@RequestBody AddNewProductRequest addNewProductRequest){

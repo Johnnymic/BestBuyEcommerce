@@ -9,9 +9,8 @@ import com.bestbuy.ecommerce.service.BrandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,57 +18,63 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService {
 
-    private  final BrandRepository brandRepository;
+    private final BrandRepository brandRepository;
+
+    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     @Override
     public BrandResponse createBrand(BrandRequest brandRequest) {
         Brand brand = mapToBrand(brandRequest);
-        brand.setCreatedAt(Date.from(Instant.now()));
-       var newBrand = brandRepository.save(brand);
+        Brand newBrand = brandRepository.save(brand);
         return mapToBrandResponse(newBrand);
     }
 
     @Override
     public List<BrandResponse> getAllBrands() {
-        List<Brand> brands= brandRepository.findAll();
+        List<Brand> brands = brandRepository.findAll();
         return brands.stream().map(this::mapToBrandResponse).collect(Collectors.toList());
     }
 
     @Override
     public BrandResponse getBrandById(Long brandId) {
         Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(()->new BrandNotFoundException("brand not found"));
+                .orElseThrow(() -> new BrandNotFoundException("Brand not found"));
         return mapToBrandResponse(brand);
     }
 
     @Override
     public BrandResponse updateBrand(Long brandId, BrandRequest brandRequest) {
         Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(()->new BrandNotFoundException("brand not found"));
+                .orElseThrow(() -> new BrandNotFoundException("Brand not found"));
+
+        // Update the brand properties
         brand.setBrandDescription(brandRequest.getBrandDescription());
         brand.setBrandName(brandRequest.getBrandName());
         brand.setLogoUrl(brandRequest.getLogoUrl());
-       brand.setUpdatedAt(Date.from(Instant.now()));
-        brandRepository.save(brand);
-        return mapToBrandResponse(brand);
+
+        // Save the updated brand
+        Brand updatedBrand = brandRepository.save(brand);
+        return mapToBrandResponse(updatedBrand);
     }
 
     @Override
     public String deleteBrand(Long brandId) {
         Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(()->new BrandNotFoundException("brand not found"));
-         brandRepository.delete(brand);
-        return "brand is successfully deleted";
-    }
+                .orElseThrow(() -> new BrandNotFoundException("Brand not found"));
 
+        brandRepository.delete(brand);
+        return "Brand is successfully deleted";
+    }
 
     private BrandResponse mapToBrandResponse(Brand brand) {
         return BrandResponse.builder()
                 .brandName(brand.getBrandName())
                 .brandDescription(brand.getBrandDescription())
-                .createAt(brand.getCreatedAt())
-                .updateAt(brand.getUpdatedAt())
+//                .createAt(LocalDateTime.parse(brand.getCreatedAt().format(dateFormat)))
                 .build();
     }
+
+
 
     private Brand mapToBrand(BrandRequest brandRequest) {
         return Brand.builder()

@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Getter
 @Setter
 @Builder
@@ -16,5 +18,7 @@ public class BrandRequest {
     private String brandDescription;
 
     private String logoUrl;
+
+    private Date update;
 
 }

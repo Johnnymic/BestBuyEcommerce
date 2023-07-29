@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 public class PickCenterRequest {
     private String name;
-    private String location;
+
     private Long stateId;
     private String email;
     private String phone;

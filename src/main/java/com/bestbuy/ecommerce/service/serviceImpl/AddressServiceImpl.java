@@ -31,13 +31,17 @@ public class AddressServiceImpl implements AddressServices {
 
     private final AppUserRepository appUserRepository;
     @Override
-    public AddressResponse addNewAddress(AddressRequest addressRequest,Long id) {
+    public AddressResponse addNewAddress(AddressRequest addressRequest) {
         AppUser appUser = appUserRepository.findByEmail(UserUtils.getUserEmailFromContext())
                 .orElseThrow(()-> new AppUserNotFountException("user not found"));
-        State state = stateRepository.findById(id).orElseThrow(()-> new StateNotFoundException("state Not Found"));
-         Address address = mapToAddress(addressRequest,appUser,state);
+
+        State state = stateRepository.findById(addressRequest.getStateId())
+                .orElseThrow(()-> new StateNotFoundException("state not found"));
+         Address address = mapToAddress(addressRequest,appUser);
+         address.setState(state);
          appUser.setAddress(address);
-          appUserRepository.save(appUser);
+         appUserRepository.save(appUser);
+
          var newAddress = addressRepository.save(address);
 
          return mapToAddressResponse(newAddress);
@@ -88,21 +92,19 @@ public class AddressServiceImpl implements AddressServices {
                 .emailAddress(newAddress.getEmailAddress())
                 .street(newAddress.getStreet())
                 .state(State.builder()
+                        .id(newAddress.getState().getId())
                         .name(newAddress.getState().getName())
                         .build())
                 .country(newAddress.getCountry())
                 .build();
     }
 
-    private Address mapToAddress(AddressRequest addressRequest,AppUser appUser,State state) {
+    private Address mapToAddress(AddressRequest addressRequest,AppUser appUser) {
         return Address.builder()
                 .fullName(addressRequest.getFullName())
                 .phone(addressRequest.getPhone())
                 .emailAddress(addressRequest.getEmailAddress())
                 .street(addressRequest.getStreet())
-                .state(State.builder()
-                        .name(state.getName())
-                        .build())
                 .country(addressRequest.getCountry())
                 .user(appUser)
                 .build();

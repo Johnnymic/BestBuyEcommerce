@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Builder
@@ -17,5 +19,7 @@ public class CategoryRequest  {
     private String categoryName;
 
     private String imageUrl;
+
+    private Date time;
 
 }

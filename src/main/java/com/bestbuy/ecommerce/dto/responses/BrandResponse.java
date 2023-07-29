@@ -17,8 +17,8 @@ public class BrandResponse {
 
     private String brandDescription;
 
-    private Date createAt;
+    private LocalDateTime createAt;
 
-    private Date updateAt;
+    private String updateAt;
 
 }
