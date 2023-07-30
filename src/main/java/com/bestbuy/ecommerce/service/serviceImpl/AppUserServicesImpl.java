@@ -90,7 +90,7 @@ public class AppUserServicesImpl implements AppUserService{
             if (!passwordEncoder.matches(loginRequest.getPassword(), appUser.getPassword())){
                 throw  new UserCredentialNotFoundException("password does not match ");
            }
-            Authentication authentication = new UsernamePasswordAuthenticationToken(appUser.getPassword(),appUser.getEmail());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(appUser.getEmail(), appUser.getPassword());
              String  access_token = jwtService.generateAccessTokens(appUser);
              String  refresh_token = jwtService.generateRefreshTokens(appUser);
 

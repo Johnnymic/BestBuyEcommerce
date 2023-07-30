@@ -17,7 +17,6 @@ import java.util.Date;
 public  abstract class BaseEntity {
 
 
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createdAt")
     private Date createdAt;

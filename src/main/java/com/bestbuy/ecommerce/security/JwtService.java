@@ -27,7 +27,7 @@ public class JwtService {
 
     private  final JwtTokenRepository jwtTokenRepository;
 
-    private UserDetailsService userDetailsService;
+
 
     @Value("${jwt.expiration.access-token}")
     private long access_expiration;
@@ -63,6 +63,8 @@ public class JwtService {
              .getBody();
     }
 
+
+
     // generate the token
     private boolean isTokenExpired(String token){
         return  extractExpiration(token).after(new Date());
@@ -74,15 +76,7 @@ public class JwtService {
         return  buildToken(extractClaims, userDetails, access_expiration);
     }
 
-public String generateAccessTokens(Authentication authentication){
-    String username = authentication.getName();
-    return Jwts.builder()
-            .setSubject(username)
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis() + access_expiration))
-            .signWith(generatedKey(), SignatureAlgorithm.HS256)
-            .compact();
-}
+
     public String generateAccessTokens(UserDetails userDetails){
         return  buildToken(new HashMap<>(), userDetails, access_expiration);
     }
