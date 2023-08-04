@@ -16,10 +16,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Collection;
+
+import static com.bestbuy.ecommerce.config.SecurityConfigBean.getJwtAuthenticationConverter;
 
 @EnableWebSecurity
 @Configuration
@@ -28,7 +31,7 @@ public class SecurityConfig{
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final LogoutService logoutService;
-    private Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,8 +41,8 @@ public class SecurityConfig{
                         .permitAll()
                         .anyRequest()
                         .authenticated())
-//                .oauth2ResourceServer(httpSecurityOAuth2Resource -> httpSecurityOAuth2Resource
-//                        .jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(getJwtAuthenticationConverter())))
+                .oauth2ResourceServer(httpSecurityOAuth2Resource -> httpSecurityOAuth2Resource
+                        .jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(getJwtAuthenticationConverter())))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -52,9 +55,7 @@ public class SecurityConfig{
         return http.build();
     }
 
-//    private Converter<Jwt,? extends AbstractAuthenticationToken> getJwtAuthenticationConverter() {
-//      JwtAuthenticationConvert  jwtAuthenticationConverter = new JwtAuthenticationConvert();
-//    }
+
 
 
 

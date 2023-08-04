@@ -30,3 +30,7 @@ cloudinary:
   cloud_name: dz66pkcg4
   api_key: 188321597371899
   api_secret: QiHoiEANiNfhZU-DHo5X-9qqojg
+
+rsa :
+  privateKey : classpath:certs/private.pem
+  publicKey: classpath:certs/public.pem
