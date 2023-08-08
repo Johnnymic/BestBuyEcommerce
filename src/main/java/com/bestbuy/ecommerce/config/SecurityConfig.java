@@ -33,7 +33,7 @@ public class SecurityConfig{
                         .anyRequest()
                         .authenticated())
                 .oauth2ResourceServer(httpSecurityOAuth2Resource -> httpSecurityOAuth2Resource
-                        .jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(getJwtAuthenticationConverter())))
+                        .jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(getJwtAuthenticationConverter() )))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -45,6 +45,7 @@ public class SecurityConfig{
 
         return http.build();
     }
+
 
 
 

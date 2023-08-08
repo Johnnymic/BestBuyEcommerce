@@ -4,6 +4,7 @@ import com.bestbuy.ecommerce.config.jwt.JwtCoder;
 import com.bestbuy.ecommerce.config.jwt.RSAKeyProperties;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.crypto.RsaKeyConversionServicePostProcessor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +27,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Collection;
 
 @Configuration
@@ -36,6 +40,8 @@ public class SecurityConfigBean {
     private static final String CLAIM_ROLES = "roles";
 
     private final JwtCoder jwtEncoder;
+
+
 
 
     @Bean
@@ -77,6 +83,12 @@ public class SecurityConfigBean {
         return grantedAuthoritiesConverter;
 
     }
+//    @Bean
+//    BeanFactoryPostProcessor conversionServiceCustomizer() {
+//        return beanFactory ->
+//                beanFactory.getBean(RsaKeyConversionServicePostProcessor.class)
+//                        .setResourceLoader(new CustomResourceLoader());
+//    }
 
     @Bean
     public JwtAuthenticationProvider jwtAuthenticationProvider(){
@@ -84,6 +96,7 @@ public class SecurityConfigBean {
        provider.setJwtAuthenticationConverter(getJwtAuthenticationConverter());
        return provider;
     }
+
 
 
 }
