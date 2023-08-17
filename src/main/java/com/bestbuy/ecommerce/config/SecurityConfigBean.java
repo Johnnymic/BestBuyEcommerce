@@ -1,8 +1,10 @@
 package com.bestbuy.ecommerce.config;
 
 import com.bestbuy.ecommerce.config.jwt.JwtCoder;
+import com.bestbuy.ecommerce.config.jwt.RSAKeyProperties;
 import com.bestbuy.ecommerce.domain.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -42,6 +44,7 @@ public class SecurityConfigBean {
                 .orElseThrow( ()-> new UsernameNotFoundException("user not found"));
 
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
