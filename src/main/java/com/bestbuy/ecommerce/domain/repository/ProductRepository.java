@@ -13,6 +13,8 @@ public interface ProductRepository extends JpaRepository<Product,Long> , JpaSpec
 
     List<Product> findAllByCategory(SubCategory category);
 
+    
+
     @Query(value = "SELECT * FROM products WHERE subcategory_id=?", nativeQuery=true)
     List<Product>findAllByCategory_SubCategoryId(Long subcategoryId);
 

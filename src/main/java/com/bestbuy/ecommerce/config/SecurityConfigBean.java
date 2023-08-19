@@ -90,12 +90,12 @@ public class SecurityConfigBean {
 //                        .setResourceLoader(new CustomResourceLoader());
 //    }
 
-    @Bean
-    public JwtAuthenticationProvider jwtAuthenticationProvider(){
-       JwtAuthenticationProvider provider = new JwtAuthenticationProvider(jwtEncoder.jwtDecoder());
-       provider.setJwtAuthenticationConverter(getJwtAuthenticationConverter());
-       return provider;
-    }
+//    @Bean
+//    public JwtAuthenticationProvider jwtAuthenticationProvider(){
+//       JwtAuthenticationProvider provider = new JwtAuthenticationProvider(jwtEncoder.jwtDecoder());
+//       provider.setJwtAuthenticationConverter(getJwtAuthenticationConverter());
+//       return provider;
+//    }
 
 
 

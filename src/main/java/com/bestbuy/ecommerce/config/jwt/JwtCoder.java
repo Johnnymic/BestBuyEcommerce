@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 
 
-@Configuration
+
 @RequiredArgsConstructor
 //@DependsOn(value = "rsaKeyProperties")
 public class JwtCoder {
@@ -24,21 +24,21 @@ public class JwtCoder {
     private  final RSAKeyProperties rsaKeyProperties
             ;
 
-    @Bean
-    public JwtDecoder jwtDecoder(){
-        return NimbusJwtDecoder.
-                withPublicKey(rsaKeyProperties.getRsaPublicKey())
-                .build();
-    }
-    @Bean
-    public JwtEncoder jwtEncoder(){
-        JWK jwk = new RSAKey.Builder(rsaKeyProperties
-                .getRsaPublicKey())
-                .privateKey(rsaKeyProperties.getRsaPrivateKey())
-                .build();
-        JWKSource<SecurityContext> jwkSource =new ImmutableJWKSet<>(new JWKSet(jwk));
-        return new NimbusJwtEncoder(jwkSource);
-    }
+//    @Bean
+//    public JwtDecoder jwtDecoder(){
+//        return NimbusJwtDecoder.
+//                withPublicKey(rsaKeyProperties.getRsaPublicKey())
+//                .build();
+//    }
+//    @Bean
+//    public JwtEncoder jwtEncoder(){
+//        JWK jwk = new RSAKey.Builder(rsaKeyProperties
+//                .getRsaPublicKey())
+//                .privateKey(rsaKeyProperties.getRsaPrivateKey())
+//                .build();
+//        JWKSource<SecurityContext> jwkSource =new ImmutableJWKSet<>(new JWKSet(jwk));
+//        return new NimbusJwtEncoder(jwkSource);
+//    }
 
 
 
