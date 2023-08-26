@@ -1,6 +1,8 @@
 package com.bestbuy.ecommerce.controller;
 
+import com.bestbuy.ecommerce.domain.entity.Brand;
 import com.bestbuy.ecommerce.dto.request.BrandRequest;
+import com.bestbuy.ecommerce.dto.request.BrandSearchRequest;
 import com.bestbuy.ecommerce.dto.responses.ApiResponse;
 import com.bestbuy.ecommerce.dto.responses.BrandResponse;
 import com.bestbuy.ecommerce.service.BrandService;
@@ -18,6 +20,8 @@ import java.util.List;
 public class BrandController {
 
     private final BrandService brandService;
+
+
 
     @PostMapping("/create/new/brand")
     public ResponseEntity<ApiResponse<BrandResponse>>createNewBrand(@RequestBody BrandRequest brandRequest){
@@ -47,6 +51,14 @@ public class BrandController {
     public ResponseEntity<ApiResponse<String>>deleteBrand(@PathVariable("brandId") Long brandId){
         ApiResponse<String> apiResponse = new ApiResponse<>(brandService.deleteBrand(brandId));
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/search/brand")
+    public ResponseEntity<ApiResponse<List<Brand>>> searchBrand(@RequestBody BrandSearchRequest brandSearchRequest){
+
+        ApiResponse<List<Brand>> apiResponse = new ApiResponse<>(brandService.searchBrandByName(brandSearchRequest));
+        return  new ResponseEntity<>(apiResponse,HttpStatus.CREATED);
     }
 
 

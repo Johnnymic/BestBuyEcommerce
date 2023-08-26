@@ -1,6 +1,7 @@
 package com.bestbuy.ecommerce.search;
 
 import com.bestbuy.ecommerce.domain.entity.Brand;
+import com.bestbuy.ecommerce.dto.request.BrandSearchRequest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -10,6 +11,7 @@ import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -18,7 +20,7 @@ public class BrandSearchDao {
 
     private final EntityManager entityManager;
 
-    List<Brand> findAllBrandDao(
+   public  List<Brand> findAllBrandDao(
             String brandName,
             String brandDescription
     ){
@@ -41,5 +43,29 @@ public class BrandSearchDao {
 
 
     }
+
+    public List<Brand>brandSearchCriteria(
+       BrandSearchRequest searchRequest
+
+    ) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Brand> criteriaQuery = criteriaBuilder.createQuery(Brand.class);
+
+        Root<Brand> root = criteriaQuery.from(Brand.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (!searchRequest.getBrandName().isEmpty() || searchRequest.getBrandName()!= null) {
+            Predicate predicate = criteriaBuilder.like(root.get("brandName"), "%" + searchRequest.getBrandName() + "%");
+            predicates.add(predicate);
+        }
+
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+
+        TypedQuery<Brand> brandTypedQuery = entityManager.createQuery(criteriaQuery);
+       return brandTypedQuery.getResultList();
+
+
+    }
+
 
 }

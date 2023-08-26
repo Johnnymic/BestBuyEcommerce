@@ -3,8 +3,10 @@ package com.bestbuy.ecommerce.service.serviceImpl;
 import com.bestbuy.ecommerce.domain.entity.Brand;
 import com.bestbuy.ecommerce.domain.repository.BrandRepository;
 import com.bestbuy.ecommerce.dto.request.BrandRequest;
+import com.bestbuy.ecommerce.dto.request.BrandSearchRequest;
 import com.bestbuy.ecommerce.dto.responses.BrandResponse;
 import com.bestbuy.ecommerce.exceptions.BrandNotFoundException;
+import com.bestbuy.ecommerce.search.BrandSearchDao;
 import com.bestbuy.ecommerce.service.BrandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 public class BrandServiceImpl implements BrandService {
 
     private final BrandRepository brandRepository;
+
+    private final BrandSearchDao brandSearchDao;
 
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -64,6 +68,11 @@ public class BrandServiceImpl implements BrandService {
 
         brandRepository.delete(brand);
         return "Brand is successfully deleted";
+    }
+
+    @Override
+    public List<Brand> searchBrandByName(BrandSearchRequest brandSearchRequest) {
+        return brandSearchDao.brandSearchCriteria(brandSearchRequest);
     }
 
     private BrandResponse mapToBrandResponse(Brand brand) {
