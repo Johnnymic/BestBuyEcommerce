@@ -7,8 +7,10 @@ import com.bestbuy.ecommerce.domain.repository.SubCategoryRepository;
 import com.bestbuy.ecommerce.dto.request.CategoryRequest;
 import com.bestbuy.ecommerce.dto.responses.CategoryResponse;
 import com.bestbuy.ecommerce.exceptions.CategoryNotFoundException;
+import com.bestbuy.ecommerce.search.CategorySearchDto;
 import com.bestbuy.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+
+    private  final CategorySearchDto categorySearchDto;
     @Override
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
         Category category = mapToResponse(categoryRequest);
@@ -73,6 +77,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(()->new CategoryNotFoundException("category not found"));
         categoryRepository.delete(category);
         return "category is deleted";
+    }
+
+    @Override
+    public Page<Category> filterAndSearchCategory(int pageNo, int pageSize, String sortBy, String firstName) {
+
+        return null;
     }
 
 
