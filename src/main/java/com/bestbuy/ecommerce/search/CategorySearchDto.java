@@ -25,7 +25,7 @@ public class CategorySearchDto {
 
     private CriteriaBuilder criteriaBuilder;
 
-    Page<Category> searchCategoryCriteria(CategorySearchPage categorySearchPage , CategorySearch categorySearch){
+   public    Page<Category> searchCategoryCriteria(CategorySearchPage categorySearchPage , CategorySearch categorySearch){
         criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Category> criteriaQuery = criteriaBuilder.createQuery(Category.class);
         Root<Category> categoryRoot = criteriaQuery.from(Category.class);

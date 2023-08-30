@@ -7,10 +7,13 @@ import com.bestbuy.ecommerce.domain.repository.SubCategoryRepository;
 import com.bestbuy.ecommerce.dto.request.CategoryRequest;
 import com.bestbuy.ecommerce.dto.responses.CategoryResponse;
 import com.bestbuy.ecommerce.exceptions.CategoryNotFoundException;
+import com.bestbuy.ecommerce.search.CategorySearch;
 import com.bestbuy.ecommerce.search.CategorySearchDto;
+import com.bestbuy.ecommerce.search.CategorySearchPage;
 import com.bestbuy.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -81,8 +84,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Page<Category> filterAndSearchCategory(int pageNo, int pageSize, String sortBy, String firstName) {
-
-        return null;
+      CategorySearchPage categorySearchPage = new CategorySearchPage();
+      categorySearchPage.setPageNo(pageNo);
+      categorySearchPage.setPageSize(pageSize);
+      categorySearchPage.setSortDirection(Sort.Direction.ASC);
+      categorySearchPage.setSortByName(sortBy);
+        CategorySearch categorySearch  = new CategorySearch();
+        categorySearch.setCategoryName(firstName);
+        return categorySearchDto.searchCategoryCriteria(categorySearchPage,categorySearch);
     }
 
 
