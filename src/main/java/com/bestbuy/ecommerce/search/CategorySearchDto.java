@@ -7,21 +7,25 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+@RequiredArgsConstructor
+@Repository
+@Getter
 public class CategorySearchDto {
 
-    private EntityManager entityManager;
+    private final EntityManager  entityManager;
 
     private CriteriaBuilder criteriaBuilder;
 
-    List<Category> searchCategoryCriteria(CategorySearchPage categorySearchPage , CategorySearch categorySearch){
+    Page<Category> searchCategoryCriteria(CategorySearchPage categorySearchPage , CategorySearch categorySearch){
         criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Category> criteriaQuery = criteriaBuilder.createQuery(Category.class);
         Root<Category> categoryRoot = criteriaQuery.from(Category.class);
@@ -33,11 +37,19 @@ public class CategorySearchDto {
         categoryTypedQuery.setFirstResult(categorySearchPage.getPageNo()* categorySearchPage.getPageSize());
         categoryTypedQuery.setMaxResults(categorySearchPage.getPageSize());
 
-        Pageable pageable =getPageRequest(categorySearch);
+        Pageable pageable =getPageRequest(categorySearchPage);
+        Long categoryCount = getNumberOfCategory(predicate);
 
 
-        return null;
+        return new PageImpl<>(categoryTypedQuery.getResultList(),pageable,categoryCount);
 
+    }
+
+    private Long getNumberOfCategory(Predicate predicate) {
+        CriteriaQuery<Long> longCriteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Root<Category> categoryRoot = longCriteriaQuery.from(Category.class);
+        longCriteriaQuery.select(criteriaBuilder.count(categoryRoot)).where(predicate);
+        return entityManager.createQuery(longCriteriaQuery).getSingleResult();
     }
 
     private Pageable getPageRequest(CategorySearchPage categorySearchPage) {
