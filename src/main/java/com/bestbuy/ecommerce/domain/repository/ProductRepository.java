@@ -15,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> , JpaSpec
 
     
 
-    @Query(value = "SELECT * FROM products WHERE subcategory_id=?", nativeQuery=true)
+    @Query(value = "SELECT c.name   FROM products c INNER JOIN subcategory s ON c.subcategory_id= s.id WHERE subcategory_id=?", nativeQuery=true)
     List<Product>findAllByCategory_SubCategoryId(Long subcategoryId);
 
     @Query(value = "SELECT * FROM products WHERE brand_id=?", nativeQuery=true)

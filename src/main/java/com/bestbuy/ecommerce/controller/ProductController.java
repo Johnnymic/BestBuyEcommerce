@@ -52,6 +52,7 @@ public class ProductController {
        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
+
     @GetMapping("/fetch/all/product/brand/{brandId}")
     public ResponseEntity<ApiResponse<Page<ProductResponse>>>fetchProductByBrand( @PathVariable("brandId") Long brandId,
                                                                                   @RequestParam(defaultValue = "0") Integer pageNo,
